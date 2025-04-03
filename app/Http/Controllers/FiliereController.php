@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class FiliereController extends Controller
 {
     /**
-     * Récupère toutes les filièresggffhhhvcgcgf
+     * Récupère toutes les filièresggffhhhvcgcgffffd
      */
     public function index()
     {
