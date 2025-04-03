@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 class FiliereController extends Controller
 {
     /**
-     * Récupère toutes les filières
+     * Récupère toutes les filièresggff
      */
     public function index()
     {
+
         try {
             $filieres = Filiere::select('id', 'nom', 'code')->get();
             
