@@ -1,9 +1,8 @@
 <?php
 
-<<<<<<< HEAD
-=======
+
 // faraaaah coment
->>>>>>> 8603f3fe6f241c814be9aff6b9b8b47f1fd0ea53
+// faraaaah coment2
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
