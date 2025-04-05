@@ -25,6 +25,7 @@ class User extends Authenticatable
     public function etudiant() {
         return $this->hasOne(Etudiant::class);
     }
+    protected $table = 'utilisateurs';
 }
 
 

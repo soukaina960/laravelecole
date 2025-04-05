@@ -100,6 +100,26 @@ return [
             'throttle' => 60,
         ],
     ],
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+      
+        'model' => App\Models\User::class, // أو , // أو App\Models\Utilisateur إذا غيرتي الاسم
+    ],
+],
+
+'guards' => [
+    'api' => [
+        'driver' => 'sanctum',
+        'provider' => 'utilisateurs',
+    ],
+],
+
+    'api' => [
+        'driver' => 'sanctum', // ولا token حسب استعمالك
+        'provider' => 'utilisateurs',
+    ],
+
 
     /*
     |--------------------------------------------------------------------------

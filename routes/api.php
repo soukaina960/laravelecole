@@ -12,6 +12,7 @@ use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\AuthController;
+<<<<<<< HEAD
 use App\Http\Controllers\API\RetardController;
 use App\Http\Controllers\API\IncidentController;
 use App\Http\Controllers\API\EmploiSurveillanceController;
@@ -45,6 +46,10 @@ Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [In
 
 
 
+=======
+use Illuminate\Http\Request;
+use App\Http\Controllers\EtudiantProfesseurController;
+>>>>>>> 48fbc1b (login)
 
 
 Route::get('/utilisateurs', [UtilisateurController::class, 'index']);
@@ -65,6 +70,7 @@ Route::post('/etudiants', [StudentController::class, 'store']);
 Route::put('/etudiants/{id}', [StudentController::class, 'update']);
 Route::delete('etudiants/{id}', [StudentController::class, 'destroy']);
 
+Route::get('/etudiant_professeur/{classe_id}', [EtudiantProfesseurController::class, 'getEtudiantsProfesseurs']);
 
 // routes/api.php
 Route::post('professeurs/{id}/calculer-salaire', [ProfesseurController::class, 'calculerSalaire']);
@@ -111,8 +117,14 @@ Route::get('/classes/{classe}/etudiants', [ClasseController::class, 'getEtudiant
    
     Route::get('/etudiants/{etudiant_id}/parent-email', [ParentController::class, 'getParentEmail']);
 Route::post('/send-message', [MessageController::class, 'send']);
+//login
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);

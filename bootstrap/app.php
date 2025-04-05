@@ -1,11 +1,5 @@
 <?php
-<<<<<<< HEAD
-=======
 
-
-// faraaaah coment
-
->>>>>>> a1a674e (ajout)
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
