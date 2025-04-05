@@ -23,3 +23,4 @@ class CreateEmploisSurveillanceTable extends Migration
         Schema::dropIfExists('emploi_surveillances');
     }
 }
+//ajoo

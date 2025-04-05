@@ -22,3 +22,4 @@ class CreateIncidentsTable extends Migration
         Schema::dropIfExists('incidents');
     }
 }
+//ajoo

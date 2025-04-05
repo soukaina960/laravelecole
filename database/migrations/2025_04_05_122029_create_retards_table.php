@@ -19,5 +19,5 @@ class CreateRetardsTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists('retards');
-    }
+    }//ajoo
 }
