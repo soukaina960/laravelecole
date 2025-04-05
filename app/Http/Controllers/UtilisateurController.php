@@ -53,5 +53,9 @@ class UtilisateurController extends Controller
         Utilisateur::destroy($id);
         return response()->json(['message' => 'Utilisateur supprimé']);
     }
+    public function etudiant()
+{
+    return $this->hasOne(Etudiant::class, 'utilisateur_id');
+}
 }
 

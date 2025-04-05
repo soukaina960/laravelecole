@@ -11,15 +11,23 @@ class Etudiant extends Model
 
     protected $fillable = [
         'nom',
-    'prenom'
-    ,'matricule', 'email', 'date_naissance', 'sexe', 
-        'adresse', 'photo_profil', 'montant_a_payer',
-        'parent_id', 'origine','filiere_id',
+    'prenom',
+    'matricule',
+     'email',
+      'date_naissance', 
+      'sexe', 
+       'adresse',
+      'photo_profil',
+     'montant_a_payer',
+    'parent_id', 
+     'origine',
+     'filiere_id',
     'classe_id',
     'category',
-    ];
+'utilisateur_id',    ];
     public function filiere()
 {
+
     return $this->belongsTo(Filiere::class);
 }
 public function attendances()
@@ -50,5 +58,8 @@ public function classe()
         return $this->belongsToMany(Professeur::class);
     }
 
-
+    public function utilisateur()
+    {
+        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
+    }
 }
