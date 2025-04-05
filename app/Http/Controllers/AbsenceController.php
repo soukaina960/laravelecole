@@ -44,4 +44,25 @@ class AbsenceController extends Controller
         Absence::destroy($id);
         return response()->json(['message' => 'Absence supprimée']);
     }
+    // Récupérer les absences d'un étudiant
+public function getByEtudiant($etudiant_id)
+{
+    $absences = Absence::where('etudiant_id', $etudiant_id)
+                ->with('etudiant')
+                ->get();
+
+    return response()->json($absences);
+}
+
+// Récupérer les absences d'un étudiant entre deux dates
+public function getByDateRange($etudiant_id, $date_debut, $date_fin)
+{
+    $absences = Absence::where('etudiant_id', $etudiant_id)
+                ->whereBetween('date', [$date_debut, $date_fin])
+                ->with('etudiant')
+                ->get();
+
+    return response()->json($absences);
+}
+
 }

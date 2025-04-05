@@ -43,4 +43,25 @@ class IncidentController extends Controller
         Incident::destroy($id);
         return response()->json(['message' => 'Incident supprimé']);
     }
+    // 🔎 Get all incidents for a specific student
+public function getByEtudiant($etudiant_id)
+{
+    $incidents = Incident::where('etudiant_id', $etudiant_id)
+                ->with('etudiant')
+                ->get();
+
+    return response()->json($incidents);
+}
+
+// 📅 Get incidents for a student in a date range
+public function getByDateRange($etudiant_id, $date_debut, $date_fin)
+{
+    $incidents = Incident::where('etudiant_id', $etudiant_id)
+                ->whereBetween('date', [$date_debut, $date_fin])
+                ->with('etudiant')
+                ->get();
+
+    return response()->json($incidents);
+}
+
 }

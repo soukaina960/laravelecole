@@ -35,4 +35,24 @@ class NotificationController extends Controller
         Notification::destroy($id);
         return response()->json(['message' => 'Notification supprimée']);
     }
+    // 🔔 Notifications d’un étudiant spécifique
+public function getByEtudiant($etudiant_id)
+{
+    $notifications = Notification::where('etudiant_id', $etudiant_id)
+                    ->with('etudiant')
+                    ->get();
+
+    return response()->json($notifications);
+}
+
+// 📤 Notifications envoyées par un utilisateur spécifique
+public function getByEnvoyeur($user_id)
+{
+    $notifications = Notification::where('envoyee_par', $user_id)
+                    ->with('etudiant')
+                    ->get();
+
+    return response()->json($notifications);
+}
+
 }

@@ -44,4 +44,12 @@ class EmploiSurveillanceController extends Controller
         EmploiSurveillance::destroy($id);
         return response()->json(['message' => 'Emploi supprimé']);
     }
+    // En bas de ton controller
+public function getBySurveillant($surveillant_id)
+{
+    $emplois = EmploiSurveillance::where('surveillant_id', $surveillant_id)->get();
+
+    return response()->json($emplois);
+}
+
 }

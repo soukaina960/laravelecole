@@ -12,6 +12,39 @@ use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\API\RetardController;
+use App\Http\Controllers\API\IncidentController;
+use App\Http\Controllers\API\EmploiSurveillanceController;
+use App\Http\Controllers\API\EmailParentController;
+use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\NotificationController;
+
+// CRUD routes
+Route::apiResource('notifications', NotificationController::class)->only([
+    'index', 'store', 'show', 'destroy'
+]);
+Route::get('notifications/etudiant/{etudiant_id}', [NotificationController::class, 'getByEtudiant']);
+Route::get('notifications/envoyeur/{user_id}', [NotificationController::class, 'getByEnvoyeur']);
+
+
+// Routes API standards
+Route::apiResource('absences', AbsenceController::class);
+Route::get('absences/etudiant/{etudiant_id}', [AbsenceController::class, 'getByEtudiant']);
+Route::get('absences/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [AbsenceController::class, 'getByDateRange']);
+Route::apiResource('retards', RetardController::class);
+Route::get('retards/etudiant/{etudiant_id}', [RetardController::class, 'getByEtudiant']);
+Route::get('retards/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [RetardController::class, 'getByDateRange']);
+Route::apiResource('emplois', EmploiSurveillanceController::class);
+Route::get('emplois/surveillant/{surveillant_id}', [EmploiSurveillanceController::class, 'getBySurveillant']);
+Route::apiResource('incidents', IncidentController::class);
+Route::get('incidents/etudiant/{etudiant_id}', [IncidentController::class, 'getByEtudiant']);
+Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [IncidentController::class, 'getByDateRange']);
+
+
+
+
+
+
 
 
 Route::get('/utilisateurs', [UtilisateurController::class, 'index']);
