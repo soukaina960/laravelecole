@@ -10,15 +10,18 @@ class Utilisateur extends Authenticatable
 
     protected $table = 'utilisateurs';
 
-    protected $fillable = [
-        'nom',
-        'email',
-        'mot_de_passe',
-        'role',
-        'telephone',
-        'adresse',
-        'photo_profil', 
-    ];
+   // app/Models/Utilisateur.php
+
+protected $fillable = [
+    'matricule', // Ajouter ce champ
+    'nom',
+    'email',
+    'mot_de_passe',
+    'role',
+    'telephone',
+    'adresse',
+    'photo_profil'
+];
 
     protected $hidden = ['mot_de_passe'];
 
@@ -30,5 +33,8 @@ class Utilisateur extends Authenticatable
 public function etudiant() {
     return $this->hasOne(Etudiant::class);
 }
-
+public function getAuthPassword()
+    {
+        return $this->mot_de_passe;
+    }
 }
