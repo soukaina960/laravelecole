@@ -11,6 +11,7 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\AuthController;
 
 
 Route::get('/utilisateurs', [UtilisateurController::class, 'index']);
@@ -77,3 +78,8 @@ Route::get('/classes/{classe}/etudiants', [ClasseController::class, 'getEtudiant
    
     Route::get('/etudiants/{etudiant_id}/parent-email', [ParentController::class, 'getParentEmail']);
 Route::post('/send-message', [MessageController::class, 'send']);
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+Route::post('/register', [AuthController::class, 'register']);

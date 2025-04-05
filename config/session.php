@@ -35,7 +35,11 @@ return [
     'lifetime' => (int) env('SESSION_LIFETIME', 120),
 
     'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
-
+'stateful' => [
+    'localhost',
+    '127.0.0.1',
+    'localhost:3000', // Ajoutez votre domaine frontend
+],
     /*
     |--------------------------------------------------------------------------
     | Session Encryption
