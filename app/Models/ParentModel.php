@@ -1,4 +1,3 @@
-// app/Models/ParentModel.php
 <?php
 
 namespace App\Models;
@@ -25,4 +24,9 @@ class ParentModel extends Model
     {
         return $this->hasMany(Etudiant::class, 'parent_id');
     }
+    public function etudiant()
+    {
+        return $this->belongsTo(Etudiant::class);
+    }
 }
+

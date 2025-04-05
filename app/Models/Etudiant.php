@@ -49,6 +49,34 @@ public function classe()
     {
         return $this->belongsToMany(Professeur::class);
     }
+    public function absences()
+    {
+        return $this->hasMany(Absence::class);
+    }
+
+    public function retards()
+    {
+        return $this->hasMany(Retard::class);
+    }
+
+    public function incidents()
+    {
+        return $this->hasMany(Incident::class);
+    }
+
+    public function sanctions()
+    {
+        return $this->hasMany(Sanction::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+    public function emailParent()
+{
+    return $this->hasOne(EmailParent::class);
+}
 
 
 }
