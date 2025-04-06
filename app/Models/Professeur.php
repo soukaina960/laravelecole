@@ -9,7 +9,7 @@ class Professeur extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'specialite', 'niveau_enseignement', 'diplome', 'date_embauche'];
+    protected $fillable = ['user_id','nom','email' ,'specialite', 'niveau_enseignement', 'diplome', 'date_embauche'];
 
     public function utilisateur()
     {

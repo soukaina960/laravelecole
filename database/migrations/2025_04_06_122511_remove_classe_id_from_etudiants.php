@@ -9,11 +9,10 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('etudiants', function (Blueprint $table) {
-            // Ajout d'une clé étrangère avec une action onDelete cascade
-            $table->foreignId('classe_id')->constrained('classrooms')->onDelete('cascade');
+            //
         });
     }
 
@@ -23,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('etudiants', function (Blueprint $table) {
-            // Suppression de la clé étrangère
-            $table->dropForeign(['classe_id']);
+            //
         });
     }
 };

@@ -11,7 +11,7 @@ class Classroom extends Model
 
     protected $table = 'classrooms';
 
-    protected $fillable = ['name', 'capacite', 'niveau', 'professeur_id','description'];
+    protected $fillable = ['name', 'capacite', 'niveau'];
 
     public function professeur() {
         return $this->belongsTo(User::class, 'professeur_id');

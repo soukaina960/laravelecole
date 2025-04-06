@@ -12,7 +12,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('etudiants', function (Blueprint $table) {
-            // Ajout d'une clé étrangère avec une action onDelete cascade
+            // Supprimer la contrainte de la clé étrangère existante
+            $table->dropForeign(['classe_id']);
+            
+            // Ajouter une nouvelle contrainte avec la bonne table et la suppression en cascade
             $table->foreignId('classe_id')->constrained('classrooms')->onDelete('cascade');
         });
     }
@@ -23,8 +26,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('etudiants', function (Blueprint $table) {
-            // Suppression de la clé étrangère
+            // Supprimer la contrainte si on annule la migration
             $table->dropForeign(['classe_id']);
+            
+            // Recréer la contrainte précédente si nécessaire
+            $table->foreignId('classe_id')->constrained();  // Si tu veux revenir à l'état initial
         });
     }
 };

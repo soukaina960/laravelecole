@@ -11,6 +11,7 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ParentController;
+<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
 <<<<<<< HEAD
 use App\Http\Controllers\API\RetardController;
@@ -50,6 +51,10 @@ Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [In
 use Illuminate\Http\Request;
 use App\Http\Controllers\EtudiantProfesseurController;
 >>>>>>> 48fbc1b (login)
+=======
+use App\Http\Controllers\EmploiTempsController;
+
+>>>>>>> 5f9269f ( dernier modification)
 
 
 Route::get('/utilisateurs', [UtilisateurController::class, 'index']);
@@ -117,6 +122,7 @@ Route::get('/classes/{classe}/etudiants', [ClasseController::class, 'getEtudiant
    
     Route::get('/etudiants/{etudiant_id}/parent-email', [ParentController::class, 'getParentEmail']);
 Route::post('/send-message', [MessageController::class, 'send']);
+<<<<<<< HEAD
 //login
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -128,3 +134,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+=======
+
+Route::get('/emplois_temps', [EmploiTempsController::class, 'index']);
+Route::post('/emplois_temps', [EmploiTempsController::class, 'store']);
+Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
+>>>>>>> 5f9269f ( dernier modification)

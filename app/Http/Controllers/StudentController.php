@@ -3,108 +3,128 @@
 namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
-use App\Models\Utilisateur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => 'required|string|max:255', // Le nom est requis
-            'email' => 'required|email|unique:etudiants,email', // Vérifie que l'email est unique
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'email' => 'required|email|unique:etudiants,email',
             'matricule' => 'required|string|unique:etudiants,matricule',
+            'origine' => 'nullable|string|max:255',
             'date_naissance' => 'required|date',
             'sexe' => 'required|in:M,F',
             'adresse' => 'required|string',
-            'photo_profil' => 'nullable|image',
-            'class_id' => 'required|exists:classrooms,id',
+            'classe_id' => 'required|exists:classrooms,id',
             'montant_a_payer' => 'nullable|numeric',
+            'photo_profil' => 'nullable|image|max:2048',
+            'utilisateur_id' => 'nullable|exists:utilisateurs,id',
+            'parent_id' => 'nullable|exists:utilisateurs,id',
             'professeurs' => 'nullable|array',
         ]);
 
-
-        $etudiant = Etudiant::create([
-            'nom' => $request->nom,
-            'email' => $request->email,
-            'matricule' => $request->matricule,
-            'date_naissance' => $request->date_naissance,
-            'sexe' => $request->sexe,
-            'adresse' => $request->adresse,
-            'photo_profil' => $request->photo_profil,
-            'class_id' => $request->class_id, 
-           'montant_a_payer' => $request->montant_a_payer,
-           
+        $data = $request->only([
+            'nom', 'prenom', 'email', 'matricule', 'origine', 'date_naissance',
+            'sexe', 'adresse', 'classe_id', 'montant_a_payer', 'utilisateur_id', 'parent_id'
         ]);
-        
+
+        if ($request->hasFile('photo_profil')) {
+            $data['photo_profil'] = $request->file('photo_profil')->store('photos', 'public');
+        }
+
+        $etudiant = Etudiant::create($data);
+
         if ($request->has('professeurs')) {
             $etudiant->professeurs()->attach($request->professeurs);
         }
-    
+
         return response()->json($etudiant, 201);
     }
 
-   
     public function index()
     {
         $etudiants = Etudiant::with('classroom')->get();
-    
-        // Exclure les données binaires ou encoder en Base64
+
         $etudiants->each(function ($etudiant) {
-            $etudiant->photo_profil = base64_encode($etudiant->photo_profil); // Encodage Base64
+            if ($etudiant->photo_profil) {
+                $etudiant->photo_profil_url = asset('storage/' . $etudiant->photo_profil);
+            }
         });
-    
+
         return response()->json($etudiants);
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
             'email' => 'required|email',
             'matricule' => 'required|string',
+            'origine' => 'nullable|string|max:255',
             'date_naissance' => 'required|date',
             'sexe' => 'required|in:M,F',
             'adresse' => 'required|string',
-            'class_id' => 'required|exists:classes,id',
-            'montant_a_payer' => 'nullable|numeric', 
+            'classe_id' => 'required|exists:classrooms,id',
+            'montant_a_payer' => 'nullable|numeric',
+            'utilisateur_id' => 'nullable|exists:utilisateurs,id',
+            'parent_id' => 'nullable|exists:utilisateurs,id',
+            'photo_profil' => 'nullable|image|max:2048',
             'professeurs' => 'nullable|array',
         ]);
 
         $etudiant = Etudiant::findOrFail($id);
-        $etudiant->update([
-            'nom' => $request->nom,
-            'email' => $request->email,
-            'matricule' => $request->matricule,
-            'date_naissance' => $request->date_naissance,
-            'sexe' => $request->sexe,
-            'adresse' => $request->adresse,
-            'class_id' => $request->class_id,
-            'montant_a_payer' => $request->montant_a_payer, // Mise à jour du montant
+
+        $data = $request->only([
+            'nom', 'prenom', 'email', 'matricule', 'origine', 'date_naissance',
+            'sexe', 'adresse', 'classe_id', 'montant_a_payer', 'utilisateur_id', 'parent_id'
         ]);
+
+        if ($request->hasFile('photo_profil')) {
+            // Supprimer l’ancienne si elle existe
+            if ($etudiant->photo_profil) {
+                Storage::disk('public')->delete($etudiant->photo_profil);
+            }
+            $data['photo_profil'] = $request->file('photo_profil')->store('photos', 'public');
+        }
+
+        $etudiant->update($data);
+
+        if ($request->has('professeurs')) {
+            $etudiant->professeurs()->sync($request->professeurs);
+        }
 
         return response()->json($etudiant);
     }
+
     public function destroy($id)
     {
         $etudiant = Etudiant::findOrFail($id);
-            $etudiant->delete();
-    
+
+        if ($etudiant->photo_profil) {
+            Storage::disk('public')->delete($etudiant->photo_profil);
+        }
+
+        $etudiant->delete();
+
         return response()->json(['message' => 'Étudiant supprimé avec succès!']);
     }
-    
-public function affecterProfesseurs(Request $request, $etudiantId)
-{
-    $etudiant = Etudiant::findOrFail($etudiantId);
 
-    $request->validate([
-        'professeurs' => 'required|array', // Professeurs à affecter
-        'professeurs.*' => 'exists:professeurs,id', // Les IDs des professeurs doivent exister
-    ]);
+    public function affecterProfesseurs(Request $request, $etudiantId)
+    {
+        $etudiant = Etudiant::findOrFail($etudiantId);
 
-    // Associer les professeurs à l'étudiant
-    $etudiant->professeurs()->sync($request->professeurs);
+        $request->validate([
+            'professeurs' => 'required|array',
+            'professeurs.*' => 'exists:professeurs,id',
+        ]);
 
-    return response()->json(['message' => 'Professeurs affectés avec succès!']);
-}
+        $etudiant->professeurs()->sync($request->professeurs);
 
+        return response()->json(['message' => 'Professeurs affectés avec succès!']);
+    }
 }

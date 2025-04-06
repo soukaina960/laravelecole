@@ -10,21 +10,10 @@ class Etudiant extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom',
-    'prenom',
-    'matricule',
-     'email',
-      'date_naissance', 
-      'sexe', 
-       'adresse',
-      'photo_profil',
-     'montant_a_payer',
-    'parent_id', 
-     'origine',
-     'filiere_id',
-    'classe_id',
-    'category',
-'utilisateur_id',    ];
+        'utilisateur_id', 'nom', 'prenom', 'matricule', 'email', 'origine',
+        'parent_id', 'date_naissance', 'sexe', 'adresse', 'photo_profil',
+        'montant_a_payer', 'classe_id'
+    ];
     public function filiere()
 {
 
@@ -35,10 +24,7 @@ public function attendances()
     return $this->hasMany(Attendance::class);
 }
 
-public function classe()
-{
-    return $this->belongsTo(Classe::class, 'classe_id');
-}
+
     public function parent()
     {
         return $this->belongsTo(Parent::class);
@@ -46,9 +32,10 @@ public function classe()
 
 
     public function classroom()
-    {
-        return $this->belongsTo(Classroom::class, 'class_id');
-    }
+{
+    return $this->belongsTo(Classroom::class, 'classe_id');
+}
+
     public function montantAPayer()
     {
         return $this->montant_a_payer ?? $this->classe->montant;

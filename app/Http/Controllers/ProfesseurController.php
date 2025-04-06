@@ -19,6 +19,8 @@ class ProfesseurController extends Controller
     {
         $request->validate([
             'user_id' => 'required|exists:utilisateurs,id',
+            'nom' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:utilisateurs,email',
             'specialite' => 'required|string|max:255',
             'niveau_enseignement' => 'required|string|max:255',
             'diplome' => 'required|string|max:255',
@@ -27,6 +29,8 @@ class ProfesseurController extends Controller
 
         $professeur = Professeur::create([
             'user_id' => $request->user_id,
+            'nom'=> $request->nom,
+            'email'=> $request->email,
             'specialite' => $request->specialite,
             'niveau_enseignement' => $request->niveau_enseignement,
             'diplome' => $request->diplome,
