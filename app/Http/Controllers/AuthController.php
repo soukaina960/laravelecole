@@ -28,40 +28,27 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'role' => $utilisateur->role,  // Retourner le rôle de l'utilisateur
-            'utilisateur' => $utilisateur->only([
-                'id', 'matricule', 'nom', 'email', 
-                'telephone', 'adresse', 'photo_profil'
-            ])
+            'utilisateur' => $utilisateur,
+            'role' => $utilisateur->role,
         ]);
     } catch (\Exception $e) {
-        Log::error('Erreur de connexion: ' . $e->getMessage());
-        return response()->json(['message' => 'Erreur lors de la connexion'], 500);
+        \Log::error('Erreur login : ' . $e->getMessage());
+        return response()->json(['message' => 'Erreur serveur: ' . $e->getMessage()], 500);
     }
 }
-
-    public function logout(Request $request)
-    {
-        try {
-            $request->user()->currentAccessToken()->delete();
-            return response()->json(['message' => 'Déconnexion réussie']);
-        } catch (\Exception $e) {
-            Log::error('Erreur de déconnexion: ' . $e->getMessage());
-            return response()->json(['message' => 'Erreur lors de la déconnexion'], 500);
-        }
-    }
 
     public function register(Request $request)
     {
         try {
             $request->validate([
-                'matricule' => 'required|string|unique:utilisateurs|max:20',
-                'nom' => 'required|string|max:255',
-                'email' => 'required|email|unique:utilisateurs|max:255',
-                'mot_de_passe' => 'required|string|min:8|confirmed',
-                'role' => 'required|in:admin,enseignant,etudiant,parent',
-                'telephone' => 'nullable|string|max:20',
-                'adresse' => 'nullable|string|max:255'
+                'matricule' => 'required|string|unique:utilisateurs',
+                'nom' => 'required|string',
+                'email' => 'required|email|unique:utilisateurs',
+                'mot_de_passe' => 'required|string|min:8',
+                'mot_de_passe_confirmation' => 'required|string|same:mot_de_passe',
+                'role' => 'required|string|in:admin,professeur,étudiant,parent',
+                'telephone' => 'nullable|string',
+                'adresse' => 'nullable|string',
             ]);
 
             $utilisateur = Utilisateur::create([
@@ -71,21 +58,16 @@ class AuthController extends Controller
                 'mot_de_passe' => Hash::make($request->mot_de_passe),
                 'role' => $request->role,
                 'telephone' => $request->telephone,
-                'adresse' => $request->adresse
+                'adresse' => $request->adresse,
             ]);
 
             return response()->json([
+                'utilisateur' => $utilisateur,
                 'message' => 'Compte créé avec succès',
-                'utilisateur' => $utilisateur
-            ], 201);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                'message' => 'Erreur de validation',
-                'errors' => $e->errors()
-            ], 422);
+            ]);
         } catch (\Exception $e) {
-            Log::error('Erreur de création de compte: ' . $e->getMessage());
-            return response()->json(['message' => 'Erreur lors de la création du compte'], 500);
+            Log::error('Erreur de création du compte: ' . $e->getMessage());
+            return response()->json(['message' => 'Une erreur est survenue.'], 500);
         }
     }
 }

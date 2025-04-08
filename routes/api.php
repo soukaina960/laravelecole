@@ -14,12 +14,21 @@ use App\Http\Controllers\ParentController;
 use App\Http\Controllers\Api\ChargeController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\AuthController;
+<<<<<<< HEAD
+=======
+
+>>>>>>> be121dd (partie prf ajouter note)
 use App\Http\Controllers\API\RetardController;
 use App\Http\Controllers\API\IncidentController;
 use App\Http\Controllers\API\EmploiSurveillanceController;
 use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
+
+use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\AnneeScolaireController;
+use App\Http\Controllers\SemestreController;
+
 
 // CRUD routes
 Route::apiResource('notifications', NotificationController::class)->only([
@@ -50,7 +59,11 @@ Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [In
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\EtudiantProfesseurController;
+<<<<<<< HEAD
 use App\Http\Controllers\EmploiTempsController;
+=======
+
+>>>>>>> be121dd (partie prf ajouter note)
 
 
 
@@ -71,6 +84,8 @@ Route::get('/etudiants', [StudentController::class, 'index']);
 Route::post('/etudiants', [StudentController::class, 'store']);  
 Route::put('/etudiants/{id}', [StudentController::class, 'update']);
 Route::delete('etudiants/{id}', [StudentController::class, 'destroy']);
+Route::get('etudiants/{classeId}', [StudentController::class, 'getEtudiantsParClasse']);
+
 
 Route::get('/etudiant_professeur/{classe_id}', [EtudiantProfesseurController::class, 'getEtudiantsProfesseurs']);
 
@@ -130,6 +145,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+<<<<<<< HEAD
 
 Route::get('/emplois_temps', [EmploiTempsController::class, 'index']);
 Route::post('/emplois_temps', [EmploiTempsController::class, 'store']);
@@ -137,3 +153,13 @@ Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
+=======
+Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
+Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
+Route::post('/evaluations', [EvaluationController::class, 'store']);
+
+// routes/api.php
+Route::get('annees_scolaires', [AnneeScolaireController::class, 'index']);
+
+Route::get('/semestres', [SemestreController::class, 'index']);
+>>>>>>> be121dd (partie prf ajouter note)

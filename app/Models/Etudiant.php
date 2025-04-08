@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Etudiant extends Model
 {
     use HasFactory;
@@ -77,4 +78,22 @@ public function attendances()
     {
         return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
     }
+    
+public function professeur() {
+    return $this->belongsTo(Professeur::class);
+}
+public function notes()
+{
+    return $this->hasMany(NoteMatiere::class);
+}
+// app/Models/Etudiant.php
+
+public function evaluations()
+{
+    return $this->hasMany(Evaluation::class);
+}
+
+
+
+
 }

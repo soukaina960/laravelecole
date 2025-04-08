@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Storage;
+=======
+use Illuminate\Support\Facades\DB;
+>>>>>>> be121dd (partie prf ajouter note)
 
 class StudentController extends Controller
 {
@@ -57,6 +61,17 @@ class StudentController extends Controller
 
         return response()->json($etudiants);
     }
+<<<<<<< HEAD
+=======
+    public function getEtudiantsParClasse($classeId)
+{
+    $etudiants = DB::table('etudiants')
+        ->where('classe_id', $classeId)
+        ->get();
+
+    return response()->json($etudiants);
+}
+>>>>>>> be121dd (partie prf ajouter note)
 
     public function update(Request $request, $id)
     {

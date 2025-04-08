@@ -19,6 +19,16 @@ class Professeur extends Model
     {
         return $this->belongsToMany(Etudiant::class);
     }
+    
+  
+public function evaluations()
+{
+    return $this->hasMany(Evaluation::class);
+}
+public function classes()
+{
+    return $this->belongsToMany(Classe::class, 'professeur_id', 'classe_id');
+}
 
     
 }
