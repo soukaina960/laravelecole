@@ -24,6 +24,7 @@ use App\Http\Controllers\API\EmploiSurveillanceController;
 use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaiementMensuelController;
 
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
@@ -153,6 +154,7 @@ Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
+<<<<<<< HEAD
 =======
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
@@ -163,3 +165,13 @@ Route::get('annees_scolaires', [AnneeScolaireController::class, 'index']);
 
 Route::get('/semestres', [SemestreController::class, 'index']);
 >>>>>>> be121dd (partie prf ajouter note)
+=======
+
+
+Route::get('/paiements-mensuels', [PaiementMensuelController::class, 'index']);
+Route::post('/paiements-mensuels', [PaiementMensuelController::class, 'store']);
+Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show']);
+Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
+Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
+
+>>>>>>> ef769d7 ( hajars1  modificaton)

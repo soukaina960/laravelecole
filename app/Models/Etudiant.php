@@ -78,6 +78,7 @@ public function attendances()
     {
         return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
     }
+<<<<<<< HEAD
     
 public function professeur() {
     return $this->belongsTo(Professeur::class);
@@ -96,4 +97,11 @@ public function evaluations()
 
 
 
+=======
+    public function paiements()
+{
+    return $this->hasMany(\App\Models\paiements_mentuels::class);
+}
+
+>>>>>>> ef769d7 ( hajars1  modificaton)
 }
