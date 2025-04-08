@@ -10,11 +10,11 @@ class Filiere extends Model
     use HasFactory;
 
     protected $fillable = ['nom', 'code'];
-    // app/Models/Filiere.php
-public function classes()
-{
-    return $this->hasMany(Classe::class);
-}
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class);
+    }
+    
 public function filiere()
 {
     return $this->belongsTo(Filiere::class, 'filiere_id');

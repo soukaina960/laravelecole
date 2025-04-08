@@ -21,4 +21,9 @@ class Classroom extends Model
     {
         return $this->hasMany(Etudiant::class, 'class_id');
     }
+    public function filiere()
+{
+    return $this->belongsTo(Filiere::class);
+}
+
 }

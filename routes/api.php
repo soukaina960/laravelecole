@@ -11,7 +11,8 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ParentController;
-
+use App\Http\Controllers\Api\ChargeController;
+use App\Http\Controllers\RapportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\RetardController;
 use App\Http\Controllers\API\IncidentController;
@@ -133,3 +134,6 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 Route::get('/emplois_temps', [EmploiTempsController::class, 'index']);
 Route::post('/emplois_temps', [EmploiTempsController::class, 'store']);
 Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
+
+Route::apiResource('charges', ChargeController::class);
+Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
