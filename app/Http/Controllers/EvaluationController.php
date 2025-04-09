@@ -6,6 +6,7 @@ use App\Models\Etudiant;
 use App\Models\Evaluation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class EvaluationController extends Controller
 {
@@ -79,4 +80,24 @@ class EvaluationController extends Controller
 
         return response()->json(['message' => 'Notes enregistrées avec succès.']);
     }
+  // Exemple d'une méthode dans votre contrôleur pour récupérer les notes avec la matière
+  public function getNotesEtudiant($etudiant_id, Request $request)
+  {
+      // Récupérer les paramètres d'année scolaire et de semestre depuis la requête
+      $annee_scolaire_id = $request->query('annee_scolaire_id');
+      $semestre_id = $request->query('semestre_id');
+      
+      // Récupérer les notes de l'étudiant, et associer avec la spécialité du professeur
+      $notes = DB::table('evaluations')
+          ->join('professeurs', 'evaluations.professeur_id', '=', 'professeurs.id')
+          ->where('evaluations.etudiant_id', $etudiant_id)
+          ->where('evaluations.annee_scolaire_id', $annee_scolaire_id)
+          ->where('evaluations.semestre_id', $semestre_id)
+          ->select('evaluations.*', 'professeurs.specialite')
+          ->get();
+  
+      return response()->json($notes);
+  }
+  
+
 }

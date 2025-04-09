@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\classroom;
 
 
 class Etudiant extends Model
@@ -33,9 +34,9 @@ public function attendances()
 
 
     public function classroom()
-{
-    return $this->belongsTo(Classroom::class, 'classe_id');
-}
+    {
+        return $this->belongsTo(Classroom::class, 'classe_id');
+    }
 
     public function montantAPayer()
     {

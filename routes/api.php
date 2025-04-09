@@ -14,21 +14,25 @@ use App\Http\Controllers\ParentController;
 use App\Http\Controllers\Api\ChargeController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\AuthController;
-<<<<<<< HEAD
-=======
 
->>>>>>> be121dd (partie prf ajouter note)
 use App\Http\Controllers\API\RetardController;
 use App\Http\Controllers\API\IncidentController;
 use App\Http\Controllers\API\EmploiSurveillanceController;
 use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
+<<<<<<< HEAD
 use App\Http\Controllers\PaiementMensuelController;
+=======
+use App\Http\Controllers\EmploiTempsController;
+use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\PaiementController;
+>>>>>>> 4491089 (partie etudiant)
 
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\SemestreController;
+use App\Http\Controllers\FichierPedagogiqueController;
 
 
 // CRUD routes
@@ -60,11 +64,6 @@ Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [In
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\EtudiantProfesseurController;
-<<<<<<< HEAD
-use App\Http\Controllers\EmploiTempsController;
-=======
-
->>>>>>> be121dd (partie prf ajouter note)
 
 
 
@@ -146,7 +145,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-<<<<<<< HEAD
+
 
 Route::get('/emplois_temps', [EmploiTempsController::class, 'index']);
 Route::post('/emplois_temps', [EmploiTempsController::class, 'store']);
@@ -155,7 +154,11 @@ Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> 4491089 (partie etudiant)
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
@@ -164,6 +167,7 @@ Route::post('/evaluations', [EvaluationController::class, 'store']);
 Route::get('annees_scolaires', [AnneeScolaireController::class, 'index']);
 
 Route::get('/semestres', [SemestreController::class, 'index']);
+<<<<<<< HEAD
 >>>>>>> be121dd (partie prf ajouter note)
 =======
 
@@ -175,3 +179,18 @@ Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'updat
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
 
 >>>>>>> ef769d7 ( hajars1  modificaton)
+=======
+
+Route::prefix('fichiers')->group(function () {
+    Route::get('/', [FichierPedagogiqueController::class, 'index']);
+    Route::post('/', [FichierPedagogiqueController::class, 'store']);
+    Route::get('/{id}', [FichierPedagogiqueController::class, 'show']);
+    Route::put('/{id}', [FichierPedagogiqueController::class, 'update']);
+    Route::delete('/{id}', [FichierPedagogiqueController::class, 'destroy']);
+    Route::get('/download/{id}', [FichierPedagogiqueController::class, 'download']);
+});// routes/api.php
+Route::middleware('auth:api')->group(function() {
+    Route::get('/etudiant/info', [EtudiantController::class, 'getEtudiantInfo']);
+});
+Route::get('/notes-etudiant/{etudiant_id}', [EvaluationController::class, 'getNotesEtudiant']);
+>>>>>>> 4491089 (partie etudiant)
