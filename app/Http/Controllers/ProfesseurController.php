@@ -26,6 +26,7 @@ class ProfesseurController extends Controller
             'diplome' => 'required|string|max:255',
             'date_embauche' => 'required|date',
         ]);
+     
 
         $professeur = Professeur::create([
             'user_id' => $request->user_id,
@@ -39,6 +40,12 @@ class ProfesseurController extends Controller
 
         return response()->json($professeur, 201);
     }
+    public function show($id)
+    {
+        $professeur = Professeur::with('utilisateur')->findOrFail($id);
+        return response()->json($professeur);
+    }
+    
 
     // Modifier un professeur
     public function update(Request $request, $id)

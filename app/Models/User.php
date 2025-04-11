@@ -16,15 +16,21 @@ class User extends Authenticatable
 
     protected $hidden = ['mot_de_passe'];
 
-    // Relation avec le professeur
-    public function professeur() {
+    public function professeur()
+    {
         return $this->hasOne(Professeur::class);
     }
+    
+// Utilisateur.php (modèle)
+public function etudiant()
+{
+    return $this->hasOne(Etudiant::class, 'utilisateur_id');
+}
 
-    // Relation avec l'étudiant
-    public function etudiant() {
-        return $this->hasOne(Etudiant::class);
-    }
+public function professeurs()
+{
+    return $this->belongsToMany(Professeur::class, 'utilisateur_professeur', 'utilisateur_id', 'professeur_id');
+}
     protected $table = 'utilisateurs';
 }
 

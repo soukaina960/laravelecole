@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Storage;
-=======
 use Illuminate\Support\Facades\DB;
->>>>>>> be121dd (partie prf ajouter note)
 
 class StudentController extends Controller
 {
@@ -61,8 +58,17 @@ class StudentController extends Controller
 
         return response()->json($etudiants);
     }
-<<<<<<< HEAD
-=======
+    public function show($id)
+{
+    $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
+
+    if ($etudiant->photo_profil) {
+        $etudiant->photo_profil_url = asset('storage/' . $etudiant->photo_profil);
+    }
+
+    return response()->json($etudiant);
+}
+
     public function getEtudiantsParClasse($classeId)
 {
     $etudiants = DB::table('etudiants')
@@ -71,7 +77,6 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
->>>>>>> be121dd (partie prf ajouter note)
 
     public function update(Request $request, $id)
     {

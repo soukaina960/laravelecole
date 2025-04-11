@@ -10,7 +10,7 @@ class Professeur extends Model
     use HasFactory;
 
     protected $fillable = ['user_id','nom','email' ,'specialite', 'niveau_enseignement', 'diplome', 'date_embauche'];
-
+   
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, 'user_id'); 
@@ -29,6 +29,9 @@ public function classes()
 {
     return $this->belongsToMany(Classe::class, 'professeur_id', 'classe_id');
 }
-
+public function utilisateurs()
+    {
+        return $this->belongsToMany(Utilisateur::class, 'utilisateur_professeur', 'professeur_id', 'utilisateur_id');
+    }
     
 }

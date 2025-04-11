@@ -14,10 +14,7 @@ use App\Http\Controllers\ParentController;
 use App\Http\Controllers\Api\ChargeController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\AuthController;
-<<<<<<< HEAD
-=======
 
->>>>>>> be121dd (partie prf ajouter note)
 use App\Http\Controllers\API\RetardController;
 use App\Http\Controllers\API\IncidentController;
 use App\Http\Controllers\API\EmploiSurveillanceController;
@@ -60,11 +57,8 @@ Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [In
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\EtudiantProfesseurController;
-<<<<<<< HEAD
 use App\Http\Controllers\EmploiTempsController;
-=======
 
->>>>>>> be121dd (partie prf ajouter note)
 
 
 
@@ -83,6 +77,7 @@ Route::delete('/classrooms/{id}', [ClassroomController::class, 'destroy']);
 
 Route::get('/etudiants', [StudentController::class, 'index']);  
 Route::post('/etudiants', [StudentController::class, 'store']);  
+Route::get('/etudiants/{id}', [StudentController::class, 'show']);
 Route::put('/etudiants/{id}', [StudentController::class, 'update']);
 Route::delete('etudiants/{id}', [StudentController::class, 'destroy']);
 Route::get('etudiants/{classeId}', [StudentController::class, 'getEtudiantsParClasse']);
@@ -94,9 +89,10 @@ Route::get('/etudiant_professeur/{classe_id}', [EtudiantProfesseurController::cl
 Route::post('professeurs/{id}/calculer-salaire', [ProfesseurController::class, 'calculerSalaire']);
 Route::get('/professeurs/{id}/update-total', [ProfesseurController::class, 'updateTotalForProfessor']);
 
-
+Route::post('utilisateurs', [UtilisateurController::class, 'store']);
 Route::get('/calculer-salaire-professeur/{id}', [ProfesseurController::class, 'calculerSalaire']);
 Route::get('/professeurs', [ProfesseurController::class, 'index']); // Récupérer tous les professeurs
+Route::get('/professeurs/{id}', [ProfesseurController::class, 'show']);
 Route::post('/professeurs', [ProfesseurController::class, 'store']); // Ajouter un professeur
 Route::put('/professeurs/{id}', [ProfesseurController::class, 'update']); // Modifier un professeur
 Route::delete('/professeurs/{id}', [ProfesseurController::class, 'destroy']); // Supprimer un professeur
@@ -146,7 +142,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-<<<<<<< HEAD
 
 Route::get('/emplois_temps', [EmploiTempsController::class, 'index']);
 Route::post('/emplois_temps', [EmploiTempsController::class, 'store']);
@@ -154,8 +149,6 @@ Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
-<<<<<<< HEAD
-=======
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
@@ -164,8 +157,6 @@ Route::post('/evaluations', [EvaluationController::class, 'store']);
 Route::get('annees_scolaires', [AnneeScolaireController::class, 'index']);
 
 Route::get('/semestres', [SemestreController::class, 'index']);
->>>>>>> be121dd (partie prf ajouter note)
-=======
 
 
 Route::get('/paiements-mensuels', [PaiementMensuelController::class, 'index']);
@@ -174,4 +165,3 @@ Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show'
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
 
->>>>>>> ef769d7 ( hajars1  modificaton)

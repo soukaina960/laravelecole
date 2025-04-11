@@ -25,4 +25,17 @@ class Utilisateur extends Authenticatable
     {
         return $this->mot_de_passe;
     }
+    public function professeur()
+    {
+        return $this->hasOne(Professeur::class, 'user_id'); 
+    }
+    
+// Utilisateur.php (modèle)
+public function etudiant()
+{
+    return $this->hasOne(Etudiant::class, 'utilisateur_id');
 }
+
+
+}
+

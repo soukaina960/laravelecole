@@ -11,10 +11,22 @@ class Etudiant extends Model
     use HasFactory;
 
     protected $fillable = [
-        'utilisateur_id', 'nom', 'prenom', 'matricule', 'email', 'origine',
-        'parent_id', 'date_naissance', 'sexe', 'adresse', 'photo_profil',
-        'montant_a_payer', 'classe_id'
+        'utilisateur_id',
+        'nom',
+        'prenom',
+        'matricule',
+        'email',
+        'origine',
+        'parent_id',
+        'date_naissance',
+        'sexe',
+        'adresse',
+        'photo_profil',
+        'montant_a_payer',
+        'classe_id',
     ];
+
+
     public function filiere()
 {
 
@@ -74,12 +86,12 @@ public function attendances()
     return $this->hasOne(EmailParent::class);
 }
 
-    public function utilisateur()
-    {
-        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
-    }
-<<<<<<< HEAD
-    
+// Etudiant.php (modèle)
+public function utilisateur()
+{
+    return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
+}
+
 public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
@@ -97,11 +109,9 @@ public function evaluations()
 
 
 
-=======
     public function paiements()
 {
     return $this->hasMany(\App\Models\paiements_mentuels::class);
 }
 
->>>>>>> ef769d7 ( hajars1  modificaton)
 }
