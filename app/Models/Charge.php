@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Charge extends Model
 {
@@ -13,4 +14,11 @@ class Charge extends Model
         'description',
         'montant',
     ];
+    protected static function booted()
+    {
+        static::creating(function ($charge) {
+            $charge->mois = now()->month;
+            $charge->annee = now()->year;
+        });
+    }
 }

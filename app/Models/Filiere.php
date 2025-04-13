@@ -10,16 +10,12 @@ class Filiere extends Model
     use HasFactory;
 
     protected $fillable = ['nom', 'code'];
+    
+    
     public function classrooms()
     {
-        return $this->hasMany(Classroom::class);
+        return $this->hasMany(Classroom::class, 'filiere_id');  // Assurez-vous que la relation est correctement définie
     }
-    
-public function filiere()
-{
-    return $this->belongsTo(Filiere::class, 'filiere_id');
-}
-
 public function etudiants()
 {
     return $this->hasMany(Etudiant::class, 'classe_id');

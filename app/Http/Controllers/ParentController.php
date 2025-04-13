@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\ParentModel;
 
 class ParentController extends Controller
 {
@@ -14,8 +15,20 @@ class ParentController extends Controller
      * @param int $etudiant_id L'ID de l'étudiant
      * @return \Illuminate\Http\JsonResponse
      */
+    public function index()
+    {
+        $parents = ParentModel::select(['id', 'nom', 'prenom', 'email', 'telephone', 'adresse', 'profession'])
+                       ->orderBy('nom')
+                       ->get();
+        
+        return response()->json([
+            'success' => true,
+            'parents' => $parents
+        ]);
+    }
     public function getParentEmail($etudiant_id)
     {
+    
         try {
             // 1. Récupérer l'étudiant avec son parent
             $etudiant = Etudiant::with(['parent' => function($query) {

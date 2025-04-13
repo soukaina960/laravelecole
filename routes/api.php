@@ -22,12 +22,23 @@ use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaiementMensuelController;
+use App\Http\Controllers\EmploiTempsController;
+use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\PaiementController;
 
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\SemestreController;
+use App\Http\Controllers\FichierPedagogiqueController;
+use App\Http\Controllers\DashboardController;
+
+Route::get('/charges', [ChargeController::class, 'index']);
+Route::post('/charges', [ChargeController::class, 'store']);
 
 
+
+Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/parents', [ParentController::class, 'index']);
 // CRUD routes
 Route::apiResource('notifications', NotificationController::class)->only([
     'index', 'store', 'show', 'destroy'
@@ -57,7 +68,6 @@ Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [In
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\EtudiantProfesseurController;
-use App\Http\Controllers\EmploiTempsController;
 
 
 

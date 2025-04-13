@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Charge;
 use Illuminate\Http\Request;
+use Carbon\Carbon;  // Assure-toi d'importer Carbon pour manipuler les dates
 
 class ChargeController extends Controller
 {
@@ -25,7 +26,17 @@ class ChargeController extends Controller
             'montant' => 'required|numeric|min:0',
         ]);
 
-        $charge = Charge::create($validated);
+        // Utiliser la date actuelle pour remplir automatiquement 'mois' et 'annee'
+        $currentMonth = Carbon::now()->month;  // Mois actuel
+        $currentYear = Carbon::now()->year;   // Année actuelle
+
+        // Ajouter une charge avec les champs mois et année automatiquement définis
+        $charge = Charge::create([
+            'description' => $validated['description'],
+            'montant' => $validated['montant'],
+            'mois' => $currentMonth,
+            'annee' => $currentYear,
+        ]);
 
         return response()->json([
             'success' => true,

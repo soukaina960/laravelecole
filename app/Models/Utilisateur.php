@@ -35,7 +35,10 @@ public function etudiant()
 {
     return $this->hasOne(Etudiant::class, 'utilisateur_id');
 }
-
+public function parent()
+{
+    return $this->hasOne(ParentModel::class, 'utilisateur_id');
+}
 
 }
 

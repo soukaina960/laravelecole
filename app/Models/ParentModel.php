@@ -28,5 +28,9 @@ class ParentModel extends Model
     {
         return $this->belongsTo(Etudiant::class);
     }
+    public function utilisateur()
+{
+    return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
+}
 }
 

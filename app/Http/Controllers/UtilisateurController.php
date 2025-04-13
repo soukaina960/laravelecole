@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Utilisateur;
 use App\Models\Etudiant;
 use App\Models\Professeur;
+use App\Models\ParentModel;
 use App\Models\Classe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,11 +22,10 @@ class UtilisateurController extends Controller
     
         return Utilisateur::all(); // Récupère tous les utilisateurs si aucun filtre n'est appliqué
     }
-
     public function store(Request $request)
     {
         try {
-            // Validation des champs et récupération des données validées
+            // Validation des données de base
             $validatedData = $request->validate([
                 'telephone' => 'nullable|string',
                 'nom' => 'required|string',
@@ -34,8 +34,14 @@ class UtilisateurController extends Controller
                 'role' => 'required|in:admin,professeur,surveillant,étudiant,parent',
                 'matricule' => 'required|unique:utilisateurs',
             ]);
-    
-            // Création de l'utilisateur avec les données validées
+
+            // Gestion de l'image de profil (s'il y en a une)
+            $chemin = 'default_image.png'; // Valeur par défaut
+            if ($request->hasFile('photo_profil')) {
+                $chemin = $request->file('photo_profil')->store('photos', 'public');
+            }
+
+            // Création de l'utilisateur
             $utilisateur = Utilisateur::create([
                 'nom' => $validatedData['nom'],
                 'email' => $validatedData['email'],
@@ -43,12 +49,12 @@ class UtilisateurController extends Controller
                 'role' => $validatedData['role'],
                 'telephone' => $validatedData['telephone'] ?? null,
                 'adresse' => $request->adresse ?? null,
-                'photo_profil' => $request->photo_profil ?? 'default_image.png', // Utiliser une image par défaut si aucune n'est envoyée
+                'photo_profil' => $chemin,
                 'matricule' => $validatedData['matricule'],
             ]);
-    
+
+            // Création spécifique pour un étudiant
             if ($utilisateur->role === 'étudiant') {
-                // Validation des champs spécifiques aux étudiants
                 $studentData = $request->validate([
                     'prenom' => 'required|string',
                     'date_naissance' => 'required|date',
@@ -56,15 +62,7 @@ class UtilisateurController extends Controller
                     'montant_a_payer' => 'nullable|numeric',
                     'classe_id' => 'nullable|exists:classrooms,id',
                 ]);
-                  if ($request->hasFile('photo_profil')) {
-            // Supprimer l’ancienne si elle existe
-            if ($etudiant->photo_profil) {
-                Storage::disk('public')->delete($etudiant->photo_profil);
-            }
-            $data['photo_profil'] = $request->file('photo_profil')->store('photos', 'public');
-        }
-            
-                // Création de l'étudiant dans la table 'etudiants'
+
                 Etudiant::create([
                     'utilisateur_id' => $utilisateur->id,
                     'nom' => $validatedData['nom'],
@@ -76,13 +74,12 @@ class UtilisateurController extends Controller
                     'date_naissance' => $studentData['date_naissance'],
                     'sexe' => $studentData['sexe'],
                     'adresse' => $request->adresse ?? null,
-                    'photo_profil' => $request->photo_profil ?? 'default_image.png', // Utilisation de l'image par défaut
+                    'photo_profil' => $chemin,
                     'montant_a_payer' => $request->montant_a_payer ?? 0,
-                    'professeurs' => 'nullable|array', // Professeurs est un tableau d'IDs
-                    'professeurs.*' => 'exists:professeurs,id', // Vérifier si les professeurs existent
                     'classe_id' => $request->classe_id ?? null,
                 ]);
             }
+
             if ($utilisateur->role === 'professeur') {
                 $profData = $request->validate([
                     'specialite' => 'nullable|string',
@@ -102,27 +99,46 @@ class UtilisateurController extends Controller
 
                
              }
+             if ($utilisateur->role === 'parent') {
+                $parentData = $request->validate([
+                    'prenom' => 'required|string',
+                    'profession' => 'nullable|string',
+                ]);
+                
+                // Assurez-vous que votre modèle s'appelle correctement (par exemple ParentModel)
+                ParentModel::create([
+                    'utilisateur_id' => $utilisateur->id,
+                    'nom' => $utilisateur->nom,
+                    'prenom' => $parentData['prenom'],
+                    'email' => $utilisateur->email,
+                    'telephone' => $utilisateur->telephone,
+                    'adresse' => $utilisateur->adresse,
+                    'profession' => $parentData['profession'] ?? null,
+                ]);
+            }
+    
+            return response()->json([
+                'success' => true,
+                'data' => $utilisateur,
+                'message' => 'Utilisateur créé avec succès'
+            ], 201);
+    
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors(),
+                'message' => 'Erreur de validation'
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur interne du serveur: ' . $e->getMessage(),
+                'trace' => config('app.debug') ? $e->getTrace() : null
+            ], 500);
+        }
+    }
  
-             return response()->json([
-                 'success' => true,
-                 'data' => $utilisateur,
-                 'message' => 'Utilisateur créé avec succès'
-             ], 201);
-     
-         } catch (ValidationException $e) {
-             return response()->json([
-                 'success' => false,
-                 'errors' => $e->errors(),
-                 'message' => 'Erreur de validation'
-             ], 422);
-         } catch (\Exception $e) {
-             return response()->json([
-                 'success' => false,
-                 'message' => 'Erreur interne du serveur: ' . $e->getMessage(),
-                 'trace' => config('app.debug') ? $e->getTrace() : null
-             ], 500);
-         }
-     }
+            
  
 
     public function show($id)
