@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classe;
 use App\Models\Attendance;
+use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -48,6 +49,25 @@ class ClasseController extends Controller
        
        return response()->json($attendances);
    }
+   public function index(){
+ 
+    $classrooms = Classroom::with('filiere')->get();
+return response()->json($classrooms);
+
+
+
+   }
+  
+    public function filieres($classeId)
+    {
+        $classe = Classe::findOrFail($classeId);
+        // Vérifie que c’est bien une classe de lycée
+        if ($classe->niveau === 'lycée') {
+            return $classe->filieres; // relation many-to-many
+        } else {
+            return response()->json(['message' => 'Pas de filières pour cette classe.'], 400);
+        }
+    }
    public function storeAttendances(Request $request, $classeId)
 {
     $validated = $request->validate([

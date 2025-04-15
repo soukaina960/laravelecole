@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Absence;
 use Illuminate\Http\Request;
+use App\Models\Etudiant;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Professeur;
 
 class AbsenceController extends Controller
 {
@@ -44,25 +47,49 @@ class AbsenceController extends Controller
         Absence::destroy($id);
         return response()->json(['message' => 'Absence supprimée']);
     }
-    // Récupérer les absences d'un étudiant
-public function getByEtudiant($etudiant_id)
-{
-    $absences = Absence::where('etudiant_id', $etudiant_id)
-                ->with('etudiant')
-                ->get();
+ 
+public function getByEtudiant($id)
+    {
+        $absences = Absence::with(['professeur' => function($query) {
+                $query->select('id', 'nom');
+            }])
+            ->where('etudiant_id', $id)
+            ->get();
 
-    return response()->json($absences);
-}
+        return response()->json($absences);
+    }
+    public function getByStudent($etudiantId)
+    {
+        // Vérifie que l'étudiant existe
+        $etudiant = Etudiant::find($etudiantId);
+        if (!$etudiant) {
+            return response()->json(['message' => 'Étudiant non trouvé'], 404);
+        }
 
-// Récupérer les absences d'un étudiant entre deux dates
-public function getByDateRange($etudiant_id, $date_debut, $date_fin)
-{
-    $absences = Absence::where('etudiant_id', $etudiant_id)
-                ->whereBetween('date', [$date_debut, $date_fin])
-                ->with('etudiant')
-                ->get();
+        // Récupère les absences triées par date décroissante
+        $absences = Absence::where('etudiant_id', $etudiantId)
+                         ->orderBy('date', 'desc')
+                         ->get();
 
-    return response()->json($absences);
-}
+        return response()->json($absences);
+    }
+
+   
+    public function mesAbsences()
+    {
+        // Vérifie que l'utilisateur est un étudiant
+        if (!Auth::user()->etudiant) {
+            return response()->json(['message' => 'Accès non autorisé'], 403);
+        }
+
+        $absences = Auth::user()->etudiant->absences()
+                       ->orderBy('date', 'desc')
+                       ->get();
+
+        return response()->json($absences);
+    }
+
+   
+   
 
 }

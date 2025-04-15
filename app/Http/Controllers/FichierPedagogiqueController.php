@@ -6,6 +6,7 @@ use App\Models\FichierPedagogique;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Fichier;
 
 class FichierPedagogiqueController extends Controller
 {
@@ -245,5 +246,24 @@ class FichierPedagogiqueController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+    public function fichiersPourEtudiant(Request $request)
+    {
+        // Vérification des paramètres
+        $classeId = $request->input('classe_id');
+        $semestreId = $request->input('semestre_id');
+    
+        if (!$classeId || !$semestreId) {
+            return response()->json(['message' => 'Classe ou semestre manquant'], 400);
+        }
+    
+        // Récupérer les fichiers avec la spécialité du professeur
+        $fichiers = Fichier::where('classe_id', $classeId)
+                            ->where('semestre_id', $semestreId)
+                            ->join('professeurs', 'fichiers.professeur_id', '=', 'professeurs.id')
+                            ->select('fichiers.*', 'professeurs.specialite')  // Sélectionner aussi la spécialité
+                            ->get();
+    
+        return response()->json($fichiers);
     }
 }

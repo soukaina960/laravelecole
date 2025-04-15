@@ -4,8 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+=======
+
+use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Support\Facades\DB;
+
+>>>>>>> 50baf20 (partie classe)
 
 class StudentController extends Controller
 {
@@ -58,6 +66,7 @@ class StudentController extends Controller
 
         return response()->json($etudiants);
     }
+<<<<<<< HEAD
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -68,6 +77,9 @@ class StudentController extends Controller
 
     return response()->json($etudiant);
 }
+=======
+
+>>>>>>> 50baf20 (partie classe)
 
     public function getEtudiantsParClasse($classeId)
 {
@@ -77,6 +89,10 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 50baf20 (partie classe)
 
     public function update(Request $request, $id)
     {

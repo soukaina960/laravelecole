@@ -29,9 +29,34 @@ public function classes()
 {
     return $this->belongsToMany(Classe::class, 'professeur_id', 'classe_id');
 }
+<<<<<<< HEAD
 public function utilisateurs()
     {
         return $this->belongsToMany(Utilisateur::class, 'utilisateur_professeur', 'professeur_id', 'utilisateur_id');
     }
+=======
+public function matieres()
+{
+    return $this->belongsToMany(Matiere::class, 'prof_matiere_classe', 'professeur_id', 'matiere_id')
+                ->withPivot('classe_id')
+                ->withTimestamps();
+}
+public function paiementsMensuels($mois = null)
+{
+    $etudiants = $this->etudiants();
+
+    // Si un mois est spécifié, filtrer par mois
+    if ($mois) {
+        return $etudiants->join('paiements_mensuels', 'etudiants.id', '=', 'paiements_mensuels.etudiant_id')
+                         ->where('paiements_mensuels.mois', $mois)
+                         ->get(['etudiants.*', 'paiements_mensuels.*']);
+    }
+
+    // Sinon, récupérer tous les paiements mensuels des étudiants
+    return $etudiants->join('paiements_mensuels', 'etudiants.id', '=', 'paiements_mensuels.etudiant_id')
+                     ->get(['etudiants.*', 'paiements_mensuels.*']);
+}
+
+>>>>>>> 50baf20 (partie classe)
     
 }
