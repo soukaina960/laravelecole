@@ -15,6 +15,8 @@ class DashboardController extends Controller
 {
     public function index(): JsonResponse
     {
+        $moisActuel = Carbon::now()->month;
+        $anneeActuelle = Carbon::now()->year;
         $nombreEtudiants = Etudiant::count();
         $nombreProfesseurs = Professeur::count();
         $nombreClasses = Classe::count();

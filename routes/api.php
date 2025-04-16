@@ -31,9 +31,19 @@ use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\SemestreController;
 use App\Http\Controllers\FichierPedagogiqueController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ConfigAttestationController;
+
+Route::get('/config-attestations', [ConfigAttestationController::class, 'index']);
+Route::put('/config-attestations/{id}', [ConfigAttestationController::class, 'update']);
+
+
+Route::get('/etudiants/{id}/attestation-pdf', [StudentController::class, 'generateAttestation']);
 
 Route::get('/charges', [ChargeController::class, 'index']);
 Route::post('/charges', [ChargeController::class, 'store']);
+Route::get('/charges/{charge}', [ChargeController::class, 'show']);
+Route::put('/charges/{charge}', [ChargeController::class, 'update']);
+Route::delete('/charges/{charge}', [ChargeController::class, 'destroy']);
 
 
 

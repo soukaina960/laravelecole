@@ -6,6 +6,8 @@ use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class StudentController extends Controller
 {
@@ -147,4 +149,36 @@ class StudentController extends Controller
 
         return response()->json(['message' => 'Professeurs affectés avec succès!']);
     }
-}
+
+    public function generateAttestation($id)
+    {
+        $etudiant = Etudiant::findOrFail($id);
+        
+        // Get the first config attestation or use default values
+        $config = \App\Models\ConfigAttestation::first() ?? $this->getDefaultConfig();
+        
+        // Create a temporary attestation array with current date
+        $attestation = [
+            'date_emission' => now()->format('d/m/Y'),
+            'annee_universitaire' => $config->annee_scolaire ?? date('Y').'/'.(date('Y')+1)
+        ];
+        
+        $pdf = Pdf::loadView('pdf.attestation', [
+            'etudiant' => $etudiant,
+            'config' => $config,
+            'attestation' => (object)$attestation // Convert array to object for view compatibility
+        ]);
+        
+        return $pdf->stream("attestation_{$etudiant->nom}.pdf");    }
+    
+    private function getDefaultConfig()
+    {
+        return (object)[
+            'nom_ecole' => 'Université Hassan 1er',
+            'nom_faculte' => 'Faculté des Sciences et Techniques de Settat',
+            'annee_scolaire' => date('Y').'/'.(date('Y')+1),
+            'telephone' => '',
+            'fax' => '',
+            'logo_path' => ''
+        ];
+    }}
