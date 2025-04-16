@@ -57,7 +57,10 @@ class ClassroomController extends Controller
 
     public function show($id)
     {
-        $classroom = Classroom::findOrFail($id);
+        $classroom = Classroom::find($id);
+        if (!$classroom) {
+            return response()->json(['message' => 'Classe non trouvée'], 404);
+        }
         return response()->json($classroom);
     }
 }

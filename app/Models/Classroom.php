@@ -29,6 +29,7 @@ class Classroom extends Model
     // Relation avec Filiere
     public function filiere()
     {
-        return $this->belongsTo(Filiere::class, 'filiere_id');  // Assurez-vous que 'filiere_id' existe dans la table classrooms
+        return $this->belongsTo(Filiere::class);
     }
+    
 }

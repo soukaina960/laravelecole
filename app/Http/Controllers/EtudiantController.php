@@ -1,40 +1,62 @@
 <?php
-// App\Http\Controllers\EtudiantController.php
+// app/Http/Controllers/EtudiantController.php
+
 namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Classroom; // Assurez-vous d'importer le modèle Classroom
+use Illuminate\Support\Facades\Storage;
+use App\Models\Professeur;
+use App\Models\Utilisateur;
 
 
 class EtudiantController extends Controller
 {
-    public function __construct()
+    // Appliquez le middleware 'auth:api' dans le constructeur
+   
+    /**
+     * Récupère les informations d'un étudiant spécifique (pour admin/profs)
+     */
+    public function getCurrentStudentInfo()
     {
-        $this->middleware('auth:api'); // Assurer que l'utilisateur est authentifié
-    }
+        $user = Auth::user();
+        
+        if (!$user) {
+            return response()->json(['message' => 'Non autorisé'], 401);
+        }
 
-    public function getEtudiantInfo(Request $request)
-    {
-        $userId = $request->user()->id;
+        $etudiant = Etudiant::with('classe')
+            ->where('utilisateur_id', $user->id)
+            ->first();
 
-        // Log de l'ID de l'utilisateur pour le debugging
-        Log::info("ID de l'utilisateur : $userId");
-
-        try {
-            // Récupérer l'étudiant avec sa classe
-            $etudiant = Etudiant::where('utilisateur_id', $userId)
-                                ->with('classroom') // Charger la relation classroom
-                                ->firstOrFail();  // Utiliser firstOrFail pour renvoyer une erreur 404 si pas trouvé
-        } catch (\Exception $e) {
-            // Log de l'erreur si l'étudiant n'est pas trouvé
-            Log::error("Erreur lors de la récupération des informations de l'étudiant: " . $e->getMessage());
+        if (!$etudiant) {
             return response()->json(['message' => 'Étudiant non trouvé'], 404);
         }
 
-        // Retourner les informations de l'étudiant sous forme de JSON
         return response()->json($etudiant);
     }
+
+    /**
+     * Récupère les informations d'un étudiant spécifique (pour admin/profs)
+     */
+
+
+    /**
+     * Récupère les infos d'un étudiant par son ID
+     */
+    public function show($id)
+    {
+        $etudiant = Etudiant::with('utilisateur')->find($id);
+        if ($etudiant) {
+            return response()->json($etudiant);
+        }
+        return response()->json(['message' => 'Étudiant non trouvé'], 404);
+    }
+    
+    
+    
+    
 }
+    
+

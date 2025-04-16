@@ -6,17 +6,20 @@ use App\Models\Filiere;
 use App\Http\Requests\StoreFiliereRequest;
 use App\Http\Requests\UpdateFiliereRequest;
 use Illuminate\Http\Request;
+use App\Models\Classe;
+use App\Models\Matiere;
+
 
 class FiliereController extends Controller
 {
     /**
-     * Display a listing of all filieres
+     * Display a listing of the resource.
      */
     public function index()
     {
         try {
             $filieres = Filiere::query()
-                ->select('id', 'nom', 'code', 'description', 'created_at', 'updated_at')
+                ->select('id', 'nom', 'code', 'description', 'created_at')
                 ->orderBy('nom')
                 ->get();
             
@@ -37,18 +40,14 @@ class FiliereController extends Controller
     }
 
     /**
-     * Store a newly created filiere
+     * Store a newly created resource in storage.
      */
     public function store(StoreFiliereRequest $request)
     {
         try {
             $validated = $request->validated();
             
-            $filiere = Filiere::create([
-                'nom' => $validated['nom'],
-                'code' => $validated['code'],
-                'description' => $validated['description'] ?? null
-            ]);
+            $filiere = Filiere::create($validated);
             
             return response()->json([
                 'success' => true,
@@ -66,12 +65,12 @@ class FiliereController extends Controller
     }
 
     /**
-     * Display the specified filiere
+     * Display the specified resource.
      */
     public function show($id)
     {
         try {
-            $filiere = Filiere::select('id', 'nom', 'code', 'description', 'created_at', 'updated_at')
+            $filiere = Filiere::with(['classrooms:id,nom,filiere_id'])
                 ->findOrFail($id);
             
             return response()->json([
@@ -90,7 +89,7 @@ class FiliereController extends Controller
     }
 
     /**
-     * Update the specified filiere
+     * Update the specified resource in storage.
      */
     public function update(UpdateFiliereRequest $request, $id)
     {
@@ -98,11 +97,7 @@ class FiliereController extends Controller
             $filiere = Filiere::findOrFail($id);
             $validated = $request->validated();
             
-            $filiere->update([
-                'nom' => $validated['nom'] ?? $filiere->nom,
-                'code' => $validated['code'] ?? $filiere->code,
-                'description' => $validated['description'] ?? $filiere->description
-            ]);
+            $filiere->update($validated);
             
             return response()->json([
                 'success' => true,
@@ -120,14 +115,14 @@ class FiliereController extends Controller
     }
 
     /**
-     * Remove the specified filiere
+     * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
         try {
             $filiere = Filiere::findOrFail($id);
             
-            // Vérifier si la filière a des classes avant suppression
+            // Check if filiere has classrooms before deletion
             if ($filiere->classrooms()->exists()) {
                 return response()->json([
                     'success' => false,
@@ -159,7 +154,7 @@ class FiliereController extends Controller
         try {
             $classrooms = Filiere::findOrFail($filiereId)
                 ->classrooms()
-                ->select('id', 'name as nom', 'filiere_id', 'niveau', 'capacite')
+                ->select('id', 'nom', 'filiere_id', 'niveau')
                 ->orderBy('niveau')
                 ->get();
             
@@ -177,5 +172,37 @@ class FiliereController extends Controller
                 'error' => config('app.debug') ? $e->getMessage() : null
             ], 404);
         }
+    }
+    public function getFilieres()
+    {
+        $filieres = Filiere::all(); // Assure-toi que la table 'filieres' existe et contient des données
+        return response()->json($filieres);
+    }
+
+    // Récupérer les classes disponibles pour le lycée
+    public function getClassesLycee()
+    {
+        $classes = Classe::where('niveau', 'lycee')->get(); // Assure-toi que la table 'classes' contient un champ 'niveau'
+        return response()->json($classes);
+    }
+
+    // Récupérer les matières pour une classe donnée
+    public function getMatieres($classe)
+    {
+        $matieres = Matiere::where('classe_id', $classe)->get(); // Assure-toi que chaque matière est liée à une classe
+        return response()->json($matieres);
+    }
+
+    // Récupérer les étudiants d'une classe et, si nécessaire, d'une filière spécifique
+    public function getEtudiants($classe, $filiere = null)
+    {
+        $query = Etudiant::where('classe_id', $classe); // Filtrer par classe
+
+        if ($filiere) {
+            $query->where('filiere_id', $filiere); // Filtrer par filière si elle est donnée
+        }
+
+        $etudiants = $query->get();
+        return response()->json($etudiants);
     }
 }
