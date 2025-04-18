@@ -26,6 +26,7 @@ class Utilisateur extends Authenticatable
     {
         return $this->mot_de_passe;
     }
+<<<<<<< HEAD
 
   
     
@@ -42,6 +43,21 @@ class Utilisateur extends Authenticatable
     }
 
 
+=======
+    public function professeur()
+    {
+        return $this->hasOne(Professeur::class, 'user_id'); 
+    }
+    
+// Utilisateur.php (modèle)
+public function etudiant()
+{
+    return $this->hasOne(Etudiant::class, 'utilisateur_id');}
+
+   
+   
+    
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 public function parent()
 {
     return $this->hasOne(ParentModel::class, 'utilisateur_id');

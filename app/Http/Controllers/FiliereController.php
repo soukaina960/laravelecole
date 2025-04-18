@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateFiliereRequest;
 use Illuminate\Http\Request;
 use App\Models\Classe;
 use App\Models\Matiere;
-
+use App\Models\Etudiant;
 
 class FiliereController extends Controller
 {
@@ -18,6 +18,7 @@ class FiliereController extends Controller
     public function index()
     {
         try {
+            // Récupérer toutes les filières avec un tri par nom
             $filieres = Filiere::query()
                 ->select('id', 'nom', 'code', 'description', 'created_at')
                 ->orderBy('nom')
@@ -31,6 +32,7 @@ class FiliereController extends Controller
             ]);
             
         } catch (\Exception $e) {
+            // En cas d'erreur, retour d'une réponse avec code 500
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur lors de la récupération des filières',
@@ -39,23 +41,39 @@ class FiliereController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreFiliereRequest $request)
+    public function store(Request $request)
     {
         try {
-            $validated = $request->validated();
+            // Valider les données envoyées dans la requête
+            $validated = $request->validate([
+                'nom' => 'required|string|max:255',
+                'code' => 'required|string|max:100|unique:filieres,code',
+                'description' => 'nullable|string|max:500'
+            ]);
             
-            $filiere = Filiere::create($validated);
+            // Créer la filière à partir des données validées
+            $filiere = Filiere::create([
+                'nom' => $validated['nom'],
+                'code' => $validated['code'],
+                'description' => $validated['description']
+            ]);
             
+            // Retourner une réponse JSON avec le succès
             return response()->json([
                 'success' => true,
                 'message' => 'Filière créée avec succès',
                 'data' => $filiere
             ], 201);
             
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Si la validation échoue, retourner un message d'erreur spécifique
+            return response()->json([
+                'success' => false,
+                'message' => 'Les données envoyées ne sont pas valides',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
+            // Si une autre exception survient, retourner un message d'erreur générique
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur lors de la création de la filière',
@@ -63,13 +81,11 @@ class FiliereController extends Controller
             ], 500);
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
+    
     public function show($id)
     {
         try {
+            // Récupérer la filière avec ses classes associées
             $filiere = Filiere::with(['classrooms:id,nom,filiere_id'])
                 ->findOrFail($id);
             
@@ -80,6 +96,7 @@ class FiliereController extends Controller
             ]);
             
         } catch (\Exception $e) {
+            // En cas d'erreur, retour d'une réponse avec code 404
             return response()->json([
                 'success' => false,
                 'message' => 'Filière non trouvée',
@@ -88,41 +105,53 @@ class FiliereController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateFiliereRequest $request, $id)
-    {
-        try {
-            $filiere = Filiere::findOrFail($id);
-            $validated = $request->validated();
-            
-            $filiere->update($validated);
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Filière mise à jour avec succès',
-                'data' => $filiere
-            ]);
-            
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur lors de la mise à jour de la filière',
-                'error' => config('app.debug') ? $e->getMessage() : null
-            ], 500);
-        }
-    }
+    public function update(Request $request, $id)
+{
+    try {
+        // Récupérer la filière à mettre à jour
+        $filiere = Filiere::findOrFail($id);
+        
+        // Valider les données de la requête
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'code' => 'required|string|max:100|unique:filieres,code,' . $filiere->id, // Permet de vérifier l'unicité sauf pour la filière actuelle
+            'description' => 'nullable|string|max:500'
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
+        // Mettre à jour la filière avec les données validées
+        $filiere->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Filière mise à jour avec succès',
+            'data' => $filiere
+        ]);
+        
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Si la validation échoue, retourner un message d'erreur spécifique
+        return response()->json([
+            'success' => false,
+            'message' => 'Les données envoyées ne sont pas valides',
+            'errors' => $e->errors()
+        ], 422);
+        
+    } catch (\Exception $e) {
+        // En cas d'erreur générale, renvoyer une erreur interne avec code 500
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de la mise à jour de la filière',
+            'error' => config('app.debug') ? $e->getMessage() : null
+        ], 500);
+    }
+}
+
     public function destroy($id)
     {
         try {
+            // Récupérer la filière à supprimer
             $filiere = Filiere::findOrFail($id);
             
-            // Check if filiere has classrooms before deletion
+            // Vérifier si la filière contient des classes avant de la supprimer
             if ($filiere->classrooms()->exists()) {
                 return response()->json([
                     'success' => false,
@@ -130,6 +159,7 @@ class FiliereController extends Controller
                 ], 422);
             }
             
+            // Supprimer la filière
             $filiere->delete();
             
             return response()->json([
@@ -138,6 +168,7 @@ class FiliereController extends Controller
             ]);
             
         } catch (\Exception $e) {
+            // En cas d'erreur, retour d'une réponse avec code 500
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur lors de la suppression de la filière',
@@ -152,6 +183,7 @@ class FiliereController extends Controller
     public function getClasses($filiereId)
     {
         try {
+            // Récupérer les classes associées à la filière
             $classrooms = Filiere::findOrFail($filiereId)
                 ->classrooms()
                 ->select('id', 'nom', 'filiere_id', 'niveau')
@@ -166,6 +198,7 @@ class FiliereController extends Controller
             ]);
             
         } catch (\Exception $e) {
+            // En cas d'erreur, retour d'une réponse avec code 404
             return response()->json([
                 'success' => false,
                 'message' => 'Filière non trouvée ou erreur de récupération',
@@ -173,27 +206,26 @@ class FiliereController extends Controller
             ], 404);
         }
     }
+
+    // Méthodes supplémentaires
     public function getFilieres()
     {
-        $filieres = Filiere::all(); // Assure-toi que la table 'filieres' existe et contient des données
+        $filieres = Filiere::all(); // Récupérer toutes les filières
         return response()->json($filieres);
     }
 
-    // Récupérer les classes disponibles pour le lycée
     public function getClassesLycee()
     {
-        $classes = Classe::where('niveau', 'lycee')->get(); // Assure-toi que la table 'classes' contient un champ 'niveau'
+        $classes = Classe::where('niveau', 'lycee')->get(); // Récupérer les classes au niveau lycée
         return response()->json($classes);
     }
 
-    // Récupérer les matières pour une classe donnée
     public function getMatieres($classe)
     {
-        $matieres = Matiere::where('classe_id', $classe)->get(); // Assure-toi que chaque matière est liée à une classe
+        $matieres = Matiere::where('classe_id', $classe)->get(); // Récupérer les matières pour une classe
         return response()->json($matieres);
     }
 
-    // Récupérer les étudiants d'une classe et, si nécessaire, d'une filière spécifique
     public function getEtudiants($classe, $filiere = null)
     {
         $query = Etudiant::where('classe_id', $classe); // Filtrer par classe

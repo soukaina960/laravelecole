@@ -15,10 +15,7 @@ class Professeur extends Model
     {
         return $this->belongsTo(Utilisateur::class, 'user_id'); 
     }
-    public function etudiants()
-    {
-        return $this->belongsToMany(Etudiant::class);
-    }
+ 
     
   
 public function evaluations()
@@ -29,12 +26,18 @@ public function classes()
 {
     return $this->belongsToMany(Classe::class, 'professeur_id', 'classe_id');
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 public function utilisateurs()
     {
         return $this->belongsToMany(Utilisateur::class, 'utilisateur_professeur', 'professeur_id', 'utilisateur_id');
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 public function matieres()
 {
     return $this->belongsToMany(Matiere::class, 'prof_matiere_classe', 'professeur_id', 'matiere_id')
@@ -58,4 +61,14 @@ public function paiementsMensuels($mois = null)
 }
 
 
+<<<<<<< HEAD
+=======
+public function etudiants()
+{
+    return $this->belongsToMany(Etudiant::class);
+}
+
+
+
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 }

@@ -59,6 +59,8 @@ public function attendances()
     {
         return $this->belongsToMany(Professeur::class);
     }
+    
+
     public function absences()
     {
         return $this->hasMany(Absence::class);
@@ -88,13 +90,17 @@ public function attendances()
     return $this->hasOne(EmailParent::class);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 // Etudiant.php (modèle)
 public function utilisateur()
 {
     return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
 }
 
+<<<<<<< HEAD
 
 
     
@@ -102,6 +108,13 @@ public function utilisateur()
 public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
+=======
+  
+
+    
+
+
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);

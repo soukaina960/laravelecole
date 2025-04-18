@@ -12,7 +12,7 @@ use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ParentController;
 
-
+Route::post('/associer-etudiant-professeur', [UtilisateurController::class, 'associerEtudiantProfesseur']);
 Route::get('/utilisateurs', [UtilisateurController::class, 'index']);
 Route::post('/utilisateurs', [UtilisateurController::class, 'store']);
 Route::get('/utilisateurs/{id}', [UtilisateurController::class, 'show']);

@@ -21,25 +21,49 @@ use App\Http\Controllers\API\EmploiSurveillanceController;
 use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 use App\Http\Controllers\PaiementMensuelController;
 use App\Http\Controllers\EmploiTempsController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\SemestreController;
 use App\Http\Controllers\FichierPedagogiqueController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ConfigAttestationController;
+use App\Http\Controllers\MatiereController;
+
+Route::get('matieres', [MatiereController::class, 'index']);
+Route::post('matieres', [MatiereController::class, 'store']);
+Route::put('matieres/{id}', [MatiereController::class, 'update']);
+Route::delete('matieres/{id}', [MatiereController::class, 'destroy']);
+
+
+
+Route::get('/config-attestations', [ConfigAttestationController::class, 'index']);
+Route::put('/config-attestations/{id}', [ConfigAttestationController::class, 'update']);
+
+
+Route::get('/etudiants/{id}/attestation-pdf', [StudentController::class, 'generateAttestation']);
 
 Route::get('/charges', [ChargeController::class, 'index']);
 Route::post('/charges', [ChargeController::class, 'store']);
+Route::get('/charges/{charge}', [ChargeController::class, 'show']);
+Route::put('/charges/{charge}', [ChargeController::class, 'update']);
+Route::delete('/charges/{charge}', [ChargeController::class, 'destroy']);
 
 
 
@@ -169,6 +193,11 @@ Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
@@ -185,7 +214,10 @@ Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show'
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 
 Route::prefix('fichiers')->group(function () {
     Route::get('/', [FichierPedagogiqueController::class, 'index']);
@@ -237,6 +269,7 @@ Route::get('/professeurs/{professeur}/classes/{classe}/matieres', [ProfesseurCon
 Route::get('/professeurs/{professeur}/classes/{classe}/filieres/{filiere}/matieres', [ProfesseurController::class, 'matieresAvecFiliere']);
 
 Route::get('professeur/{professeurId}/paiements/{mois}', [PaiementMensuelController::class, 'getPaiements']);
+<<<<<<< HEAD
 
 Route::get('/professeurs/{id}', [ProfesseurController::class, 'affichierinfo']);
 // routes/api.php
@@ -249,3 +282,5 @@ Route::prefix('demandes-attestations')->group(function () {
     Route::patch('/{id}/traiter', [DemandeAttestationController::class, 'marquerCommeTraitee']); // Admin
     Route::get('/etudiant/{id}', [DemandeAttestationController::class, 'demandesEtudiant']); // Étudiant
 });
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c

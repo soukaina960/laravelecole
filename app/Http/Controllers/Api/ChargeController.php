@@ -10,11 +10,23 @@ use Carbon\Carbon;  // Assure-toi d'importer Carbon pour manipuler les dates
 class ChargeController extends Controller
 {
     // Lister toutes les charges
-    public function index()
+    public function index(Request $request)
     {
+        $mois = $request->query('mois');  // Récupérer le mois depuis la requête
+        $annee = $request->query('annee'); // Récupérer l'année depuis la requête
+
+        // Récupérer les charges pour le mois et l'année spécifiés, ou toutes si non spécifiés
+        $charges = Charge::when($mois, function ($query) use ($mois) {
+            return $query->where('mois', $mois);
+        })
+        ->when($annee, function ($query) use ($annee) {
+            return $query->where('annee', $annee);
+        })
+        ->get();
+
         return response()->json([
             'success' => true,
-            'data' => Charge::all()
+            'data' => $charges
         ]);
     }
 

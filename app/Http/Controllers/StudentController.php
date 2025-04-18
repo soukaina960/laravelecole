@@ -4,14 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
-
+=======
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Support\Facades\DB;
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
+
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
+
+
+
 
 
 class StudentController extends Controller
@@ -65,7 +73,10 @@ class StudentController extends Controller
 
         return response()->json($etudiants);
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -77,7 +88,10 @@ class StudentController extends Controller
     return response()->json($etudiant);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 
     public function getEtudiantsParClasse($classeId)
 {
@@ -87,7 +101,10 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
 
     public function update(Request $request, $id)
     {
@@ -158,4 +175,36 @@ class StudentController extends Controller
 
         return response()->json(['message' => 'Professeurs affectés avec succès!']);
     }
-}
+
+    public function generateAttestation($id)
+    {
+        $etudiant = Etudiant::findOrFail($id);
+        
+        // Get the first config attestation or use default values
+        $config = \App\Models\ConfigAttestation::first() ?? $this->getDefaultConfig();
+        
+        // Create a temporary attestation array with current date
+        $attestation = [
+            'date_emission' => now()->format('d/m/Y'),
+            'annee_universitaire' => $config->annee_scolaire ?? date('Y').'/'.(date('Y')+1)
+        ];
+        
+        $pdf = Pdf::loadView('pdf.attestation', [
+            'etudiant' => $etudiant,
+            'config' => $config,
+            'attestation' => (object)$attestation // Convert array to object for view compatibility
+        ]);
+        
+        return $pdf->stream("attestation_{$etudiant->nom}.pdf");    }
+    
+    private function getDefaultConfig()
+    {
+        return (object)[
+            'nom_ecole' => 'Université Hassan 1er',
+            'nom_faculte' => 'Faculté des Sciences et Techniques de Settat',
+            'annee_scolaire' => date('Y').'/'.(date('Y')+1),
+            'telephone' => '',
+            'fax' => '',
+            'logo_path' => ''
+        ];
+    }}
