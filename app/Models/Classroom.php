@@ -12,7 +12,7 @@ class Classroom extends Model
 
     protected $table = 'classrooms';  // Assurez-vous que la table est bien 'classrooms'
 
-    protected $fillable = ['name', 'capacite', 'niveau'];
+    protected $fillable = ['name', 'capacite', 'niveau',  'filiere_id'];
 
     // Relation avec Professeur
     public function professeur()

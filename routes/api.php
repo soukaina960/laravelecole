@@ -21,20 +21,10 @@ use App\Http\Controllers\API\EmploiSurveillanceController;
 use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
-<<<<<<< HEAD
 use App\Http\Controllers\PaiementMensuelController;
 use App\Http\Controllers\EmploiTempsController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
-=======
-
-use App\Http\Controllers\PaiementMensuelController;
-
-use App\Http\Controllers\EmploiTempsController;
-use App\Http\Controllers\EtudiantController;
-use App\Http\Controllers\PaiementController;
-
->>>>>>> 50baf20 (partie classe)
 
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
@@ -42,6 +32,14 @@ use App\Http\Controllers\SemestreController;
 use App\Http\Controllers\FichierPedagogiqueController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConfigAttestationController;
+use App\Http\Controllers\MatiereController;
+
+Route::get('matieres', [MatiereController::class, 'index']);
+Route::post('matieres', [MatiereController::class, 'store']);
+Route::put('matieres/{id}', [MatiereController::class, 'update']);
+Route::delete('matieres/{id}', [MatiereController::class, 'destroy']);
+
+
 
 Route::get('/config-attestations', [ConfigAttestationController::class, 'index']);
 Route::put('/config-attestations/{id}', [ConfigAttestationController::class, 'update']);
@@ -182,12 +180,9 @@ Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> 50baf20 (partie classe)
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
@@ -196,10 +191,6 @@ Route::post('/evaluations', [EvaluationController::class, 'store']);
 Route::get('annees_scolaires', [AnneeScolaireController::class, 'index']);
 
 Route::get('/semestres', [SemestreController::class, 'index']);
-<<<<<<< HEAD
-=======
-
->>>>>>> 50baf20 (partie classe)
 
 
 Route::get('/paiements-mensuels', [PaiementMensuelController::class, 'index']);
@@ -208,8 +199,6 @@ Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show'
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
 
-<<<<<<< HEAD
-=======
 
 Route::prefix('fichiers')->group(function () {
     Route::get('/', [FichierPedagogiqueController::class, 'index']);
@@ -261,4 +250,3 @@ Route::get('/professeurs/{professeur}/classes/{classe}/matieres', [ProfesseurCon
 Route::get('/professeurs/{professeur}/classes/{classe}/filieres/{filiere}/matieres', [ProfesseurController::class, 'matieresAvecFiliere']);
 
 Route::get('professeur/{professeurId}/paiements/{mois}', [PaiementMensuelController::class, 'getPaiements']);
->>>>>>> 50baf20 (partie classe)

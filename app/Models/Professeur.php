@@ -15,10 +15,7 @@ class Professeur extends Model
     {
         return $this->belongsTo(Utilisateur::class, 'user_id'); 
     }
-    public function etudiants()
-    {
-        return $this->belongsToMany(Etudiant::class);
-    }
+ 
     
   
 public function evaluations()
@@ -29,12 +26,10 @@ public function classes()
 {
     return $this->belongsToMany(Classe::class, 'professeur_id', 'classe_id');
 }
-<<<<<<< HEAD
 public function utilisateurs()
     {
         return $this->belongsToMany(Utilisateur::class, 'utilisateur_professeur', 'professeur_id', 'utilisateur_id');
     }
-=======
 public function matieres()
 {
     return $this->belongsToMany(Matiere::class, 'prof_matiere_classe', 'professeur_id', 'matiere_id')
@@ -57,6 +52,12 @@ public function paiementsMensuels($mois = null)
                      ->get(['etudiants.*', 'paiements_mensuels.*']);
 }
 
->>>>>>> 50baf20 (partie classe)
-    
+
+public function etudiants()
+{
+    return $this->belongsToMany(Etudiant::class);
+}
+
+
+
 }

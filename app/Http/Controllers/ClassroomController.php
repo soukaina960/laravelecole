@@ -11,16 +11,16 @@ class ClassroomController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
             'capacite' => 'required|integer|min:1',
             'niveau' => 'required|string',
+            'filiere_id' => 'nullable|exists:filieres,id' // rendu facultatif
         ]);
 
         $classroom = Classroom::create([
             'name' => $request->name,
-            'description' => $request->description,
             'capacite' => $request->capacite,
             'niveau' => $request->niveau,
+             'filiere_id' => $request->input('filiere_id')
         ]);
 
         return response()->json($classroom, 201);
@@ -30,14 +30,19 @@ class ClassroomController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
+            'capacite' => 'required|integer|min:1',
+            'niveau' => 'required|string',
+            'filiere_id' => 'nullable|exists:filieres,id' // rendu facultatif
         ]);
 
         $classroom = Classroom::findOrFail($id);
         $classroom->update([
             'name' => $request->name,
-            'description' => $request->description,
-        ]);
+            'capacite' => $request->capacite,
+            'niveau' => $request->niveau,
+            'filiere_id' => $request->input('filiere_id')
+
+            ]);
 
         return response()->json($classroom);
     }
@@ -51,7 +56,7 @@ class ClassroomController extends Controller
 
     public function index()
     {
-        $classrooms = Classroom::all();
+        $classrooms = Classroom::with('filiere:id,nom')->get();
         return response()->json($classrooms);
     }
 
