@@ -9,14 +9,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Etudiant;
+use App\Models\Filiere;
+use App\Models\Professeur;
+use App\Models\Utilisateur;
 
+use App\Models\AnneeScolaire;       
 class ClasseController extends Controller
 {
    // Dans ClasseController.php
    public function getEtudiants($classeId)
 {
     try {
-        $classe = Classe::findOrFail($classeId);
+        $classe = Classroom::findOrFail($classeId);
         $etudiants = $classe->etudiants;
         
         return response()->json([
@@ -58,16 +62,41 @@ return response()->json($classrooms);
 
    }
   
-    public function filieres($classeId)
-    {
-        $classe = Classe::findOrFail($classeId);
-        // Vérifie que c’est bien une classe de lycée
-        if ($classe->niveau === 'lycée') {
-            return $classe->filieres; // relation many-to-many
-        } else {
-            return response()->json(['message' => 'Pas de filières pour cette classe.'], 400);
-        }
-    }
+   public function getFilieresByClasse($classeId)
+   {
+       try {
+           $classe = Classroom::findOrFail($classeId);
+           
+           if (strtolower($classe->niveau) !== 'secondaire') {
+               return response()->json([
+                   'filieres' => [],
+                   'message' => 'Cette classe n\'est pas un lycée.'
+               ]);
+           }
+           
+           // Récupérer la filière associée à la classe
+           $filiere = $classe->filiere;
+           
+           if (!$filiere) {
+               return response()->json([
+                   'filieres' => [],
+                   'message' => 'Aucune filière trouvée pour cette classe'
+               ]);
+           }
+           
+           return response()->json([
+               'filieres' => [$filiere] // Retourne toujours un tableau
+           ]);
+           
+       } catch (\Exception $e) {
+           return response()->json([
+               'filieres' => [],
+               'message' => 'Erreur lors de la récupération des filières',
+               'error' => $e->getMessage()
+           ], 500);
+       }
+   }
+   
    public function storeAttendances(Request $request, $classeId)
 {
     $validated = $request->validate([

@@ -88,21 +88,17 @@ public function attendances()
     return $this->hasOne(EmailParent::class);
 }
 
-<<<<<<< HEAD
+
 // Etudiant.php (modèle)
 public function utilisateur()
 {
     return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
 }
 
-=======
-    public function utilisateur()
-    {
-        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
-    }
+
 
     
->>>>>>> 50baf20 (partie classe)
+
 public function professeur() {
     return $this->belongsTo(Professeur::class);
 }

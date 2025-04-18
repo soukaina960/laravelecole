@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Utilisateur;
+
 use Illuminate\Support\Facades\Log;
+
 
 class AuthController extends Controller
 {
@@ -32,7 +34,7 @@ class AuthController extends Controller
             'role' => $utilisateur->role,
         ]);
     } catch (\Exception $e) {
-        \Log::error('Erreur login : ' . $e->getMessage());
+        Log::error('Erreur login : ' . $e->getMessage());
         return response()->json(['message' => 'Erreur serveur: ' . $e->getMessage()], 500);
     }
 }

@@ -142,18 +142,18 @@ class UtilisateurController extends Controller
  
 
     public function show($id)
-    {
-        $utilisateur = Utilisateur::with([
-            'etudiant',
-            'professeur',
-            'parent',
-            'admin',
-            'surveillant'
-        ])->findOrFail($id);
-    
-        return response()->json($utilisateur);
-    }
-    
+     {
+         return response()->json(Utilisateur::findOrFail($id));
+         $utilisateur = Utilisateur::with([
+             'etudiant',
+             'professeur',
+             'parent',
+             'admin',
+             'surveillant'
+         ])->findOrFail($id);
+     
+         return response()->json($utilisateur);
+     }
 
     public function update(Request $request, $id)
     {

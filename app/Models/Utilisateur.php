@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 class Utilisateur extends Authenticatable
 {
     use HasApiTokens, Notifiable;
@@ -25,27 +26,22 @@ class Utilisateur extends Authenticatable
     {
         return $this->mot_de_passe;
     }
-<<<<<<< HEAD
-    public function professeur()
-    {
-        return $this->hasOne(Professeur::class, 'user_id'); 
-    }
+
+  
     
-// Utilisateur.php (modèle)
-public function etudiant()
-{
-    return $this->hasOne(Etudiant::class, 'utilisateur_id');
-=======
-    public function professeur() {
+
+    public function professeur() 
+    {
         return $this->hasOne(Professeur::class);
     }
 
     // Relation avec l'étudiant
-    public function etudiant() {
+    public function etudiant() 
+    {
         return $this->hasOne(Etudiant::class);
     }
->>>>>>> 50baf20 (partie classe)
-}
+
+
 public function parent()
 {
     return $this->hasOne(ParentModel::class, 'utilisateur_id');
