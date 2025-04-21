@@ -36,3 +36,4 @@ class SanctionController extends Controller
         return redirect('/sanctions')->with('success', 'Sanction ajoutée avec succès !');
     }
 }
+

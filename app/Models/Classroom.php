@@ -23,6 +23,7 @@ class Classroom extends Model
     // Relation avec Etudiant
     public function etudiants()
     {
+
         return $this->hasMany(Etudiant::class, 'class_id'); // Utilise 'classe_id' qui est la clé étrangère dans la table etudiants
     }
     
@@ -35,6 +36,15 @@ class Classroom extends Model
     public function filiere()
     {
         return $this->belongsTo(Filiere::class, 'filiere_id');  // Assurez-vous que 'filiere_id' existe dans la table classrooms
+
+        return $this->hasMany(Etudiant::class, 'classe_id');  // Assurez-vous que la clé étrangère est 'classe_id'
+    }
+
+    // Relation avec Filiere
+    public function filiere()
+    {
+        return $this->belongsTo(Filiere::class);
+
     }
     
 }

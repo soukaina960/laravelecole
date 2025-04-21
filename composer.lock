@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
+=======
+    "content-hash": "9ce09467025411b46817d2f34a11c0ed",
+>>>>>>> 32f397de9c28bc07174e4af731be108786415da7
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -3552,6 +3556,7 @@
             "time": "2020-10-15T08:29:30+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "phpmailer/phpmailer",
             "version": "v6.9.3",
             "source": {
@@ -3633,6 +3638,8 @@
             "time": "2024-11-24T18:04:13+00:00"
         },
         {
+=======
+>>>>>>> 32f397de9c28bc07174e4af731be108786415da7
             "name": "phpoption/phpoption",
             "version": "1.9.3",
             "source": {

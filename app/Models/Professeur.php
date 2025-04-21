@@ -26,11 +26,25 @@ public function classes()
 {
     return $this->belongsToMany(Classe::class, 'professeur_id', 'classe_id');
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
+>>>>>>> 32f397de9c28bc07174e4af731be108786415da7
 public function utilisateurs()
     {
         return $this->belongsToMany(Utilisateur::class, 'utilisateur_professeur', 'professeur_id', 'utilisateur_id');
     }
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
+>>>>>>> 32f397de9c28bc07174e4af731be108786415da7
 public function matieres()
 {
     return $this->belongsToMany(Matiere::class, 'prof_matiere_classe', 'professeur_id', 'matiere_id')
@@ -54,7 +68,12 @@ public function paiementsMensuels($mois = null)
 }
 
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 32f397de9c28bc07174e4af731be108786415da7
 public function etudiants()
 {
     return $this->belongsToMany(Etudiant::class);
@@ -62,5 +81,9 @@ public function etudiants()
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
+>>>>>>> 32f397de9c28bc07174e4af731be108786415da7
 }
