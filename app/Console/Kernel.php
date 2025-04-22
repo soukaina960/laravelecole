@@ -7,8 +7,13 @@ use App\Models\Paiement;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\PaiementEnRetardNotification;
 
+$schedule->call(function () {
+    \App\Http\Controllers\PaiementMensuelController::resetPaiementsMoisPrecedent();
+})->monthlyOn(1, '00:00'); // Réinitialise les paiements tous les premiers du mois à minuit
+
 class PaimentMenuels
 {
+    
     public function verifierPaiementMensuel()
     {
         $moisActuel = now()->format('Y-m');

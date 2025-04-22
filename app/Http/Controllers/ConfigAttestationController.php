@@ -53,8 +53,7 @@ public function store(Request $request)
             $logoPath = $request->file('logo')->store('logos', 'public');
             $config->logo_path = $logoPath;
         }
-
-        $config->nom_ecole = $request->nom_ecole;
+     $config->nom_ecole = $request->nom_ecole;
         $config->nom_faculte = $request->nom_faculte;
         $config->annee_scolaire = $request->annee_scolaire;
         $config->telephone = $request->telephone;

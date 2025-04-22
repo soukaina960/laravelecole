@@ -12,8 +12,10 @@ class IncidentController extends Controller
         return response()->json(Incident::with('etudiant')->get());
     }
 
-    public function store(Request $request)
-    {
+    // Store method with error handling for validation failures
+public function store(Request $request)
+{
+    try {
         $request->validate([
             'etudiant_id' => 'required|exists:etudiants,id',
             'description' => 'required|string',
@@ -23,7 +25,13 @@ class IncidentController extends Controller
         $incident = Incident::create($request->all());
 
         return response()->json($incident, 201);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Log the validation errors
+        Log::error('Validation failed', $e->errors());
+        return response()->json($e->errors(), 422);
     }
+}
+
 
     public function show($id)
     {

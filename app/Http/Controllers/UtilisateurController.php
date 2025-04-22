@@ -8,6 +8,7 @@ use App\Models\ParentModel;
 use App\Models\Classe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -36,6 +37,7 @@ class UtilisateurController extends Controller
                  'mot_de_passe' => 'required|min:6',
                  'role' => 'required|in:admin,professeur,surveillant,étudiant,parent',
                  'matricule' => 'required|unique:utilisateurs',
+                 
              ]);
  
              // Gestion de l'image de profil (s'il y en a une)
@@ -94,6 +96,9 @@ class UtilisateurController extends Controller
                      'niveau_enseignement' => 'nullable|string',
                      'diplome' => 'nullable|string',
                      'date_embauche' => 'nullable|date',
+                     'matieres_classes' => 'array|required',
+                     'matieres_classes.*.matiere_id' => 'required|exists:matieres,id',
+                     'matieres_classes.*.classe_id' => 'required|exists:classrooms,id',
                  ]);
                  $professeur = Professeur::create([
                      'user_id' => $utilisateur->id,
@@ -104,6 +109,16 @@ class UtilisateurController extends Controller
                      'diplome' => $profData['diplome'],
                      'date_embauche' => $profData['date_embauche'],
                  ]);
+                 foreach ($profData['matieres_classes'] as $item) {
+                    DB::table('prof_matiere_classe')->insert([
+                        'professeur_id' => $professeur->id,
+                        'classe_id' => $item['classe_id'],
+                        'matiere_id' => $item['matiere_id'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+                
  
  
               }

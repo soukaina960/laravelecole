@@ -16,6 +16,9 @@ use App\Models\Utilisateur;
 use App\Models\AnneeScolaire;       
 class ClasseController extends Controller
 {
+    // PUT /api/classrooms/{id}
+
+
    // Dans ClasseController.php
    public function getEtudiants($classeId)
 {

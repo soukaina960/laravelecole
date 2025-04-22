@@ -58,7 +58,7 @@ public function register(Request $request)
             'email' => 'required|email|unique:utilisateurs',
             'mot_de_passe' => 'required|string|min:8',
             'mot_de_passe_confirmation' => 'required|string|same:mot_de_passe',
-            'role' => 'required|string|in:admin,professeur,étudiant,parent',
+            'role' => 'required|string|in:admin,professeur,surveillant,étudiant,parent',
             'telephone' => 'nullable|string',
             'adresse' => 'nullable|string',
         ]);
@@ -83,3 +83,4 @@ public function register(Request $request)
     }
 }
 }
+

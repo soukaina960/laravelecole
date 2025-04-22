@@ -22,13 +22,16 @@ use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 use App\Http\Controllers\PaiementMensuelController;
-use App\Http\Controllers\EmploiTempsController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
+<<<<<<< HEAD
 
 
 
@@ -37,6 +40,8 @@ use App\Http\Controllers\PaiementController;
 
 
 
+=======
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
@@ -45,7 +50,33 @@ use App\Http\Controllers\FichierPedagogiqueController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConfigAttestationController;
 use App\Http\Controllers\MatiereController;
+<<<<<<< HEAD
 use App\Http\Controllers\DemandeAttestationController;
+=======
+use App\Http\Controllers\Api\EmploiTempsController;
+// routes/api.php
+
+use App\Http\Controllers\CreneauController;
+Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
+Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
+
+Route::get('/creneaux', [CreneauController::class, 'index']);
+Route::post('/creneaux', [CreneauController::class, 'store']);
+Route::put('/creneaux/{id}', [CreneauController::class, 'update']);
+Route::delete('/creneaux/{id}', [CreneauController::class, 'destroy']);
+
+Route::get('/emplois-temps/{classeId}', [EmploiTempsController::class, 'index']);
+
+Route::get('/absences/plus-de-15h', [AbsenceController::class, 'countEtudiantsAvecAbsenceSuperieureA15h']);
+
+Route::prefix('emplois-temps')->group(function () {
+    // GET /api/emplois-temps/{classeId} - Get schedule for a class
+    Route::get('/{classeId}', [EmploiTempsController::class, 'index']);
+    
+    // POST /api/emplois-temps - Create new schedule entry
+    Route::post('/', [EmploiTempsController::class, 'store']);
+});
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 Route::get('matieres', [MatiereController::class, 'index']);
 Route::post('matieres', [MatiereController::class, 'store']);
@@ -56,7 +87,7 @@ Route::delete('matieres/{id}', [MatiereController::class, 'destroy']);
 
 Route::get('/config-attestations', [ConfigAttestationController::class, 'index']);
 Route::put('/config-attestations/{id}', [ConfigAttestationController::class, 'update']);
-
+Route::post('/config-attestations', [ConfigAttestationController::class, 'store']);
 
 Route::get('/etudiants/{id}/attestation-pdf', [StudentController::class, 'generateAttestation']);
 
@@ -113,7 +144,7 @@ Route::delete('/utilisateurs/{id}', [UtilisateurController::class, 'destroy']);
 Route::get('/classrooms', [ClassroomController::class, 'index']);
 Route::post('/classrooms', [ClassroomController::class, 'store']);
 Route::delete('/classrooms/{id}', [ClassroomController::class, 'destroy']);
-
+Route::put('/classrooms/{id}', [ClassroomController::class, 'update']);
 Route::get('/classrooms/{id}', [ClassroomController::class, 'show']);
 
 
@@ -187,12 +218,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-Route::get('/emplois_temps', [EmploiTempsController::class, 'index']);
-Route::post('/emplois_temps', [EmploiTempsController::class, 'store']);
 Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
@@ -208,7 +242,14 @@ Route::post('/paiements-mensuels', [PaiementMensuelController::class, 'store']);
 Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show']);
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
+<<<<<<< HEAD
 Route::prefix('fichiers-pedagogiques')->group(function () {
+=======
+
+
+
+Route::prefix('fichiers')->group(function () {
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
     Route::get('/', [FichierPedagogiqueController::class, 'index']);
     Route::post('/', [FichierPedagogiqueController::class, 'store']);
     Route::get('/{id}', [FichierPedagogiqueController::class, 'show']);
@@ -237,8 +278,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [AbsenceController::class, 'update']);
         Route::delete('/{id}', [AbsenceController::class, 'destroy']);
     });
+<<<<<<< HEAD
 });Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
 
+=======
+});
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/paiements-mensuels/{etudiantId}', [PaiementMensuelController::class, 'listePaiements']);  // Changé ici
@@ -271,6 +316,7 @@ Route::prefix('demandes-attestations')->group(function () {
     Route::patch('/{id}/traiter', [DemandeAttestationController::class, 'marquerCommeTraitee']); // Admin
     Route::get('/etudiant/{id}', [DemandeAttestationController::class, 'demandesEtudiant']); // Étudiant
 });
+<<<<<<< HEAD
 Route::get('/attestations/{id}/download', [DemandeAttestationController::class, 'download']);
 Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'demandesNonTraitees']);
 Route::post('/traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
@@ -278,3 +324,6 @@ Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'dema
 Route::post('/traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
 Route::get('demandes-non-traitees', [DemandeAttestationController::class, 'getDemandesNonTraitees']);
 Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
+=======
+
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da

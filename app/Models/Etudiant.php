@@ -91,9 +91,12 @@ public function attendances()
 }
 
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 // Etudiant.php (modèle)
 public function utilisateur()
 {
@@ -108,6 +111,7 @@ public function utilisateur()
 public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
+<<<<<<< HEAD
 
   
 
@@ -115,6 +119,9 @@ public function professeur() {
 
 
 
+=======
+
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);
@@ -137,9 +144,15 @@ public function paiements_mensuels()
 {
     return $this->hasMany(PaiementMensuel::class);
 }
-
-
-
+protected static function booted()
+{
+    static::deleting(function ($etudiant) {
+        // Pour chaque professeur lié à l'étudiant
+        $etudiant->professeurs->each(function ($professeur) {
+            $professeur->recalculerSalaire(); // Met à jour automatiquement
+        });
+    });
+}
 
 
 }

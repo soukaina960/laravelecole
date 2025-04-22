@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Etudiant; // Ajoutez cette ligne
 use App\Models\Professeur;
 use Illuminate\Http\Request;
 use App\Models\Utilisateur;
@@ -12,6 +12,41 @@ use DateTime;
 
 class ProfesseurController extends Controller
 {
+    public function destroyEtudiant($professeurId, $etudiantId)
+    {
+        // Trouver l'étudiant
+        $etudiant = Etudiant::findOrFail($etudiantId);
+        
+        // Vérifier que l'étudiant appartient bien au professeur
+        if ($etudiant->professeur_id != $professeurId) {
+            return response()->json(['message' => 'Cet étudiant ne appartient pas à ce professeur'], 403);
+        }
+        
+        // Récupérer le montant de l'étudiant avant suppression
+        $montantEtudiant = $etudiant->montant_a_payer;
+        
+        // Supprimer l'étudiant
+        $etudiant->delete();
+        
+        // Mettre à jour le salaire du professeur
+        $professeur = Professeur::findOrFail($professeurId);
+        
+        // Calculer le nouveau total des montants des étudiants restants
+        $totalMontants = $professeur->etudiants()->sum('montant_a_payer');
+        
+        // Recalculer le salaire
+        $salaire = ($professeur->pourcentage / 100) * $totalMontants + $professeur->prime;
+        
+        // Mettre à jour le salaire du professeur
+        $professeur->total = $salaire;
+        $professeur->save();
+        
+        return response()->json([
+            'message' => 'Étudiant supprimé avec succès et salaire mis à jour',
+            'nouveau_salaire' => $salaire,
+            'montant_soustrait' => $montantEtudiant * ($professeur->pourcentage / 100)
+        ], 200);
+    }
     public function matieresSansFiliere($professeurId, $classeId)
     {
         $prof = Professeur::findOrFail($professeurId);
@@ -76,7 +111,6 @@ class ProfesseurController extends Controller
         $professeur = Professeur::findOrFail($id);
 
         $request->validate([
-            'specialite' => 'sometimes|required|string|max:255',
             'niveau_enseignement' => 'sometimes|required|string|max:255',
             'diplome' => 'sometimes|required|string|max:255',
             'date_embauche' => 'sometimes|required|date',
@@ -86,6 +120,7 @@ class ProfesseurController extends Controller
 
         return response()->json($professeur, 200);
     }
+    
     public function calculerSalaire(Request $request, $id)
     {
         $professeur = Professeur::findOrFail($id);

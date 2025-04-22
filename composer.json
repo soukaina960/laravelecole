@@ -9,12 +9,24 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "*",
         "laravel/framework": "^11.31",
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        "laravel/passport": "*",
+        "laravel/sanctum": "*",
+        "laravel/tinker": "^2.9",
+        "phpmailer/phpmailer": "^6.9"
+=======
+
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
         "laravel/passport": "*",
         "laravel/sanctum": "*",
         "laravel/tinker": "^2.9"
+>>>>>>> 32f397de9c28bc07174e4af731be108786415da7
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "laravel/breeze": "^2.3",
         "laravel/pail": "^1.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
