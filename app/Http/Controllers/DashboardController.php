@@ -6,6 +6,7 @@ use App\Models\Etudiant;
 use App\Models\Professeur;
 use App\Models\Classe;
 use App\Models\Charge;
+use App\Models\Classroom;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
 $moisActuel = Carbon::now()->month;
@@ -19,7 +20,7 @@ class DashboardController extends Controller
         $anneeActuelle = Carbon::now()->year;
         $nombreEtudiants = Etudiant::count();
         $nombreProfesseurs = Professeur::count();
-        $nombreClasses = Classe::count();
+        $nombreClasses = Classroom::count();
     
         $revenus = Etudiant::sum('montant_a_payer');
         $depenses = Professeur::sum('total') ;

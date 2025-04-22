@@ -12,33 +12,43 @@ use Illuminate\Support\Facades\Log;
 class AuthController extends Controller
 {
     public function login(Request $request)
-{
-    try {
-        $request->validate([
-            'matricule' => 'required|string',
-            'mot_de_passe' => 'required|string',
-        ]);
-
-        $utilisateur = Utilisateur::where('matricule', $request->matricule)->first();
-
-        if (!$utilisateur || !Hash::check($request->mot_de_passe, $utilisateur->mot_de_passe)) {
-            return response()->json(['message' => 'Matricule ou mot de passe incorrect'], 401);
+    {
+        try {
+            $request->validate([
+                'matricule' => 'required|string',
+                'mot_de_passe' => 'required|string',
+            ]);
+    
+            // Récupère l'utilisateur en fonction du matricule
+            $utilisateur = Utilisateur::where('matricule', $request->matricule)->first();
+    
+            if (!$utilisateur || !Hash::check($request->mot_de_passe, $utilisateur->mot_de_passe)) {
+                return response()->json(['message' => 'Matricule ou mot de passe incorrect'], 401);
+            }
+    
+            // Récupérer le classe_id si l'utilisateur est un étudiant
+            if ($utilisateur->role === 'étudiant') {
+                $etudiant = $utilisateur->etudiant; // Assure-toi d'avoir la relation correctement définie
+                $utilisateur->classe_id = $etudiant ? $etudiant->classe_id : null;
+            }
+    
+            // Créer le token d'authentification
+            $token = $utilisateur->createToken('auth_token')->plainTextToken;
+    
+            // Retourner la réponse avec le token et les informations de l'utilisateur
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'utilisateur' => $utilisateur,
+                'role' => $utilisateur->role,
+                'classe_id' => $utilisateur->classe_id, // Ajout du classe_id dans la réponse
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur login : ' . $e->getMessage());
+            return response()->json(['message' => 'Erreur serveur: ' . $e->getMessage()], 500);
         }
-
-        $token = $utilisateur->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'utilisateur' => $utilisateur,
-            'role' => $utilisateur->role,
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Erreur login : ' . $e->getMessage());
-        return response()->json(['message' => 'Erreur serveur: ' . $e->getMessage()], 500);
     }
-}
-
+    
 public function register(Request $request)
 {
     try {

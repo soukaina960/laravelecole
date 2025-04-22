@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Etudiant;
 use App\Models\Professeur;
 use App\Models\Charge;
-use Barryvdh\DomPDF\Facade\Pdf;
+use PDF;
+
+
 
 class RapportController extends Controller
 {

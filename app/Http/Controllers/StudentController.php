@@ -4,15 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
+
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Models\Professeur;
+use App\Models\ParentModel; 
+use App\Models\Classe;
+use App\Models\Utilisateur;
+use Illuminate\Validation\ValidationException;
 
-=======
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
->>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
+
+
+
+
+
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -73,10 +80,10 @@ class StudentController extends Controller
 
         return response()->json($etudiants);
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
+
+
+
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -88,10 +95,10 @@ class StudentController extends Controller
     return response()->json($etudiant);
 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
+
+
+
 
     public function getEtudiantsParClasse($classeId)
 {
@@ -101,10 +108,10 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 537bccd7edc5e547f97ca773e9172f6acb762d1c
+
+
+
 
     public function update(Request $request, $id)
     {
