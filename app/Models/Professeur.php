@@ -57,7 +57,30 @@ public function etudiants()
 {
     return $this->belongsToMany(Etudiant::class);
 }
+public function recalculerSalaire()
+{
+    // Somme des montants payés par les étudiants de ce prof
+    $totalMontants = $this->etudiants()
+        ->whereHas('paiements_mensuels', function ($query) {
+            $query->where('est_paye', true);
+        })
+        ->withSum(['paiements_mensuels as montant_paye' => function ($query) {
+            $query->where('est_paye', true);
+        }], 'montant')
+        ->get()
+        ->sum('montant_paye');
 
-
+    // Calcul du nouveau salaire
+    $this->total = ($this->pourcentage / 100) * $totalMontants + $this->prime;
+    $this->save();
+}
+protected static function booted()
+{
+    static::updated(function ($professeur) {
+        if ($professeur->isDirty(['pourcentage', 'prime'])) {
+            $professeur->recalculerSalaire();
+        }
+    });
+}
 
 }

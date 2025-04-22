@@ -89,7 +89,18 @@ public function getByEtudiant($id)
         return response()->json($absences);
     }
 
-   
+    use Illuminate\Support\Facades\DB;
+
+    public function countEtudiantsAvecAbsenceSuperieureA15h()
+    {
+        $result = Absence::select('etudiant_id', DB::raw('COUNT(*) as total_absences'))
+            ->groupBy('etudiant_id')
+            ->havingRaw('COUNT(*) > 15')
+            ->get();
+    
+        return response()->json(['count' => $result->count()]);
+    }
+    
    
 
 }

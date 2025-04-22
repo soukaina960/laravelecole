@@ -22,7 +22,6 @@ use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaiementMensuelController;
-use App\Http\Controllers\EmploiTempsController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
 
@@ -33,6 +32,29 @@ use App\Http\Controllers\FichierPedagogiqueController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConfigAttestationController;
 use App\Http\Controllers\MatiereController;
+use App\Http\Controllers\Api\EmploiTempsController;
+// routes/api.php
+
+use App\Http\Controllers\CreneauController;
+Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
+Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
+
+Route::get('/creneaux', [CreneauController::class, 'index']);
+Route::post('/creneaux', [CreneauController::class, 'store']);
+Route::put('/creneaux/{id}', [CreneauController::class, 'update']);
+Route::delete('/creneaux/{id}', [CreneauController::class, 'destroy']);
+
+Route::get('/emplois-temps/{classeId}', [EmploiTempsController::class, 'index']);
+
+Route::get('/absences/plus-de-15h', [AbsenceController::class, 'countEtudiantsAvecAbsenceSuperieureA15h']);
+
+Route::prefix('emplois-temps')->group(function () {
+    // GET /api/emplois-temps/{classeId} - Get schedule for a class
+    Route::get('/{classeId}', [EmploiTempsController::class, 'index']);
+    
+    // POST /api/emplois-temps - Create new schedule entry
+    Route::post('/', [EmploiTempsController::class, 'store']);
+});
 
 Route::get('matieres', [MatiereController::class, 'index']);
 Route::post('matieres', [MatiereController::class, 'store']);
@@ -43,7 +65,7 @@ Route::delete('matieres/{id}', [MatiereController::class, 'destroy']);
 
 Route::get('/config-attestations', [ConfigAttestationController::class, 'index']);
 Route::put('/config-attestations/{id}', [ConfigAttestationController::class, 'update']);
-
+Route::post('/config-attestations', [ConfigAttestationController::class, 'store']);
 
 Route::get('/etudiants/{id}/attestation-pdf', [StudentController::class, 'generateAttestation']);
 
@@ -100,7 +122,7 @@ Route::delete('/utilisateurs/{id}', [UtilisateurController::class, 'destroy']);
 Route::get('/classrooms', [ClassroomController::class, 'index']);
 Route::post('/classrooms', [ClassroomController::class, 'store']);
 Route::delete('/classrooms/{id}', [ClassroomController::class, 'destroy']);
-
+Route::put('/classrooms/{id}', [ClassroomController::class, 'update']);
 Route::get('/classrooms/{id}', [ClassroomController::class, 'show']);
 
 
@@ -174,8 +196,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-Route::get('/emplois_temps', [EmploiTempsController::class, 'index']);
-Route::post('/emplois_temps', [EmploiTempsController::class, 'store']);
 Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
@@ -229,8 +249,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [AbsenceController::class, 'update']);
         Route::delete('/{id}', [AbsenceController::class, 'destroy']);
     });
-});Route::middleware('auth:api')->get('/etudiants/{id}', [EtudiantController::class, 'show']);
-
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/paiements-mensuels/{etudiantId}', [PaiementMensuelController::class, 'listePaiements']);  // Changé ici

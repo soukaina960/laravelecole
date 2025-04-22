@@ -123,9 +123,15 @@ public function paiements_mensuels()
 {
     return $this->hasMany(PaiementMensuel::class);
 }
-
-
-
+protected static function booted()
+{
+    static::deleting(function ($etudiant) {
+        // Pour chaque professeur lié à l'étudiant
+        $etudiant->professeurs->each(function ($professeur) {
+            $professeur->recalculerSalaire(); // Met à jour automatiquement
+        });
+    });
+}
 
 
 }

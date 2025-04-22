@@ -22,33 +22,36 @@ class PaiementMensuelController extends Controller
     {
         // Validation des données
         $validated = $request->validate([
-            'etudiant_id' => 'required|exists:etudiants,id',
-            'mois' => 'required|date_format:Y-m', // Le mois doit être au format "YYYY-MM"
+            'etudiant_id' => 'required|exists:etudiants,id'
+            // On retire la validation du mois car il sera généré automatiquement
         ]);
-
+    
+        // Générer automatiquement le mois courant au format "YYYY-MM-01"
+        $moisCourant = Carbon::now()->format('Y-m');
+    
+        // Vérifier si un paiement existe déjà pour ce mois
+        $paiementExistant = PaiementMensuel::where('etudiant_id', $request->etudiant_id)
+                                            ->where('mois', $moisCourant)
+                                            ->first();
+    
+        if ($paiementExistant) {
+            return response()->json([
+                'message' => 'Un paiement existe déjà pour ce mois',
+                'paiement' => $paiementExistant
+            ], 409);
+        }
+    
         // Enregistrement du paiement mensuel
         $paiement = PaiementMensuel::create([
             'etudiant_id' => $request->etudiant_id,
-            'mois' => $request->mois, // Le mois est récupéré directement du formulaire
-            'date_paiement' => Carbon::now()->toDateString(), // Date de paiement actuelle
-            'est_paye' => true, // Marque comme payé
+            'mois' => $moisCourant, // Mois courant généré automatiquement
+            'date_paiement' => Carbon::now()->toDateString(),
+            'est_paye' => true,
         ]);
-
+    
         return response()->json($paiement, 201);
     }
-
-    // Méthode pour afficher un paiement mensuel spécifique
-    public function show($id)
-    {
-        $paiement = PaiementMensuel::find($id);
-        
-        if (!$paiement) {
-            return response()->json(['message' => 'Paiement non trouvé'], 404);
-        }
-
-        return response()->json($paiement);
-    }
-
+    
     // Méthode pour mettre à jour un paiement mensuel
     public function update(Request $request, $id)
     {
@@ -152,5 +155,31 @@ class PaiementMensuelController extends Controller
             ], 500);
         }
     }
+    public function resetPaiementsMoisPrecedent()
+{
+    // Obtenez le mois précédent
+    $moisPrecedent = Carbon::now()->subMonth()->format('Y-m');
+
+    try {
+        // Réinitialiser les paiements du mois précédent à 'non payé' (est_paye = false)
+        $paiements = PaiementMensuel::where('mois', $moisPrecedent)->update(['est_paye' => false]);
+
+        return response()->json([
+            'message' => 'Les paiements du mois précédent ont été réinitialisés.',
+            'paiements_reset' => $paiements
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erreur lors de la réinitialisation des paiements.',
+            'details' => $e->getMessage()
+        ], 500);
+    }
+
+
+
+
+}
+
+
     
 }

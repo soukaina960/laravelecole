@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use App\Models\Professeur;
-use App\Models\Classe;
+use App\Models\Classroom;
 use App\Models\Charge;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $anneeActuelle = Carbon::now()->year;
         $nombreEtudiants = Etudiant::count();
         $nombreProfesseurs = Professeur::count();
-        $nombreClasses = Classe::count();
+        $nombreClasses = Classroom::count();
     
         $revenus = Etudiant::sum('montant_a_payer');
         $depenses = Professeur::sum('total') ;
