@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -78,6 +80,7 @@ class StudentController extends Controller
 
     return response()->json($etudiant);
 }
+
 
 
     public function getEtudiantsParClasse($classeId)
@@ -190,4 +193,9 @@ class StudentController extends Controller
             'fax' => '',
             'logo_path' => ''
         ];
-    }}
+    }
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class, 'class_id');
+    }
+}

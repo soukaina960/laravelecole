@@ -90,16 +90,21 @@ public function attendances()
     return $this->hasOne(EmailParent::class);
 }
 
+
 // Etudiant.php (modèle)
 public function utilisateur()
 {
     return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
 }
 
-  
+
+
 
     
 
+public function professeur() {
+    return $this->belongsTo(Professeur::class);
+}
 
 public function notes()
 {

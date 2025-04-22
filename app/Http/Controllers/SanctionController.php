@@ -7,33 +7,33 @@ use Illuminate\Http\Request;
 
 class SanctionController extends Controller
 {
+    // Afficher toutes les sanctions
     public function index()
     {
-        return response()->json(Sanction::with('etudiant')->get());
+        $sanctions = Sanction::all();
+        return response()->json($sanctions);
+    }
+    
+
+    // Afficher le formulaire de création
+    public function create()
+    {
+        return view('sanctions.create');
     }
 
+    // Enregistrer une nouvelle sanction
     public function store(Request $request)
     {
         $request->validate([
-            'etudiant_id' => 'required|exists:etudiants,id',
-            'type' => 'required|string',
-            'description' => 'nullable|string',
-            'date' => 'required|date',
+            'type_sanction' => 'required',
+            'description' => 'required',
+            'nombre_absences_min' => 'required|integer',
+            'niveau_concerne' => 'required',
         ]);
 
-        $sanction = Sanction::create($request->all());
+        Sanction::create($request->all());
 
-        return response()->json($sanction, 201);
-    }
-
-    public function show($id)
-    {
-        return response()->json(Sanction::findOrFail($id));
-    }
-
-    public function destroy($id)
-    {
-        Sanction::destroy($id);
-        return response()->json(['message' => 'Sanction supprimée']);
+        return redirect('/sanctions')->with('success', 'Sanction ajoutée avec succès !');
     }
 }
+

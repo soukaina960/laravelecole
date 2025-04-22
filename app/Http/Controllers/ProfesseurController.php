@@ -62,7 +62,7 @@ class ProfesseurController extends Controller
         // relation many-to-many avec classe + filière
         return $prof->matieres()
             ->wherePivot('classe_id', $classeId)
-            ->wherePivot('filiere_id', $filiereId)
+           
             ->get();
     }
     // Récupérer tous les professeurs avec l'utilisateur lié
@@ -238,5 +238,18 @@ public function getEtudiantsAvecPaiements($professeurId, $mois = null)
         $paiements = $professeur->paiementsMensuels($mois);
 
         return response()->json($paiements);
+    }
+    public function affichierinfo($id)
+    {
+        // Trouver le professeur avec l'ID
+        $prof = Professeur::find($id);
+
+        // Vérifier si le professeur existe
+        if (!$prof) {
+            return response()->json(['error' => 'Professeur non trouvé'], 404);
+        }
+
+        // Retourner les informations du professeur
+        return response()->json($prof);
     }
 }

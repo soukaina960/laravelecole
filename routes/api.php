@@ -21,6 +21,7 @@ use App\Http\Controllers\API\EmploiSurveillanceController;
 use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
+
 use App\Http\Controllers\PaiementMensuelController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
@@ -202,7 +203,6 @@ Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
 
-
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
@@ -218,6 +218,7 @@ Route::post('/paiements-mensuels', [PaiementMensuelController::class, 'store']);
 Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show']);
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
+
 
 
 Route::prefix('fichiers')->group(function () {
@@ -263,9 +264,23 @@ Route::group(['prefix' => 'professeur'], function () {
 //Route::get('/annees-scolaires', [AnneeScolaireController::class, 'index']);
 Route::get('/annees/{annee}/semestres', [AnneeScolaireController::class, 'semestres']);
 Route::get('/classes', [ClasseController::class, 'index']);
-Route::get('/classes/{classe}/filieres', [ClasseController::class, 'filieres']);
+Route::get('/classes/{classe}/filieres', [ClasseController::class, 'getFilieresByClasse']);
 
 Route::get('/professeurs/{professeur}/classes/{classe}/matieres', [ProfesseurController::class, 'matieresSansFiliere']);
 Route::get('/professeurs/{professeur}/classes/{classe}/filieres/{filiere}/matieres', [ProfesseurController::class, 'matieresAvecFiliere']);
 
 Route::get('professeur/{professeurId}/paiements/{mois}', [PaiementMensuelController::class, 'getPaiements']);
+
+
+Route::get('/professeurs/{id}', [ProfesseurController::class, 'affichierinfo']);
+// routes/api.php
+
+use App\Http\Controllers\Api\DemandeAttestationController;
+
+Route::prefix('demandes-attestations')->group(function () {
+    Route::get('/', [DemandeAttestationController::class, 'index']); // Admin
+    Route::post('/', [DemandeAttestationController::class, 'store']); // Étudiant
+    Route::patch('/{id}/traiter', [DemandeAttestationController::class, 'marquerCommeTraitee']); // Admin
+    Route::get('/etudiant/{id}', [DemandeAttestationController::class, 'demandesEtudiant']); // Étudiant
+});
+

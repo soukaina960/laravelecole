@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+use App\Models\Etudiant;  // Import the Etudiant model
 use Illuminate\Http\Request;
 
 class ClassroomController extends Controller
@@ -11,16 +12,16 @@ class ClassroomController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
             'capacite' => 'required|integer|min:1',
             'niveau' => 'required|string',
-            'filiere_id' => 'nullable|exists:filieres,id' // rendu facultatif
         ]);
 
         $classroom = Classroom::create([
             'name' => $request->name,
+            'description' => $request->description,
             'capacite' => $request->capacite,
             'niveau' => $request->niveau,
-             'filiere_id' => $request->input('filiere_id')
         ]);
 
         return response()->json($classroom, 201);
@@ -30,19 +31,14 @@ class ClassroomController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'capacite' => 'required|integer|min:1',
-            'niveau' => 'required|string',
-            'filiere_id' => 'nullable|exists:filieres,id' // rendu facultatif
+            'description' => 'nullable|string|max:1000',
         ]);
 
         $classroom = Classroom::findOrFail($id);
         $classroom->update([
             'name' => $request->name,
-            'capacite' => $request->capacite,
-            'niveau' => $request->niveau,
-            'filiere_id' => $request->input('filiere_id')
-
-            ]);
+            'description' => $request->description,
+        ]);
 
         return response()->json($classroom);
     }
@@ -56,16 +52,22 @@ class ClassroomController extends Controller
 
     public function index()
     {
-        $classrooms = Classroom::with('filiere:id,nom')->get();
+        $classrooms = Classroom::all();
         return response()->json($classrooms);
     }
+    public function students($id)
+    {
+        $etudiants = Etudiant::where('classe_id', $id)->get();
+        return response()->json($etudiants);
+    }
+    
 
     public function show($id)
     {
-        $classroom = Classroom::find($id);
-        if (!$classroom) {
-            return response()->json(['message' => 'Classe non trouvée'], 404);
-        }
+        $classroom = Classroom::findOrFail($id);
         return response()->json($classroom);
     }
+
+    // Method to get students of a specific classroom
+    
 }

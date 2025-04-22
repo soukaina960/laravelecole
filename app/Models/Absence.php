@@ -12,18 +12,26 @@ class Absence extends Model
     protected $fillable = [
         'etudiant_id',
         'date',
-        'motif',
+
         'justifiee',
-        'professeur_id' // Ajout de professeur_id
+        'professeur_id',
+        'motif',
+        'class_id',
+
     ];
 
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class);
     }
-    
     public function professeur()
     {
         return $this->belongsTo(Professeur::class);
     }
+
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class, 'class_id');
+    }
+
 }

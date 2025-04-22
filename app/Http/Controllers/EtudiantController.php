@@ -53,7 +53,12 @@ class EtudiantController extends Controller
         }
         return response()->json(['message' => 'Étudiant non trouvé'], 404);
     }
-    
+
+    public function classroom()
+{
+    return $this->belongsTo(Classroom::class, 'class_id');
+}
+
     
     
     
