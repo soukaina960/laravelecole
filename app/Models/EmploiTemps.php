@@ -18,8 +18,9 @@ class EmploiTemps extends Model
 
     public function classe()
     {
-        return $this->belongsTo(Classe::class);
+        return $this->belongsTo(Classroom::class, 'classe_id');
     }
+    
 
     public function matiere()
     {

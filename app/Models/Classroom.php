@@ -40,11 +40,10 @@ class Classroom extends Model
         return $this->hasMany(Etudiant::class, 'classe_id');  // Assurez-vous que la clé étrangère est 'classe_id'
     }
 
-    // Relation avec Filiere
-    public function filiere()
+    public function evenements()
     {
-        return $this->belongsTo(Filiere::class);
-
+        return $this->hasMany(Evenement::class);
     }
+    
     
 }

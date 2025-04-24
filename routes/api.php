@@ -37,8 +37,19 @@ use App\Http\Controllers\Api\EmploiTempsController;
 // routes/api.php
 
 use App\Http\Controllers\CreneauController;
+use App\Http\Controllers\API\EvenementController;
+Route::apiResource('evenements', EvenementController::class);
+    Route::get('/evenements', [EvenementController::class, 'index']);
+    Route::post('/evenements', [EvenementController::class, 'store']);
+    Route::get('/evenements/{id}', [EvenementController::class, 'show']);
+    Route::put('/evenements/{id}', [EvenementController::class, 'update']);
+    Route::delete('/evenements/{id}', [EvenementController::class, 'destroy']);
+
+Route::get('/emplois-temps', [EmploiTempsController::class, 'recupurer']);
+Route::get('/emplois-temps/professeur/{id}/pdf', [EmploiTempsController::class, 'exportPdf']);
 Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
 Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
+Route::get('/emplois-temps/professeur/{id}', [EmploiTempsController::class, 'getByProfesseur']);
 
 Route::get('/creneaux', [CreneauController::class, 'index']);
 Route::post('/creneaux', [CreneauController::class, 'store']);
@@ -48,6 +59,7 @@ Route::delete('/creneaux/{id}', [CreneauController::class, 'destroy']);
 Route::get('/emplois-temps/{classeId}', [EmploiTempsController::class, 'index']);
 
 Route::get('/absences/plus-de-15h', [AbsenceController::class, 'countEtudiantsAvecAbsenceSuperieureA15h']);
+Route::put('/{id}', [EmploiTempsController::class, 'update']);
 
 Route::prefix('emplois-temps')->group(function () {
     // GET /api/emplois-temps/{classeId} - Get schedule for a class
@@ -197,7 +209,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
