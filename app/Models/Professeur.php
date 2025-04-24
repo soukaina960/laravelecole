@@ -26,10 +26,19 @@ public function classes()
 {
     return $this->belongsToMany(Classe::class, 'professeur_id', 'classe_id');
 }
+
+
+
+
+
 public function utilisateurs()
     {
         return $this->belongsToMany(Utilisateur::class, 'utilisateur_professeur', 'professeur_id', 'utilisateur_id');
     }
+
+
+
+
 public function matieres()
 {
     return $this->belongsToMany(Matiere::class, 'prof_matiere_classe', 'professeur_id', 'matiere_id')
@@ -54,6 +63,7 @@ public function paiementsMensuels($mois = null)
 
 
 
+
 public function etudiants()
 {
     return $this->belongsToMany(Etudiant::class);
@@ -70,6 +80,7 @@ public function recalculerSalaire()
         }], 'montant')
         ->get()
         ->sum('montant_paye');
+
 
     // Calcul du nouveau salaire
     $this->total = ($this->pourcentage / 100) * $totalMontants + $this->prime;

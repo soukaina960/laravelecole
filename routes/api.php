@@ -22,9 +22,26 @@ use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\NotificationController;
 
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 use App\Http\Controllers\PaiementMensuelController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
+<<<<<<< HEAD
+
+
+
+
+
+
+
+
+=======
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
@@ -33,6 +50,9 @@ use App\Http\Controllers\FichierPedagogiqueController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConfigAttestationController;
 use App\Http\Controllers\MatiereController;
+<<<<<<< HEAD
+use App\Http\Controllers\DemandeAttestationController;
+=======
 use App\Http\Controllers\Api\EmploiTempsController;
 // routes/api.php
 
@@ -68,6 +88,7 @@ Route::prefix('emplois-temps')->group(function () {
     // POST /api/emplois-temps - Create new schedule entry
     Route::post('/', [EmploiTempsController::class, 'store']);
 });
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 Route::get('matieres', [MatiereController::class, 'index']);
 Route::post('matieres', [MatiereController::class, 'store']);
@@ -212,8 +233,11 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
@@ -229,10 +253,14 @@ Route::post('/paiements-mensuels', [PaiementMensuelController::class, 'store']);
 Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show']);
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
+<<<<<<< HEAD
+Route::prefix('fichiers-pedagogiques')->group(function () {
+=======
 
 
 
 Route::prefix('fichiers')->group(function () {
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
     Route::get('/', [FichierPedagogiqueController::class, 'index']);
     Route::post('/', [FichierPedagogiqueController::class, 'store']);
     Route::get('/{id}', [FichierPedagogiqueController::class, 'show']);
@@ -261,7 +289,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [AbsenceController::class, 'update']);
         Route::delete('/{id}', [AbsenceController::class, 'destroy']);
     });
+<<<<<<< HEAD
+});Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+=======
 });
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/paiements-mensuels/{etudiantId}', [PaiementMensuelController::class, 'listePaiements']);  // Changé ici
@@ -286,7 +319,7 @@ Route::get('professeur/{professeurId}/paiements/{mois}', [PaiementMensuelControl
 Route::get('/professeurs/{id}', [ProfesseurController::class, 'affichierinfo']);
 // routes/api.php
 
-use App\Http\Controllers\Api\DemandeAttestationController;
+
 
 Route::prefix('demandes-attestations')->group(function () {
     Route::get('/', [DemandeAttestationController::class, 'index']); // Admin
@@ -294,4 +327,14 @@ Route::prefix('demandes-attestations')->group(function () {
     Route::patch('/{id}/traiter', [DemandeAttestationController::class, 'marquerCommeTraitee']); // Admin
     Route::get('/etudiant/{id}', [DemandeAttestationController::class, 'demandesEtudiant']); // Étudiant
 });
+<<<<<<< HEAD
+Route::get('/attestations/{id}/download', [DemandeAttestationController::class, 'download']);
+Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'demandesNonTraitees']);
+Route::post('/traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
+Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'demandesNonTraitees']);
+Route::post('/traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
+Route::get('demandes-non-traitees', [DemandeAttestationController::class, 'getDemandesNonTraitees']);
+Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
+=======
 
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da

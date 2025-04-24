@@ -1,12 +1,14 @@
 <?php
 // app/Http/Controllers/Api/DemandeAttestationController.php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DemandeAttestation;
 use App\Models\Etudiant;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DemandeAttestationController extends Controller
 {
@@ -57,4 +59,45 @@ class DemandeAttestationController extends Controller
         $demandes = DemandeAttestation::where('etudiant_id', $id)->get();
         return response()->json($demandes);
     }
+    public function getDemandesNonTraitees()
+    {
+        // Récupère toutes les demandes non traitées
+        $demandes = DemandeAttestation::where('traitee', false)->get();
+        return response()->json($demandes);
+    }
+
+    public function traiterDemande($id)
+    {
+        // Récupère la demande
+        $demande = DemandeAttestation::findOrFail($id);
+        $etudiant = Etudiant::findOrFail($demande->etudiant_id);
+
+        // Traiter la demande (marquer comme traitée)
+        $demande->traitee = true;
+        $demande->save();
+
+        // Générer le lien d'attestation (utilisation d'un PDF ou stockage d'un fichier)
+        $pdf = PDF::loadView('attestation', ['etudiant' => $etudiant, 'config' => $this->getSchoolConfig()]);
+        $filePath = 'attestations/' . 'attestation_' . $etudiant->matricule . '.pdf';
+        $pdf->save(storage_path('app/public/' . $filePath));
+
+        // Sauvegarder le lien dans la base de données
+        $demande->lien_attestation = $filePath;
+        $demande->save();
+
+        // Retourner le lien de l'attestation générée
+        return response()->json(['lien' => $filePath]);
+    }
+
+    // Méthode pour récupérer la configuration de l'école
+    private function getSchoolConfig()
+    {
+        return (object)[
+            'nom_ecole' => 'Institut Supérieur de Technologie Hay Salam',
+            'telephone' => '0528223344',
+            'fax' => '0528223345',
+            'logo_path' => 'logos/logo.png', // Ajuster le chemin
+        ];
+    }
+
 }

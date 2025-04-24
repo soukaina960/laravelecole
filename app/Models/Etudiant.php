@@ -91,6 +91,12 @@ public function attendances()
 }
 
 
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 // Etudiant.php (modèle)
 public function utilisateur()
 {
@@ -105,7 +111,17 @@ public function utilisateur()
 public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
+<<<<<<< HEAD
 
+  
+
+    
+
+
+
+=======
+
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);

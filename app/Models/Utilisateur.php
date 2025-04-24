@@ -27,6 +27,7 @@ class Utilisateur extends Authenticatable
         return $this->mot_de_passe;
     }
 
+
   
     
 
@@ -35,6 +36,13 @@ class Utilisateur extends Authenticatable
     
 
    
+
+
+
+
+   
+
+
 
 
     public function professeur()
@@ -54,6 +62,7 @@ public function etudiant()
    
    
     
+
 
 public function parent()
 {
