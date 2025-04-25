@@ -169,7 +169,7 @@ Route::apiResource('incidents', IncidentController::class);
 Route::get('incidents/etudiant/{etudiant_id}', [IncidentController::class, 'getByEtudiant']);
 Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [IncidentController::class, 'getByDateRange']);
 
-
+ 
 
 
 
