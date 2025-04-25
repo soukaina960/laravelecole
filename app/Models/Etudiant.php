@@ -92,11 +92,19 @@ public function attendances()
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
 =======
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+
+
+
+
+
+>>>>>>> d117421 (acceuil)
 // Etudiant.php (modèle)
 public function utilisateur()
 {
@@ -112,6 +120,10 @@ public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> d117421 (acceuil)
 
   
 
@@ -119,9 +131,14 @@ public function professeur() {
 
 
 
+<<<<<<< HEAD
 =======
 
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+
+
+>>>>>>> d117421 (acceuil)
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);

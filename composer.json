@@ -10,6 +10,7 @@
         "barryvdh/laravel-dompdf": "*",
         "laravel/framework": "^11.31",
 <<<<<<< HEAD
+<<<<<<< HEAD
         
         "phpmailer/phpmailer": "^6.9"
 
@@ -33,6 +34,20 @@
         "laravel/tinker": "^2.9"
 >>>>>>> 32f397de9c28bc07174e4af731be108786415da7
 >>>>>>> 011abd5fcb530909541d8764ad8651e673ecb8fb
+=======
+
+        "laravel/passport": "*",
+        "laravel/sanctum": "*",
+        "laravel/tinker": "^2.9",
+        "phpmailer/phpmailer": "^6.9",
+
+
+
+        "laravel/passport": "*",
+        "laravel/sanctum": "*",
+        "laravel/tinker": "^2.9"
+
+>>>>>>> d117421 (acceuil)
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

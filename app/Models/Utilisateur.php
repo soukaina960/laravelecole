@@ -28,11 +28,18 @@ class Utilisateur extends Authenticatable
     }
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> d117421 (acceuil)
   
     
 
 
 
+<<<<<<< HEAD
     
 
    
@@ -50,10 +57,34 @@ class Utilisateur extends Authenticatable
         return $this->hasOne(Professeur::class, 'user_id'); 
     }
     
+=======
+
+    // Relation avec l'étudiant
+
+    public function professeur() 
+    {
+        return $this->hasOne(Professeur::class);
+    }
+
+   
+
+
+
+  
+
+  
+
+    
+
+>>>>>>> d117421 (acceuil)
     public function surveillant()
     {
         return $this->hasOne(Surveillant::class, 'user_id'); 
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> d117421 (acceuil)
 // Utilisateur.php (modèle)
 public function etudiant()
 {
@@ -64,6 +95,13 @@ public function etudiant()
     
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> d117421 (acceuil)
 public function parent()
 {
     return $this->hasOne(ParentModel::class, 'utilisateur_id');

@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
 <<<<<<< HEAD
+<<<<<<< HEAD
     "content-hash": "26c24cc4bab5aa4d724cd85e6edd0f4c",
 =======
 <<<<<<< HEAD
@@ -13,6 +14,13 @@
     "content-hash": "9ce09467025411b46817d2f34a11c0ed",
 >>>>>>> 32f397de9c28bc07174e4af731be108786415da7
 >>>>>>> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
+=======
+
+    "content-hash": "26c24cc4bab5aa4d724cd85e6edd0f4c",
+
+    "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
+
+>>>>>>> d117421 (acceuil)
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -3561,6 +3569,10 @@
         },
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> d117421 (acceuil)
             "name": "phpmailer/phpmailer",
             "version": "v6.9.3",
             "source": {
@@ -3642,8 +3654,12 @@
             "time": "2024-11-24T18:04:13+00:00"
         },
         {
+<<<<<<< HEAD
 =======
 >>>>>>> 32f397de9c28bc07174e4af731be108786415da7
+=======
+
+>>>>>>> d117421 (acceuil)
             "name": "phpoption/phpoption",
             "version": "1.9.3",
             "source": {

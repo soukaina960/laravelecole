@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+
+
+
+>>>>>>> d117421 (acceuil)
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -86,12 +92,20 @@ class StudentController extends Controller
         return response()->json($etudiants);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d117421 (acceuil)
 
 
 
 
+<<<<<<< HEAD
 =======
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+
+
+>>>>>>> d117421 (acceuil)
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -105,11 +119,19 @@ class StudentController extends Controller
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
 =======
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+
+
+
+
+
+>>>>>>> d117421 (acceuil)
 
     public function getEtudiantsParClasse($classeId)
 {
@@ -120,12 +142,20 @@ class StudentController extends Controller
     return response()->json($etudiants);
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d117421 (acceuil)
 
 
 
 
+<<<<<<< HEAD
 =======
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+
+
+>>>>>>> d117421 (acceuil)
 
     public function update(Request $request, $id)
     {

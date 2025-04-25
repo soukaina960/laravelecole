@@ -119,6 +119,10 @@ class AbsenceController extends Controller
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> d117421 (acceuil)
     use Illuminate\Support\Facades\DB;
 
     public function countEtudiantsAvecAbsenceSuperieureA15h()
@@ -132,12 +136,19 @@ class AbsenceController extends Controller
     }
     
    
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> d117421 (acceuil)
     // Envoyer une notification par email au parent
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
+<<<<<<< HEAD
 >>>>>>> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
+=======
+
+>>>>>>> d117421 (acceuil)
 
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);

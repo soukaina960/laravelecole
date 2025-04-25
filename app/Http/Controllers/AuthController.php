@@ -82,5 +82,9 @@ public function register(Request $request)
         return response()->json(['message' => 'Une erreur est survenue.'], 500);
     }
 }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> d117421 (acceuil)
