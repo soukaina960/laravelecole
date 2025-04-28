@@ -30,6 +30,7 @@ Route::get('/etudiants', [StudentController::class, 'index']);
 Route::post('/etudiants', [StudentController::class, 'store']);  
 Route::put('/etudiants/{id}', [StudentController::class, 'update']);
 Route::delete('etudiants/{id}', [StudentController::class, 'destroy']);
+Route::get('/etudiants/{id}', [StudentController::class, 'show']);
 
 
 // routes/api.php

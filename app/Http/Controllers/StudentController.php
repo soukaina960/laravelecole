@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -25,12 +22,6 @@ use Illuminate\Validation\ValidationException;
 
 
 use Barryvdh\DomPDF\Facade\Pdf;
-
-
-
-
-
-
 
 class StudentController extends Controller
 {
@@ -85,13 +76,10 @@ class StudentController extends Controller
 
         return response()->json($etudiants);
     }
-<<<<<<< HEAD
 
 
 
 
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -104,12 +92,9 @@ class StudentController extends Controller
 }
 
 
-<<<<<<< HEAD
 
 
 
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
     public function getEtudiantsParClasse($classeId)
 {
@@ -119,13 +104,10 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
-<<<<<<< HEAD
 
 
 
 
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
     public function update(Request $request, $id)
     {

@@ -10,6 +10,22 @@ use Illuminate\Support\Facades\DB;
 
 class PaiementMensuelController extends Controller
 {
+    // PaiementController.php
+
+    public function getCountEtudiantsSansPaiement()
+    {
+        $countEtudiantsSansPaiement = DB::table('etudiants')
+            ->leftJoin('paiements_mensuels', 'etudiants.id', '=', 'paiements_mensuels.etudiant_id')
+            ->whereNull('paiements_mensuels.etudiant_id') // Condition pour récupérer ceux qui ne sont pas dans la table paiements_mensuels
+            ->count(); // Retourne le nombre d'étudiants sans paiement
+    
+        return response()->json([
+            'count' => $countEtudiantsSansPaiement
+        ]);
+    }
+    
+    
+
     // Méthode pour afficher tous les paiements mensuels
     public function index()
     {

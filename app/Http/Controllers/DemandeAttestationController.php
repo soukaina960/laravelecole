@@ -3,12 +3,15 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DemandeAttestation;
 use App\Models\Etudiant;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\ConfigAttestation; // ✅ ajoute ceci
+
 
 class DemandeAttestationController extends Controller
 {
@@ -68,29 +71,49 @@ class DemandeAttestationController extends Controller
 
     public function traiterDemande($id)
     {
-        // Récupère la demande
         $demande = DemandeAttestation::findOrFail($id);
-        $etudiant = Etudiant::findOrFail($demande->etudiant_id);
 
-        // Traiter la demande (marquer comme traitée)
-        $demande->traitee = true;
-        $demande->save();
+        if ($demande->traitee) {
+            return response()->json(['message' => 'Cette demande a déjà été traitée.'], 400);
+        }
 
-        // Générer le lien d'attestation (utilisation d'un PDF ou stockage d'un fichier)
-        $pdf = PDF::loadView('attestation', ['etudiant' => $etudiant, 'config' => $this->getSchoolConfig()]);
-        $filePath = 'attestations/' . 'attestation_' . $etudiant->matricule . '.pdf';
-        $pdf->save(storage_path('app/public/' . $filePath));
+        $etudiant = $demande->etudiant;
 
-        // Sauvegarder le lien dans la base de données
-        $demande->lien_attestation = $filePath;
-        $demande->save();
+        $config = ConfigAttestation::first() ?? $this->getSchoolConfig(); // ✅ utilise getSchoolConfig
 
-        // Retourner le lien de l'attestation générée
-        return response()->json(['lien' => $filePath]);
+        $attestation = [
+            'date_emission' => now()->format('d/m/Y'),
+            'annee_universitaire' => $config->annee_scolaire ?? date('Y') . '/' . (date('Y') + 1)
+        ];
+        // Avant Pdf::loadView(), dump les données :
+            dd([
+                'etudiant' => $etudiant,
+                'config' => $config,
+                'attestation' => $attestation
+            ]);
+
+        $pdf = Pdf::loadView('pdf.attestation', [
+            'etudiant' => $etudiant,
+            'config' => $config,
+            'attestation' => (object)$attestation
+        ])>setOption('enable-php', true);
+        return $pdf->stream('attestation.pdf');
+        $pdfPath = 'attestations/attestation_' . $etudiant->id . '_' . time() . '.pdf';
+
+        Storage::disk('public')->put($pdfPath, $pdf->output());
+
+        $demande->update([
+            'traitee' => true,
+            'lien_attestation' => $pdfPath
+        ]);
+
+        return response()->json([
+            'message' => 'Demande traitée avec succès !',
+            'lien' => asset('storage/' . $pdfPath)
+        ]);
     }
 
-    // Méthode pour récupérer la configuration de l'école
-    private function getSchoolConfig()
+    private function getSchoolConfig() // ✅ utilisé ici
     {
         return (object)[
             'nom_ecole' => 'Institut Supérieur de Technologie Hay Salam',

@@ -31,6 +31,9 @@ class AuthController extends Controller
                 $etudiant = $utilisateur->etudiant; // Assure-toi d'avoir la relation correctement définie
                 $utilisateur->classe_id = $etudiant ? $etudiant->classe_id : null;
             }
+            if ($utilisateur->role === 'admin') {
+                $admin = $utilisateur->admin; // Assure-toi d'avoir la relation correctement définie
+            }
     
             // Créer le token d'authentification
             $token = $utilisateur->createToken('auth_token')->plainTextToken;

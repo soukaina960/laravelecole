@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Log;
 
 class AbsenceController extends Controller
 {
+    // AbsenceController.php
+
+public function getAbsentsCritiques()
+{
+    $absents = DB::table('absences')
+        ->select('etudiant_id', DB::raw('COUNT(*) as total_heures'))
+        ->groupBy('etudiant_id')
+        ->having('total_heures', '>', 15)
+        ->get();
+
+    return response()->json([
+        'count' => $absents->count()
+    ]);
+}
+
     // Affiche toutes les absences
     public function index()
     {
@@ -118,26 +133,10 @@ class AbsenceController extends Controller
         return response()->json($absences);
     }
 
-<<<<<<< HEAD
-    use Illuminate\Support\Facades\DB;
-
-    public function countEtudiantsAvecAbsenceSuperieureA15h()
-    {
-        $result = Absence::select('etudiant_id', DB::raw('COUNT(*) as total_absences'))
-            ->groupBy('etudiant_id')
-            ->havingRaw('COUNT(*) > 15')
-            ->get();
-    
-        return response()->json(['count' => $result->count()]);
-    }
-    
-   
-=======
     // Envoyer une notification par email au parent
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
->>>>>>> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
 
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);

@@ -2,15 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Admin extends Model
 {
-    protected $fillable = ['name', 'email', 'password', 'user_id'];
+    use HasFactory;
 
-    // Définir la relation avec le modèle User
-    public function user()
+    protected $fillable = [
+        'user_id',
+        'name',
+        'email',
+        'password',
+    ];
+
+    // Relation inverse avec Utilisateur
+    public function utilisateur()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Utilisateur::class);
     }
 }

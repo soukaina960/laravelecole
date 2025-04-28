@@ -6,7 +6,6 @@ use App\Models\Etudiant;
 use App\Models\Professeur;
 use App\Models\Classroom;
 use App\Models\Charge;
-use App\Models\Classroom;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
 $moisActuel = Carbon::now()->month;
