@@ -122,5 +122,7 @@ class DemandeAttestationController extends Controller
             'logo_path' => 'logos/logo.png', // Ajuster le chemin
         ];
     }
+    // Dans ton Controller
+
 
 }

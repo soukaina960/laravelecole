@@ -9,4 +9,8 @@ class Matiere extends Model
     use HasFactory;
 
     protected $fillable = ['nom'];
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
 }

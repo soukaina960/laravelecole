@@ -18,14 +18,12 @@ class EmploiTemps extends Model
 
     public function classe()
     {
-<<<<<<< HEAD
+
         return $this->belongsTo(Classroom::class, 'classe_id');
     }
     
-=======
-        return $this->belongsTo(Classe::class);
-    }
->>>>>>> d117421 (acceuil)
+
+
 
     public function matiere()
     {

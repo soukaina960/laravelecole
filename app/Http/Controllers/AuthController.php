@@ -42,10 +42,19 @@ class AuthController extends Controller
             return response()->json([
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                'utilisateur' => $utilisateur,
+                'utilisateur' => [
+                    'id' => $utilisateur->id,
+                    'matricule' => $utilisateur->matricule,
+                    'nom' => $utilisateur->nom,
+                    'prenom' => $utilisateur->prenom,
+                    'email' => $utilisateur->email,
+                    'role' => $utilisateur->role,
+                    'classe_id' => $utilisateur->classe_id,
+                    // Ajoute uniquement les champs nécessaires
+                ],
                 'role' => $utilisateur->role,
-                'classe_id' => $utilisateur->classe_id, // Ajout du classe_id dans la réponse
             ]);
+            
         } catch (\Exception $e) {
             Log::error('Erreur login : ' . $e->getMessage());
             return response()->json(['message' => 'Erreur serveur: ' . $e->getMessage()], 500);
@@ -85,9 +94,5 @@ public function register(Request $request)
         return response()->json(['message' => 'Une erreur est survenue.'], 500);
     }
 }
-<<<<<<< HEAD
-}
 
-=======
 }
->>>>>>> d117421 (acceuil)

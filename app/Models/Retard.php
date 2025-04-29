@@ -1,10 +1,9 @@
 <?php
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> d117421 (acceuil)
+
+
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,10 +24,9 @@ class Retard extends Model
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class);
-<<<<<<< HEAD
-=======
-=======
->>>>>>> d117421 (acceuil)
+
+
+
 namespace App\Http\Controllers;
 
 use App\Models\Retard;
@@ -91,6 +89,6 @@ class RetardController extends Controller
                     ->get();
 
         return response()->json($retards);
->>>>>>> 32f397de9c28bc07174e4af731be108786415da7
+
     }
 }

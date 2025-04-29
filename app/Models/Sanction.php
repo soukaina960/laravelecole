@@ -1,36 +1,33 @@
 <?php
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 
->>>>>>> d117421 (acceuil)
 
->>>>>>> 32f397de9c28bc07174e4af731be108786415da7
+
+
+
+
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-=======
 
 
->>>>>>> d117421 (acceuil)
->>>>>>> 32f397de9c28bc07174e4af731be108786415da7
+
+
+
+
+
+
 class Sanction extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> d117421 (acceuil)
+
+
+
         'type_sanction',
         'description',
         'nombre_absences_min',
@@ -100,15 +97,8 @@ class Sanction extends Model
         return Sanction::where('professeur_id', $professeur_id)->get();
     }
 }
-<<<<<<< HEAD
-=======
-=======
->>>>>>> d117421 (acceuil)
-        'etudiant_id',
-        'type',
-        'description',
-        'date',
-    ];
+
+
 
     public function etudiant()
     {
@@ -116,4 +106,4 @@ class Sanction extends Model
     }
 }
 
->>>>>>> 32f397de9c28bc07174e4af731be108786415da7
+

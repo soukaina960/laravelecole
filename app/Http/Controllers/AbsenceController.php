@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class AbsenceController extends Controller
 {
@@ -134,13 +135,17 @@ public function getAbsentsCritiques()
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> 85d9dd7 (exman)
 
->>>>>>> d117421 (acceuil)
-    use Illuminate\Support\Facades\DB;
+
+
+
 
     public function countEtudiantsAvecAbsenceSuperieureA15h()
     {
@@ -154,14 +159,21 @@ public function getAbsentsCritiques()
     
    
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+
+
+
+>>>>>>> 85d9dd7 (exman)
     // Envoyer une notification par email au parent
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -170,6 +182,13 @@ public function getAbsentsCritiques()
 
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+
+
+
+
+
+>>>>>>> 85d9dd7 (exman)
 
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);

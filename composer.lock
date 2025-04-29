@@ -5,26 +5,33 @@
         "This file is @generated automatically"
     ],
 <<<<<<< HEAD
+<<<<<<< HEAD
     "content-hash": "5283cc1bd6be68428b4fe2631eaaca7f",
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+
+>>>>>>> 85d9dd7 (exman)
     "content-hash": "26c24cc4bab5aa4d724cd85e6edd0f4c",
-=======
-<<<<<<< HEAD
+
+
     "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
-=======
+
     "content-hash": "9ce09467025411b46817d2f34a11c0ed",
->>>>>>> 32f397de9c28bc07174e4af731be108786415da7
->>>>>>> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
-=======
+
+
 
     "content-hash": "26c24cc4bab5aa4d724cd85e6edd0f4c",
 
     "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
 
+<<<<<<< HEAD
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+
+>>>>>>> 85d9dd7 (exman)
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -2965,12 +2972,15 @@
             "time": "2020-10-15T08:29:30+00:00"
         },
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
+<<<<<<< HEAD
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+
+
+
+>>>>>>> 85d9dd7 (exman)
             "name": "phpmailer/phpmailer",
             "version": "v6.10.0",
             "source": {
@@ -3053,6 +3063,7 @@
         },
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
@@ -3061,6 +3072,14 @@
 
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+
+
+
+
+
+
+>>>>>>> 85d9dd7 (exman)
             "name": "phpoption/phpoption",
             "version": "1.9.3",
             "source": {
