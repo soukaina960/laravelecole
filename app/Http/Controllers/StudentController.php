@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -23,6 +24,8 @@ use Illuminate\Http\Request;
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
@@ -32,8 +35,19 @@ use Illuminate\Http\Request;
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -106,6 +120,7 @@ class StudentController extends Controller
         return response()->json($etudiants);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -134,6 +149,8 @@ class StudentController extends Controller
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
@@ -143,8 +160,24 @@ class StudentController extends Controller
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -158,6 +191,7 @@ class StudentController extends Controller
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -184,6 +218,8 @@ class StudentController extends Controller
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
@@ -192,8 +228,27 @@ class StudentController extends Controller
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 
     public function getEtudiantsParClasse($classeId)
 {
@@ -204,6 +259,7 @@ class StudentController extends Controller
     return response()->json($etudiants);
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -231,6 +287,8 @@ class StudentController extends Controller
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
@@ -240,8 +298,24 @@ class StudentController extends Controller
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 
     public function update(Request $request, $id)
     {

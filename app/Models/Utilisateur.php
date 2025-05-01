@@ -29,7 +29,11 @@ class Utilisateur extends Authenticatable
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> 49074a4 (dernier commit)
 
 
 
@@ -55,6 +59,10 @@ class Utilisateur extends Authenticatable
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49074a4 (dernier commit)
     public function professeur()
     {
         return $this->hasOne(Professeur::class, 'user_id'); 
@@ -102,10 +110,18 @@ public function etudiant()
 {
     return $this->hasOne(Etudiant::class, 'utilisateur_id');}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49074a4 (dernier commit)
   public function admin()
 {
     return $this->hasOne(Admin::class, 'user_id');
 } 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 49074a4 (dernier commit)
    
    
     
@@ -118,15 +134,16 @@ public function etudiant()
 
 
 
+
+
+
 <<<<<<< HEAD
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+>>>>>>> 85d9dd7 (exman)
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 =======
 
 
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+>>>>>>> 49074a4 (dernier commit)
 public function parent()
 {
     return $this->hasOne(ParentModel::class, 'utilisateur_id');

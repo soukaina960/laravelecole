@@ -135,6 +135,7 @@ public function getAbsentsCritiques()
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     use Illuminate\Support\Facades\DB;
 =======
@@ -146,6 +147,10 @@ public function getAbsentsCritiques()
 =======
 =======
 >>>>>>> 85d9dd7 (exman)
+=======
+
+
+>>>>>>> 49074a4 (dernier commit)
 
 
 
@@ -164,6 +169,7 @@ public function getAbsentsCritiques()
     
    
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -178,10 +184,19 @@ public function getAbsentsCritiques()
 
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
     // Envoyer une notification par email au parent
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
@@ -195,13 +210,24 @@ public function getAbsentsCritiques()
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);

@@ -95,6 +95,7 @@ public function attendances()
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -122,6 +123,8 @@ public function attendances()
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
@@ -130,8 +133,27 @@ public function attendances()
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 // Etudiant.php (modèle)
 public function utilisateur()
 {
@@ -147,6 +169,7 @@ public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -159,11 +182,15 @@ public function professeur() {
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
 
->>>>>>> 85d9dd7 (exman)
+
+
+
 
   
 
@@ -171,30 +198,28 @@ public function professeur() {
 
 
 
+
+
+
+
+
+
+
+
 <<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
-
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
-
-
-
-
-
-
-
-
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);

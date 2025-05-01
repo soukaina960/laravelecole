@@ -3,6 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
+<<<<<<< HEAD
     ],
 <<<<<<< HEAD
     "content-hash": "5283cc1bd6be68428b4fe2631eaaca7f",
@@ -16,8 +17,12 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
+=======
+    ],    "content-hash": "5283cc1bd6be68428b4fe2631eaaca7f",
 
->>>>>>> 85d9dd7 (exman)
+
+>>>>>>> 49074a4 (dernier commit)
+
     "content-hash": "26c24cc4bab5aa4d724cd85e6edd0f4c",
 
 
@@ -33,6 +38,7 @@
     "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -42,6 +48,11 @@
 
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+>>>>>>> 49074a4 (dernier commit)
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -2785,6 +2796,11 @@
             "time": "2024-11-21T10:39:51+00:00"
         },
         {
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 49074a4 (dernier commit)
             "name": "nyholm/psr7",
             "version": "1.8.2",
             "source": {
@@ -2982,6 +2998,7 @@
         {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> d117421 (acceuil)
@@ -2992,6 +3009,13 @@
 
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
             "name": "phpmailer/phpmailer",
             "version": "v6.10.0",
             "source": {
@@ -3074,6 +3098,7 @@
         },
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -3081,20 +3106,26 @@
 =======
 <<<<<<< HEAD
 =======
+=======
+
+
+>>>>>>> 49074a4 (dernier commit)
 >>>>>>> 32f397de9c28bc07174e4af731be108786415da7
-=======
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
 
 
 
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
             "name": "phpoption/phpoption",
             "version": "1.9.3",
             "source": {

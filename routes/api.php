@@ -20,6 +20,7 @@ use App\Http\Controllers\API\IncidentController;
 use App\Http\Controllers\API\EmploiSurveillanceController;
 use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
+<<<<<<< HEAD
 use App\Http\Controllers\NotificationController;
 <<<<<<< HEAD
 =======
@@ -29,6 +30,12 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationsController;
 
 
+=======
+use App\Http\Controllers\NotificationController;use App\Http\Controllers\NotificationsController;
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 
 
 
@@ -36,33 +43,39 @@ use App\Http\Controllers\PaiementMensuelController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
 <<<<<<< HEAD
-=======
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
-
-
-=======
-
-
-
-
->>>>>>> 85d9dd7 (exman)
-
-
-
-use App\Http\Controllers\PaiementMensuelController;
-use App\Http\Controllers\EtudiantController;
-use App\Http\Controllers\PaiementController;
 <<<<<<< HEAD
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+
+
+=======
+=======
+>>>>>>> 49074a4 (dernier commit)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 use App\Http\Controllers\QuizController;
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+>>>>>>> 49074a4 (dernier commit)
+
+
 
 
 
@@ -78,10 +91,10 @@ use App\Http\Controllers\QuizController;
 
 
 
-
-
 =======
 >>>>>>> 85d9dd7 (exman)
+=======
+>>>>>>> 49074a4 (dernier commit)
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\SemestreController;
@@ -90,6 +103,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConfigAttestationController;
 use App\Http\Controllers\MatiereController;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -102,9 +116,14 @@ use App\Http\Controllers\MatiereController;
 use App\Http\Controllers\DemandeAttestationController;
 =======
 
+=======
+>>>>>>> 49074a4 (dernier commit)
 use App\Http\Controllers\DemandeAttestationController;
 
->>>>>>> 85d9dd7 (exman)
+
+
+
+
 use App\Http\Controllers\Api\EmploiTempsController;
 // routes/api.php
 
@@ -133,6 +152,7 @@ Route::apiResource('evenements', EvenementController::class);
     Route::put('/evenements/{id}', [EvenementController::class, 'update']);
     Route::delete('/evenements/{id}', [EvenementController::class, 'destroy']);
 
+<<<<<<< HEAD
 Route::get('/emplois-temps', [EmploiTempsController::class, 'recupurer']);
 Route::get('/emplois-temps/professeur/{id}/pdf', [EmploiTempsController::class, 'exportPdf']);
 Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
@@ -148,9 +168,17 @@ Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurC
 =======
 
 
+=======
+    Route::get('/emplois-temps', [EmploiTempsController::class, 'recupurer']);
+    Route::get('/emplois-temps/professeur/{id}/pdf', [EmploiTempsController::class, 'exportPdf']);
+    Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
+    Route::get('/emplois-temps/professeur/{id}', [EmploiTempsController::class, 'getByProfesseur']);
+    
+>>>>>>> 49074a4 (dernier commit)
 
 
 // routes/api.php
+Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
 
 
 Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
@@ -182,6 +210,7 @@ Route::prefix('emplois-temps')->group(function () {
     Route::post('/', [EmploiTempsController::class, 'store']);
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -190,13 +219,19 @@ Route::prefix('emplois-temps')->group(function () {
 <<<<<<< HEAD
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 =======
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+>>>>>>> 49074a4 (dernier commit)
 
+
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 
 Route::get('matieres', [MatiereController::class, 'index']);
 Route::post('matieres', [MatiereController::class, 'store']);
@@ -349,6 +384,7 @@ Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -357,12 +393,20 @@ Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 =======
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
@@ -371,6 +415,7 @@ Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
@@ -381,6 +426,11 @@ Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 Route::get('/evaluations/{classeId}', [EvaluationController::class, 'indexParClasseEtProfesseur']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
@@ -397,6 +447,7 @@ Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show'
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -411,17 +462,23 @@ Route::prefix('fichiers-pedagogiques')->group(function () {
 =======
 
 Route::prefix('fichiers-pedagogiques')->group(function () {
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
 Route::prefix('fichiers-pedagogiques')->group(function () {
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 Route::prefix('fichiers-pedagogiques')->group(function () {
 
+<<<<<<< HEAD
 Route::prefix('fichiers')->group(function () {
 <<<<<<< HEAD
 
@@ -432,13 +489,15 @@ Route::prefix('fichiers')->group(function () {
 <<<<<<< HEAD
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 =======
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+>>>>>>> 49074a4 (dernier commit)
 
+
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+>>>>>>> 49074a4 (dernier commit)
     Route::get('/', [FichierPedagogiqueController::class, 'index']);
     Route::post('/', [FichierPedagogiqueController::class, 'store']);
     Route::get('/{id}', [FichierPedagogiqueController::class, 'show']);
@@ -468,6 +527,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [AbsenceController::class, 'destroy']);
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -505,13 +565,36 @@ Route::middleware('auth:sanctum')->group(function () {
 =======
 
 
+=======
+>>>>>>> 49074a4 (dernier commit)
 });Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
 
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+;Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+
+
+
+
+
+
+;Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/paiements-mensuels/{etudiantId}', [PaiementMensuelController::class, 'listePaiements']);  // Changé ici
@@ -545,6 +628,7 @@ Route::prefix('demandes-attestations')->group(function () {
     Route::get('/etudiant/{id}', [DemandeAttestationController::class, 'demandesEtudiant']); // Étudiant
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
@@ -557,32 +641,39 @@ Route::prefix('demandes-attestations')->group(function () {
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+>>>>>>> 49074a4 (dernier commit)
 
 
 
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 Route::get('/attestations/{id}/download', [DemandeAttestationController::class, 'download']);
 Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'demandesNonTraitees']);
 Route::post('/traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
 Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'demandesNonTraitees']);
 Route::post('/traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
 Route::get('demandes-non-traitees', [DemandeAttestationController::class, 'getDemandesNonTraitees']);
+<<<<<<< HEAD
 Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
 Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
+=======
+Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
+>>>>>>> 49074a4 (dernier commit)
 Route::get('/retards-paiement', [PaiementMensuelController::class, 'getCountEtudiantsSansPaiement']);
 
 
-=======
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 85d9dd7 (exman)
 
 
 
@@ -590,7 +681,12 @@ Route::get('/retards-paiement', [PaiementMensuelController::class, 'getCountEtud
 
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 
-use App\Http\Controllers\ExamenController;
+
+
+
+
+
+
 
 Route::post('/examens', [ExamenController::class, 'store']);
 Route::get('/examens/{id}', [ExamenController::class, 'show']);
@@ -608,11 +704,15 @@ Route::get('/api/etudiant/examens', [ExamenController::class, 'getExamensEtudian
     ->middleware(['auth:api', 'etudiant']);
     Route::get('/etudiants/{Classroom}/examens', [ExamenController::class, 'getExamensEtudiant']);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> d117421 (acceuil)
 >>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 =======
+=======
+
+>>>>>>> 49074a4 (dernier commit)
     Route::prefix('quizzes')->group(function () {
         Route::post('/', [QuizController::class, 'store']); // Création
         Route::get('/{quiz}', [QuizController::class, 'show']); // Mise à jour
@@ -627,6 +727,10 @@ Route::get('/api/etudiant/examens', [ExamenController::class, 'getExamensEtudian
 Route::post('/quizzes', [QuizController::class, 'store']);
 Route::get('/quizzes/{id}', [QuizController::class, 'show']);
 Route::delete('/quizzes/{id}', [QuizController::class, 'destroy']);
+// Temporairement dans routes/api.php
 
+<<<<<<< HEAD
 >>>>>>> 85d9dd7 (exman)
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+>>>>>>> 49074a4 (dernier commit)

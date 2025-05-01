@@ -33,14 +33,18 @@ class Retard extends Model
 
 
 
-namespace App\Http\Controllers;
 
-use App\Models\Retard;
-use Illuminate\Http\Request;
+}
 
+
+
+
+<<<<<<< HEAD
 >>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 class RetardController extends Controller
 {
+=======
+>>>>>>> 49074a4 (dernier commit)
     public function index()
     {
         return response()->json(Retard::with('etudiant')->get());
