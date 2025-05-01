@@ -18,11 +18,32 @@ use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\EmploiSurveillanceController;
 use App\Http\Controllers\API\EmailParentController;
 use App\Http\Controllers\AbsenceController;
+
 use App\Http\Controllers\NotificationController;
+
+use App\Http\Controllers\NotificationsController;
+
+
+
 use App\Http\Controllers\PaiementMensuelController;
-use App\Http\Controllers\EmploiTempsController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\SemestreController;
@@ -46,6 +67,93 @@ Route::post('/sanctions', [SanctionController::class, 'store']);
 
 Route::get('/parents/user/{user_id}', [ParentController::class, 'getByUserId']);
 
+
+
+
+
+
+
+use App\Http\Controllers\Api\EmploiTempsController;
+// routes/api.php
+
+use App\Http\Controllers\CreneauController;
+use App\Http\Controllers\API\EvenementController;
+
+use App\Http\Controllers\RetardPaiementController;
+use App\Http\Controllers\ChatBotController;
+
+Route::post('/chatbot', [ChatBotController::class, 'handle']);
+
+
+Route::get('/demandes-attestations', [DemandeAttestationController::class, 'index']);
+
+Route::post('/demandes-attestations/{id}/traiter', [DemandeAttestationController::class, 'traiterDemande']);
+
+Route::get('/admins', [AdminController::class, 'index']);
+Route::get('/etudiants/retards', [RetardPaiementController::class, 'index']);
+Route::post('/etudiants/{id}/envoyer-notification', [RetardPaiementController::class, 'envoyerNotification']);
+
+
+Route::apiResource('evenements', EvenementController::class);
+    Route::get('/evenements', [EvenementController::class, 'index']);
+    Route::post('/evenements', [EvenementController::class, 'store']);
+    Route::get('/evenements/{id}', [EvenementController::class, 'show']);
+    Route::put('/evenements/{id}', [EvenementController::class, 'update']);
+    Route::delete('/evenements/{id}', [EvenementController::class, 'destroy']);
+
+Route::get('/emplois-temps', [EmploiTempsController::class, 'recupurer']);
+Route::get('/emplois-temps/professeur/{id}/pdf', [EmploiTempsController::class, 'exportPdf']);
+Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
+Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
+Route::get('/emplois-temps/professeur/{id}', [EmploiTempsController::class, 'getByProfesseur']);
+
+
+
+// routes/api.php
+
+Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
+Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
+
+
+
+
+    Route::get('/emplois-temps', [EmploiTempsController::class, 'recupurer']);
+    Route::get('/emplois-temps/professeur/{id}/pdf', [EmploiTempsController::class, 'exportPdf']);
+    Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
+    Route::get('/emplois-temps/professeur/{id}', [EmploiTempsController::class, 'getByProfesseur']);
+    
+
+
+// routes/api.php
+Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
+
+
+Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
+Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
+
+
+Route::get('/creneaux', [CreneauController::class, 'index']);
+Route::post('/creneaux', [CreneauController::class, 'store']);
+Route::put('/creneaux/{id}', [CreneauController::class, 'update']);
+Route::delete('/creneaux/{id}', [CreneauController::class, 'destroy']);
+
+Route::get('/emplois-temps/{classeId}', [EmploiTempsController::class, 'index']);
+
+Route::get('/absences/plus-de-15h', [AbsenceController::class, 'countEtudiantsAvecAbsenceSuperieureA15h']);
+Route::put('/{id}', [EmploiTempsController::class, 'update']);
+
+Route::put('/{id}', [EmploiTempsController::class, 'update']);
+
+
+Route::prefix('emplois-temps')->group(function () {
+    // GET /api/emplois-temps/{classeId} - Get schedule for a class
+    Route::get('/{classeId}', [EmploiTempsController::class, 'index']);
+    
+    // POST /api/emplois-temps - Create new schedule entry
+    Route::post('/', [EmploiTempsController::class, 'store']);
+});
+
+
 Route::get('matieres', [MatiereController::class, 'index']);
 Route::post('matieres', [MatiereController::class, 'store']);
 Route::put('matieres/{id}', [MatiereController::class, 'update']);
@@ -55,7 +163,7 @@ Route::delete('matieres/{id}', [MatiereController::class, 'destroy']);
 
 Route::get('/config-attestations', [ConfigAttestationController::class, 'index']);
 Route::put('/config-attestations/{id}', [ConfigAttestationController::class, 'update']);
-
+Route::post('/config-attestations', [ConfigAttestationController::class, 'store']);
 
 Route::get('/etudiants/{id}/attestation-pdf', [StudentController::class, 'generateAttestation']);
 
@@ -117,7 +225,11 @@ Route::get('incidents/etudiant/{etudiant_id}', [IncidentController::class, 'getB
 Route::get('incidents/etudiant/{etudiant_id}/entre/{date_debut}/{date_fin}', [IncidentController::class, 'getByDateRange']);
 
 
+
 Route::put('/parent/update/{id}', [ParentController::class, 'update']);
+
+ 
+
 
 
 
@@ -140,9 +252,15 @@ Route::post('/classrooms', [ClassroomController::class, 'store']);
 Route::get('/classrooms/{id}/students', [ClassroomController::class, 'students']);
 Route::delete('/classrooms/{id}', [ClassroomController::class, 'destroy']);
 
-//student
+
+
 Route::post('/reclamations', [ReclamationController::class, 'store']);
 Route::get('/reclamations', [ReclamationController::class, 'index']);
+
+Route::put('/classrooms/{id}', [ClassroomController::class, 'update']);
+Route::get('/classrooms/{id}', [ClassroomController::class, 'show']);
+
+
 
 Route::get('/etudiants', [StudentController::class, 'index']);  
 Route::post('/etudiants', [StudentController::class, 'store']);  
@@ -223,16 +341,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('/data', [AuthController::class, 'store']);
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-Route::get('/emplois_temps', [EmploiTempsController::class, 'index']);
-Route::post('/emplois_temps', [EmploiTempsController::class, 'store']);
+
+
+Route::apiResource('charges', ChargeController::class);
+Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
+
+
+
 Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
+
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 
 
@@ -248,7 +373,24 @@ Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show'
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
 
+Route::prefix('fichiers-pedagogiques')->group(function () {
+
+Route::prefix('fichiers-pedagogiques')->group(function () {
+
+Route::prefix('fichiers-pedagogiques')->group(function () {
+
+
+Route::prefix('fichiers-pedagogiques')->group(function () {
+
+
+
+
+Route::prefix('fichiers-pedagogiques')->group(function () {
+
+
 Route::prefix('fichiers')->group(function () {
+
+
     Route::get('/', [FichierPedagogiqueController::class, 'index']);
     Route::post('/', [FichierPedagogiqueController::class, 'store']);
     Route::get('/{id}', [FichierPedagogiqueController::class, 'show']);
@@ -289,6 +431,52 @@ Route::get('/parent-dashboard/{parent_id}', [ParentDashboardController::class, '
 Route::get('/paiement/receipt/{parent_id}/{mois}', [PaiementMensuelController::class, 'generateReceipt']);
 Route::get('paiements/parent/{parent_id}/{mois}', [PaiementMensuelController::class, 'getPaiementsByMois']);
 
+    // Pour les professeurs/admin
+    Route::prefix('absences')->group(function () {
+        Route::get('/etudiant/{etudiant}', [AbsenceController::class, 'getByStudent']);
+        Route::post('/', [AbsenceController::class, 'store']);
+        Route::put('/{id}', [AbsenceController::class, 'update']);
+        Route::delete('/{id}', [AbsenceController::class, 'destroy']);
+    });
+
+});Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+});
+
+
+});Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+
+});
+
+
+});Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+
+
+
+
+
+
+
+
+
+Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+
+
+
+
+
+
+Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+
+
+
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/paiements-mensuels/{etudiantId}', [PaiementMensuelController::class, 'listePaiements']);  // Changé ici
     Route::post('/paiements-mensuels/{paiementId}/payer', [PaiementMensuelController::class, 'payer']);
@@ -321,4 +509,65 @@ Route::prefix('demandes-attestations')->group(function () {
     Route::patch('/{id}/traiter', [DemandeAttestationController::class, 'marquerCommeTraitee']); // Admin
     Route::get('/etudiant/{id}', [DemandeAttestationController::class, 'demandesEtudiant']); // Étudiant
 });
+
 Route::put('/reclamations/{id}', [ReclamationController::class, 'update']);
+
+Route::get('/attestations/{id}/download', [DemandeAttestationController::class, 'download']);
+Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'demandesNonTraitees']);
+Route::post('/traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
+Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'demandesNonTraitees']);
+Route::post('/traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
+Route::get('demandes-non-traitees', [DemandeAttestationController::class, 'getDemandesNonTraitees']);
+
+Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
+
+Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
+Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
+Route::get('/retards-paiement', [PaiementMensuelController::class, 'getCountEtudiantsSansPaiement']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Route::post('/examens', [ExamenController::class, 'store']);
+Route::get('/examens/{id}', [ExamenController::class, 'show']);
+// Pour les étudiants
+Route::get('/mon-emploi-examens', [ExamenController::class, 'emploiExamensEtudiant'])
+    ->middleware(['auth', 'etudiant'])
+    ->name('examens.etudiant');
+
+// Ou pour une API (si vous utilisez React)
+Route::get('/api/etudiant/examens', [ExamenController::class, 'getExamensEtudiant'])
+
+
+
+
+    ->middleware(['auth:api', 'etudiant']);
+    Route::get('/etudiants/{Classroom}/examens', [ExamenController::class, 'getExamensEtudiant']);
+    Route::prefix('quizzes')->group(function () {
+        Route::post('/', [QuizController::class, 'store']); // Création
+        Route::get('/{quiz}', [QuizController::class, 'show']); // Mise à jour
+    });
+    // Quiz (étudiant)
+    Route::prefix('student')->middleware('role:student')->group(function () {
+        Route::get('quizzes', [QuizController::class, 'indexForStudent']);
+        Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submit']);
+        Route::get('results', [QuizController::class, 'studentResults']);
+    });
+    Route::get('/quizzes', [QuizController::class, 'index']);
+Route::post('/quizzes', [QuizController::class, 'store']);
+Route::get('/quizzes/{id}', [QuizController::class, 'show']);
+Route::delete('/quizzes/{id}', [QuizController::class, 'destroy']);
+// Temporairement dans routes/api.php
+
+

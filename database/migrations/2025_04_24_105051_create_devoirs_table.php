@@ -11,21 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sanctions', function (Blueprint $table) {
+        Schema::create('devoirs', function (Blueprint $table) {
             $table->id();
-            $table->string('type_sanction');
-            $table->text('description');
-            $table->integer('nombre_absences_min');
-            $table->string('niveau_concerne'); // ex: primaire, collège, lycée
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('sanctions');
+        Schema::dropIfExists('devoirs');
     }
 };

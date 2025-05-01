@@ -11,6 +11,7 @@ class FichierPedagogique extends Model
 
     // Fillable fields
     protected $fillable = [
+        'matiere_id',
         'professeur_id',
         'classe_id',
         'semestre_id',
@@ -31,5 +32,14 @@ class FichierPedagogique extends Model
     {
         return $this->belongsTo(Semestre::class, 'semestre_id');
     }
+    // FichierPedagogique.php
+
+
+
+public function matiere()
+{
+    return $this->belongsTo(Matiere::class);
+}
+
 }
 

@@ -15,6 +15,8 @@ class ClassroomController extends Controller
             'description' => 'nullable|string|max:1000',
             'capacite' => 'required|integer|min:1',
             'niveau' => 'required|string',
+            'filiere_id' => 'nullable|exists:filieres,id' // Important: nullable
+
         ]);
 
         $classroom = Classroom::create([
@@ -22,6 +24,8 @@ class ClassroomController extends Controller
             'description' => $request->description,
             'capacite' => $request->capacite,
             'niveau' => $request->niveau,
+            'filiere_id' => $request->filiere_id,
+            
         ]);
 
         return response()->json($classroom, 201);
@@ -38,6 +42,9 @@ class ClassroomController extends Controller
         $classroom->update([
             'name' => $request->name,
             'description' => $request->description,
+            'capacite' => $request->capacite,
+            'niveau' => $request->niveau,
+            'filiere_id' => $request->filiere_id,
         ]);
 
         return response()->json($classroom);

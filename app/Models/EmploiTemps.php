@@ -1,38 +1,54 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class EmploiTemps extends Model
 {
-    use HasFactory;
-
     protected $table = 'emplois_temps';
-
+    
     protected $fillable = [
         'classe_id',
         'jour',
-        'heure_debut',
-        'heure_fin',
-        'matiere',
+        'creneau_id',
+        'matiere_id',
         'professeur_id',
-        'salle'
+        'salle' // Champ texte, pas une relation
     ];
 
-    protected $casts = [
-        'heure_debut' => 'datetime:H:i',
-        'heure_fin' => 'datetime:H:i',
-    ];
-
+    // Relations
     public function classe()
     {
-        return $this->belongsTo(Classe::class);
+<<<<<<< HEAD
+<<<<<<< HEAD
+        return $this->belongsTo(Classroom::class, 'classe_id');
+    }
+    
+=======
+
+        return $this->belongsTo(Classroom::class, 'classe_id');
+    }
+    
+
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+        return $this->belongsTo(Classroom::class, 'classe_id');
+    }
+>>>>>>> 49074a4 (dernier commit)
+
+    public function matiere()
+    {
+        return $this->belongsTo(Matiere::class, 'matiere_id');
     }
 
     public function professeur()
     {
-        return $this->belongsTo(Professeur::class);
+        return $this->belongsTo(Professeur::class, 'professeur_id');
+    }
+
+    public function creneau()
+    {
+        return $this->belongsTo(Creneau::class, 'creneau_id');
     }
 }

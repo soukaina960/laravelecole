@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Professeur;
 use App\Models\Utilisateur;
+use App\Models\Matiere;
 
 
 class EtudiantController extends Controller
@@ -57,6 +58,35 @@ class EtudiantController extends Controller
     public function classroom()
 {
     return $this->belongsTo(Classroom::class, 'class_id');
+}
+public function getMatieresPourProfesseurEtClasse($professeurId, $classeId)
+{
+    // Récupérer les matières pour un professeur et une classe via la table pivot
+    $matieres = DB::table('prof_matiere_classe')
+                  ->join('matieres', 'matieres.id', '=', 'prof_matiere_classe.matiere_id')
+                  ->where('prof_matiere_classe.professeur_id', $professeurId)
+                  ->where('prof_matiere_classe.classe_id', $classeId)
+                  ->select('matieres.*')
+                  ->get();
+    
+    return response()->json($matieres);
+}
+
+
+// Récupérer les classes d'une matière
+public function getClasses($matiereId)
+{
+    $classes = classroom::where('matiere_id', $matiereId)->get();
+    return response()->json($classes);
+}
+
+// Récupérer les quiz pour une matière et une classe
+public function getQuizzes(Request $request)
+{
+    $quizzes = Quiz::where('matiere_id', $request->matiere_id)
+                   ->where('classe_id', $request->class_id)
+                   ->get();
+    return response()->json($quizzes);
 }
 
     

@@ -11,9 +11,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class AbsenceController extends Controller
 {
+    // AbsenceController.php
+
+public function getAbsentsCritiques()
+{
+    $absents = DB::table('absences')
+        ->select('etudiant_id', DB::raw('COUNT(*) as total_heures'))
+        ->groupBy('etudiant_id')
+        ->having('total_heures', '>', 15)
+        ->get();
+
+    return response()->json([
+        'count' => $absents->count()
+    ]);
+}
+
     // Affiche toutes les absences
     public function index()
     {
@@ -120,10 +136,100 @@ class AbsenceController extends Controller
         return response()->json($absences);
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+    use Illuminate\Support\Facades\DB;
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 85d9dd7 (exman)
+=======
+
+
+>>>>>>> 49074a4 (dernier commit)
+
+
+
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+    public function countEtudiantsAvecAbsenceSuperieureA15h()
+    {
+        $result = Absence::select('etudiant_id', DB::raw('COUNT(*) as total_absences'))
+            ->groupBy('etudiant_id')
+            ->havingRaw('COUNT(*) > 15')
+            ->get();
+    
+        return response()->json(['count' => $result->count()]);
+    }
+    
+   
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> d117421 (acceuil)
+>>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+
+
+
+>>>>>>> 85d9dd7 (exman)
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
     // Envoyer une notification par email au parent
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
+=======
+
+>>>>>>> d117421 (acceuil)
+>>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+=======
+>>>>>>> 49074a4 (dernier commit)
+
+
+
+
+
+<<<<<<< HEAD
+>>>>>>> 85d9dd7 (exman)
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);

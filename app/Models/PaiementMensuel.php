@@ -34,7 +34,14 @@ class PaiementMensuel extends Model
     protected $casts = [
         'est_paye' => 'boolean',
     ];
+    protected static function booted()
+{
+    static::saved(function ($paiement) {
+        $paiement->etudiant->professeurs->each->recalculerSalaire();
+    });
 
-
-
+    static::deleted(function ($paiement) {
+        $paiement->etudiant->professeurs->each->recalculerSalaire();
+    });
+}
 }

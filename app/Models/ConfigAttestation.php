@@ -15,6 +15,8 @@ class ConfigAttestation extends Model
         'annee_scolaire', 
         'telephone', 
         'fax', 
-        'logo_path'
+        'logo_path',
+        'signature_path',  
+        'cachet_path',     
     ];
 }

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
+
   public function login(Request $request)
 {
     try {
@@ -52,6 +53,7 @@ class AuthController extends Controller
 }
 
 
+
 public function register(Request $request)
 {
     try {
@@ -85,5 +87,7 @@ public function register(Request $request)
         return response()->json(['message' => 'Une erreur est survenue.'], 500);
     }
 }
+
+
 }
 

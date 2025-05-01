@@ -19,6 +19,7 @@ class Evaluation extends Model
         'etudiant_id',
         'professeur_id',
         'annee_scolaire_id',
+        'matiere_id',
         'note1',
         'note2',
         'note3',
@@ -70,6 +71,10 @@ class Evaluation extends Model
     
 
     // Ajout de la logique pour vérifier ou assigner automatiquement le semestre
-    
+    // app/Models/Evaluation.php
+public function matiere()
+{
+    return $this->belongsTo(Matiere::class);
+}
     
 }

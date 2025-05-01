@@ -44,7 +44,10 @@ public function attendances()
     {
         return $this->belongsTo(ParentModel::class);
     }
-
+    public function parentModel()
+    {
+        return $this->belongsTo(ParentModel::class, 'parent_id');
+    }
 
     public function classroom()
     {
@@ -91,6 +94,66 @@ public function attendances()
 }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+
+
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+=======
+>>>>>>> 85d9dd7 (exman)
+
+
+
+
+
+<<<<<<< HEAD
+>>>>>>> d117421 (acceuil)
+>>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+=======
+>>>>>>> 49074a4 (dernier commit)
+
+
+
+
+
+
+
+
+<<<<<<< HEAD
+>>>>>>> 85d9dd7 (exman)
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 // Etudiant.php (modèle)
 public function utilisateur()
 {
@@ -105,7 +168,58 @@ public function utilisateur()
 public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> d117421 (acceuil)
+>>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+=======
+>>>>>>> 49074a4 (dernier commit)
+
+
+
+
+
+
+
+
+  
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<<<<<<< HEAD
+>>>>>>> 85d9dd7 (exman)
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+=======
+
+
+
+
+
+
+
+
+
+>>>>>>> 49074a4 (dernier commit)
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);
@@ -122,13 +236,21 @@ public function evaluations()
 
     public function paiements()
 {
-    return $this->hasMany(\App\Models\paiements_mentuels::class);
+    return $this->hasMany(PaiementMensuel::class);
 }
 public function paiements_mensuels()
 {
     return $this->hasMany(PaiementMensuel::class);
 }
-
+protected static function booted()
+{
+    static::deleting(function ($etudiant) {
+        // Pour chaque professeur lié à l'étudiant
+        $etudiant->professeurs->each(function ($professeur) {
+            $professeur->recalculerSalaire(); // Met à jour automatiquement
+        });
+    });
+}
 
 
 

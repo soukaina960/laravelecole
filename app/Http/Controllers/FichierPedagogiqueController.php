@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\FichierPedagogique;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Fichier;
+use Illuminate\Support\Facades\Log;
 
 class FichierPedagogiqueController extends Controller
 {
@@ -29,7 +28,6 @@ class FichierPedagogiqueController extends Controller
                 'success' => true,
                 'data' => $fichiers
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -45,42 +43,52 @@ class FichierPedagogiqueController extends Controller
     public function store(Request $request)
     {
         try {
+            // Validation des données
             $validator = Validator::make($request->all(), [
                 'professeur_id' => 'required|exists:professeurs,id',
-                'classe_id' => 'required|exists:classes,id',
+                'matiere_id' => 'required|exists:matieres,id',
+                'classe_id' => 'required|exists:classrooms,id',
                 'semestre_id' => 'required|exists:semestres,id',
-                'type' => 'required|in:cours,devoir,examen',
-                'fichier' => 'required|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar'
+                'type_fichier' => 'required|in:cours,devoir,examen',
+                'fichier' => 'required|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar', // Vérification du fichier ici
             ]);
-
+    
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
                     'errors' => $validator->errors()
                 ], 422);
             }
-
-            $file = $request->file('fichier');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('fichiers', $fileName, 'public');
-
-            $fichier = FichierPedagogique::create([
-                'professeur_id' => $request->professeur_id,
-                'classe_id' => $request->classe_id,
-                'semestre_id' => $request->semestre_id,
-                'type_fichier' => $request->type,
-                'nom_fichier' => $file->getClientOriginalName(),
-                'chemin_fichier' => $filePath,
-                'taille_fichier' => $file->getSize(),
-                'extension' => $file->getClientOriginalExtension()
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Fichier enregistré avec succès',
-                'data' => $fichier
-            ], 201);
-
+    
+            // Vérifie si le fichier est bien reçu
+            if ($request->hasFile('fichier')) {
+                $file = $request->file('fichier');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('fichiers', $fileName, 'public'); // Sauvegarde le fichier dans le dossier 'fichiers'
+    
+                // Crée l'entrée dans la base de données
+                $fichier = FichierPedagogique::create([
+                    'professeur_id' => $request->professeur_id,
+                    'matiere_id' => $request->matiere_id,
+                    'classe_id' => $request->classe_id,
+                    'semestre_id' => $request->semestre_id,
+                    'type_fichier' => $request->type_fichier,
+                    'nom_fichier' => $file->getClientOriginalName(),
+                    'chemin_fichier' => $filePath,  // Le chemin du fichier qui a été stocké
+                ]);
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Fichier enregistré avec succès',
+                    'data' => $fichier
+                ], 201);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Aucun fichier reçu.'
+                ], 400);
+            }
+    
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -89,97 +97,7 @@ class FichierPedagogiqueController extends Controller
             ], 500);
         }
     }
-
-    /**
-     * Affiche un fichier spécifique
-     */
-    public function show($id)
-    {
-        try {
-            $fichier = FichierPedagogique::with(['professeur', 'classe', 'semestre'])->find($id);
-
-            if (!$fichier) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Fichier non trouvé'
-                ], 404);
-            }
-
-            return response()->json([
-                'success' => true,
-                'data' => $fichier
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur lors de la récupération du fichier',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * Met à jour un fichier existant
-     */
-    public function update(Request $request, $id)
-    {
-        try {
-            $fichier = FichierPedagogique::find($id);
-
-            if (!$fichier) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Fichier non trouvé'
-                ], 404);
-            }
-
-            $validator = Validator::make($request->all(), [
-                'type' => 'sometimes|in:cours,devoir,examen',
-                'fichier' => 'sometimes|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            if ($request->hasFile('fichier')) {
-                Storage::disk('public')->delete($fichier->chemin_fichier);
-                $file = $request->file('fichier');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('fichiers', $fileName, 'public');
-
-                $fichier->update([
-                    'nom_fichier' => $file->getClientOriginalName(),
-                    'chemin_fichier' => $filePath,
-                    'taille_fichier' => $file->getSize(),
-                    'extension' => $file->getClientOriginalExtension()
-                ]);
-            }
-
-            if ($request->has('type')) {
-                $fichier->update([
-                    'type_fichier' => $request->type
-                ]);
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Fichier mis à jour avec succès',
-                'data' => $fichier
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur lors de la mise à jour',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
+        
 
     /**
      * Supprime un fichier
@@ -188,7 +106,6 @@ class FichierPedagogiqueController extends Controller
     {
         try {
             $fichier = FichierPedagogique::find($id);
-
             if (!$fichier) {
                 return response()->json([
                     'success' => false,
@@ -203,7 +120,6 @@ class FichierPedagogiqueController extends Controller
                 'success' => true,
                 'message' => 'Fichier supprimé avec succès'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -218,52 +134,54 @@ class FichierPedagogiqueController extends Controller
      */
     public function download($id)
     {
-        try {
-            $fichier = FichierPedagogique::find($id);
-
-            if (!$fichier) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Fichier non trouvé'
-                ], 404);
-            }
-
-            $filePath = storage_path('app/public/' . $fichier->chemin_fichier);
-
-            if (!file_exists($filePath)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Fichier introuvable sur le serveur'
-                ], 404);
-            }
-
-            return response()->download($filePath, $fichier->nom_fichier);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur lors du téléchargement',
-                'error' => $e->getMessage()
-            ], 500);
+        $fichier = FichierPedagogique::find($id);
+    
+        if (!$fichier) {
+            return response()->json(['success' => false, 'message' => 'Fichier introuvable dans la base de données'], 404);
         }
+    
+        $chemin = storage_path('app/public/fichiers/' . $fichier->nom_fichier); // ou $fichier->chemin si tu as un champ chemin
+    
+        if (!file_exists($chemin)) {
+            return response()->json(['success' => false, 'message' => 'Fichier introuvable sur le serveur'], 404);
+        }
+    
+        return response()->download($chemin);
     }
+    
     public function fichiersPourEtudiant(Request $request)
     {
         // Vérification des paramètres
         $classeId = $request->input('classe_id');
         $semestreId = $request->input('semestre_id');
+        $matiereId = $request->input('matiere_id'); // Paramètre pour la matière
+        
+        Log::info("Paramètres reçus :", [
+            'classe_id' => $classeId,
+            'semestre_id' => $semestreId,
+            'matiere_id' => $matiereId
+        ]);
     
         if (!$classeId || !$semestreId) {
             return response()->json(['message' => 'Classe ou semestre manquant'], 400);
         }
     
-        // Récupérer les fichiers avec la spécialité du professeur
-        $fichiers = Fichier::where('classe_id', $classeId)
-                            ->where('semestre_id', $semestreId)
-                            ->join('professeurs', 'fichiers.professeur_id', '=', 'professeurs.id')
-                            ->select('fichiers.*', 'professeurs.specialite')  // Sélectionner aussi la spécialité
-                            ->get();
+        // Construction de la requête
+        $query = FichierPedagogique::where('classe_id', $classeId)
+                                    ->where('semestre_id', $semestreId)
+                                    ->join('professeurs', 'fichiers.professeur_id', '=', 'professeurs.id')
+                                    ->select('fichiers.*', 'professeurs.specialite');  // Sélectionner aussi la spécialité
+    
+        // Ajouter un filtre pour la matière si spécifié
+        if ($matiereId) {
+            $query->where('fichiers.matiere_id', $matiereId);  // Filtrer par matière
+        }
+    
+        // Récupérer les fichiers
+        $fichiers = $query->get();
     
         return response()->json($fichiers);
     }
+    
+
 }
