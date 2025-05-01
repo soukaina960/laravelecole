@@ -94,10 +94,9 @@ public function register(Request $request)
         return response()->json(['message' => 'Une erreur est survenue.'], 500);
     }
 }
-<<<<<<< HEAD
 }
 
-=======
+
 
 }
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+

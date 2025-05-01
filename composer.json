@@ -9,64 +9,11 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "*",
         "laravel/framework": "^11.31",
-<<<<<<< HEAD
         "laravel/sanctum": "^4.1",
         "phpmailer/phpmailer": "^6.10"
 
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-        "laravel/sanctum": "^4.1",
-        "phpmailer/phpmailer": "^6.10"
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 85d9dd7 (exman)
-        
-        "phpmailer/phpmailer": "^6.9",
 
 
-
-        
-
-
-
-
-
-        "laravel/passport": "*",
-        "laravel/sanctum": "*",
-        "laravel/tinker": "^2.9",
-        "phpmailer/phpmailer": "^6.9",
-
-
-
-        "laravel/passport": "*",
-        "laravel/sanctum": "*",
-        "laravel/tinker": "^2.9",
-
-
-
-
-        "laravel/passport": "*",
-        "laravel/sanctum": "*",
-        "laravel/tinker": "^2.9",
-        "phpmailer/phpmailer": "^6.9",
-
-
-
-        "laravel/passport": "*",
-        "laravel/sanctum": "*",
-        "laravel/tinker": "^2.9"
-
-<<<<<<< HEAD
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

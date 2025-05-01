@@ -8,6 +8,8 @@ use App\Models\Utilisateur;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use DateTime;
+use Illuminate\Support\Facades\DB;
+
 
 
 class ProfesseurController extends Controller
@@ -121,33 +123,58 @@ class ProfesseurController extends Controller
         return response()->json($professeur, 200);
     }
     
-    public function calculerSalaire(Request $request, $id)
-    {
-        $professeur = Professeur::findOrFail($id);
-    
-        // Validation des champs reçus
-        $request->validate([
-            'prime' => 'required|numeric',
-            'pourcentage' => 'required|numeric',
-        ]);
-    
-        // Mise à jour des valeurs prime et pourcentage dans la base de données
-        $professeur->prime = $request->prime;
-        $professeur->pourcentage = $request->pourcentage;
-        $professeur->save();  // Sauvegarde dans la BD
-    
-        // Calcul du salaire après mise à jour des données
-        $totalMontants = $professeur->etudiants->sum(function ($etudiant) {
-            return $etudiant->montant_a_payer;
-        });
-    
-        $salaire = ($professeur->pourcentage / 100) * $totalMontants + $professeur->prime;
-        $professeur->total = $salaire;
-        $professeur->save(); 
-    
-        return response()->json(['salaire' => $salaire], 200);
+    public function calculerSalaireMensuel(Request $request, $id)
+{
+    $request->validate([
+        'prime' => 'required|numeric',
+        'pourcentage' => 'required|numeric',
+        'mois' => 'required|integer|min:1|max:12'
+    ]);
+
+    $prime = $request->prime;
+    $pourcentage = $request->pourcentage;
+    $mois = $request->mois;
+
+    // Étape 1 : Trouver les classes enseignées par le professeur
+    $classeIds = DB::table('prof_matiere_classe')
+        ->where('professeur_id', $id)
+        ->pluck('classe_id');
+
+    // Étape 2 : Trouver les étudiants dans ces classes
+    $etudiants = DB::table('etudiants')
+        ->whereIn('classe_id', $classeIds)
+        ->get();
+
+    // Étape 3 : Calculer les paiements payés dans le mois
+    $totalMontants = 0;
+
+    foreach ($etudiants as $etudiant) {
+        $paiements = DB::table('paiement_mensuels') // ou le nom réel de ta table
+            ->where('etudiant_id', $etudiant->id)
+            ->where('mois', $mois)
+            ->where('est_paye', true)
+            ->get();
+
+        foreach ($paiements as $paiement) {
+            $totalMontants += $etudiant->montant_a_payer;
+        }
     }
-    
+
+    $salaire = ($pourcentage / 100) * $totalMontants + $prime;
+
+    return response()->json(['salaire' => $salaire], 200);
+}
+
+    public function historiqueSalaire($professeurId)
+{
+    $salaires = SalaireMensuel::where('professeur_id', $professeurId)
+        ->orderBy('annee', 'desc')
+        ->orderBy('mois', 'desc')
+        ->get();
+
+    return response()->json($salaires);
+}
+
     
     // Supprimer un professeur
     public function destroy($id)

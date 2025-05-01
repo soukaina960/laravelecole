@@ -4,37 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
-
-
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
-
-
-
-
-
-
-
-
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
-
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -43,13 +12,6 @@ use App\Models\ParentModel;
 use App\Models\Classe;
 use App\Models\Utilisateur;
 use Illuminate\Validation\ValidationException;
-
-
-
-
-
-
-
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class StudentController extends Controller
@@ -105,46 +67,7 @@ class StudentController extends Controller
 
         return response()->json($etudiants);
     }
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
->>>>>>> 85d9dd7 (exman)
-
-
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
-
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
-
-
-
-
-
-
-
-
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -155,46 +78,6 @@ class StudentController extends Controller
 
     return response()->json($etudiant);
 }
-
-
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
-=======
->>>>>>> 85d9dd7 (exman)
-
-
-
-
-
-<<<<<<< HEAD
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
-
-
-
-
-
-
-
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
-
     public function getEtudiantsParClasse($classeId)
 {
     $etudiants = DB::table('etudiants')
@@ -203,45 +86,11 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
->>>>>>> 85d9dd7 (exman)
-
-
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
-
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
 
 
 
 
 
-
-
-
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 
     public function update(Request $request, $id)
     {

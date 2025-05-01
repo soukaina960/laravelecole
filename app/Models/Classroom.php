@@ -40,19 +40,17 @@ class Classroom extends Model
         return $this->hasMany(Etudiant::class, 'classe_id');  // Assurez-vous que la clé étrangère est 'classe_id'
     }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
     public function evenements()
     {
         return $this->hasMany(Evenement::class);
     }
     
-<<<<<<< HEAD
     // Relation avec Filiere
  
-=======
+
 
     // Relation avec Filiere
     public function quizzes()
@@ -60,6 +58,6 @@ class Classroom extends Model
         return $this->hasMany(Quiz::class);
     }
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
     
 }

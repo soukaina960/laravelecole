@@ -134,23 +134,18 @@ public function getAbsentsCritiques()
         return response()->json($absences);
     }
 
-<<<<<<< HEAD
 
     use Illuminate\Support\Facades\DB;
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 85d9dd7 (exman)
 
 
 
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
+
+
+
+
 
     public function countEtudiantsAvecAbsenceSuperieureA15h()
     {
@@ -163,45 +158,36 @@ public function getAbsentsCritiques()
     }
     
    
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
 
 
 
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+> 
+> 
+
+
+
+
+
     // Envoyer une notification par email au parent
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
-=======
 
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
+
+> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
+
+
+> 
+> 
 
 
 
 
 
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
 
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);

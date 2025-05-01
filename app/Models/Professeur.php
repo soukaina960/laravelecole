@@ -35,12 +35,11 @@ public function classes()
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
 public function utilisateurs()
     {
         return $this->belongsToMany(Utilisateur::class, 'utilisateur_professeur', 'professeur_id', 'utilisateur_id');
@@ -50,8 +49,6 @@ public function utilisateurs()
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -59,7 +56,8 @@ public function utilisateurs()
 
 
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
 public function matieres()
 {
     return $this->belongsToMany(Matiere::class, 'prof_matiere_classe', 'professeur_id', 'matiere_id')
@@ -86,8 +84,6 @@ public function paiementsMensuels($mois = null)
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -96,7 +92,8 @@ public function paiementsMensuels($mois = null)
 
 
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
 public function etudiants()
 {
     return $this->belongsToMany(Etudiant::class);
@@ -116,14 +113,13 @@ public function recalculerSalaire()
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
 
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
     // Calcul du nouveau salaire
     $this->total = ($this->pourcentage / 100) * $totalMontants + $this->prime;
     $this->save();
@@ -140,11 +136,10 @@ protected static function booted()
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
 }

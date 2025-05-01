@@ -4,44 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "content-hash": "5283cc1bd6be68428b4fe2631eaaca7f",
 
    
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "content-hash": "5283cc1bd6be68428b4fe2631eaaca7f",
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 85d9dd7 (exman)
-    "content-hash": "26c24cc4bab5aa4d724cd85e6edd0f4c",
 
 
-    "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
-
-    "content-hash": "9ce09467025411b46817d2f34a11c0ed",
 
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 
-    "content-hash": "26c24cc4bab5aa4d724cd85e6edd0f4c",
 
-    "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
-
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -2981,17 +2952,12 @@
         },
         {
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
 
 
 
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
+
             "name": "phpmailer/phpmailer",
             "version": "v6.10.0",
             "source": {
@@ -3073,28 +3039,20 @@
             "time": "2025-04-24T15:19:31+00:00"
         },
         {
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 32f397de9c28bc07174e4af731be108786415da7
-=======
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-=======
 
 
 
 
 
 
->>>>>>> 85d9dd7 (exman)
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
+
+
+
+
+
+
             "name": "phpoption/phpoption",
             "version": "1.9.3",
             "source": {

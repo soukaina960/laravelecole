@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\EmploiTemps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-<<<<<<< HEAD
-=======
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
 use App\Models\Professeur;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -42,13 +41,12 @@ public function exportPdf($profId)
 }
 
 
-<<<<<<< HEAD
 class EmploiTempsController extends Controller
 {
-=======
 
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
     public function index($classeId)
     {
         try {
@@ -64,10 +62,9 @@ class EmploiTempsController extends Controller
             ], 500);
         }
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
     public function recupurer()
     {
         return EmploiTemps::with(['classe', 'matiere', 'professeur', 'salle', 'creneau'])->get();
@@ -106,23 +103,21 @@ public function update(Request $request, $id)
         ], 500);
     }
 }
-<<<<<<< HEAD
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'classe_id' => 'required|exists:classrooms,id',
-=======
+
   
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'classe_id' => 'required|exists:classes,id',
-<<<<<<< HEAD
-=======
 
->>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
+
+
             'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
             'creneau_id' => 'required|exists:creneaux,id',
             'matiere_id' => 'required|exists:matieres,id',
