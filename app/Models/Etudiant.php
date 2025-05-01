@@ -104,7 +104,22 @@ public function attendances()
 
 
 
+<<<<<<< HEAD
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+
+
+
+
+
+
+>>>>>>> 85d9dd7 (exman)
+
+
+
+
+
+>>>>>>> e8fd732 (Normalize)
 
 
 
@@ -136,9 +151,12 @@ public function attendances()
 
 
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> e8fd732 (Normalize)
 // Etudiant.php (modèle)
 public function utilisateur()
 {
@@ -160,6 +178,16 @@ public function professeur() {
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+>>>>>>> e8fd732 (Normalize)
 
 
 
@@ -192,6 +220,11 @@ public function professeur() {
 
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> e8fd732 (Normalize)
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);

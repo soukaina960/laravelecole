@@ -87,7 +87,16 @@ public function register(Request $request)
         return response()->json(['message' => 'Une erreur est survenue.'], 500);
     }
 }
+<<<<<<< HEAD
 
 
 }
 
+=======
+
+}
+
+
+
+}
+>>>>>>> e8fd732 (Normalize)

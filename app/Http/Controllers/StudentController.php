@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 
 
 
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 
 
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+>>>>>>> e8fd732 (Normalize)
 
 
 
@@ -35,6 +38,23 @@ use Illuminate\Http\Request;
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> e8fd732 (Normalize)
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -106,10 +126,27 @@ class StudentController extends Controller
 
         return response()->json($etudiants);
     }
+<<<<<<< HEAD
+=======
 
 
 
 
+
+
+
+
+
+
+
+
+>>>>>>> 85d9dd7 (exman)
+>>>>>>> e8fd732 (Normalize)
+
+
+
+
+<<<<<<< HEAD
 
 
 
@@ -118,6 +155,8 @@ class StudentController extends Controller
 
 
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+>>>>>>> e8fd732 (Normalize)
 
 
 
@@ -146,6 +185,16 @@ class StudentController extends Controller
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+>>>>>>> e8fd732 (Normalize)
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -167,7 +216,22 @@ class StudentController extends Controller
 
 
 
+<<<<<<< HEAD
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+
+
+
+
+
+
+>>>>>>> 85d9dd7 (exman)
+
+
+
+
+
+>>>>>>> e8fd732 (Normalize)
 
 
 
@@ -199,9 +263,12 @@ class StudentController extends Controller
 
 
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> e8fd732 (Normalize)
 
     public function getEtudiantsParClasse($classeId)
 {
@@ -211,10 +278,26 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
+<<<<<<< HEAD
+=======
 
 
 
 
+
+
+
+
+
+
+
+>>>>>>> 85d9dd7 (exman)
+>>>>>>> e8fd732 (Normalize)
+
+
+
+
+<<<<<<< HEAD
 
 
 
@@ -222,6 +305,8 @@ class StudentController extends Controller
 
 
 >>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+=======
+>>>>>>> e8fd732 (Normalize)
 
 
 
@@ -250,6 +335,16 @@ class StudentController extends Controller
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+>>>>>>> e8fd732 (Normalize)
 
     public function update(Request $request, $id)
     {

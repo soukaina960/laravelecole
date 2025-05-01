@@ -12,9 +12,40 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
+<<<<<<< HEAD
 class RetardController extends Controller
 {
 
+=======
+    // Champs qu'on peut remplir via create() ou update()
+    protected $fillable = [
+        'etudiant_id',
+        'date',
+        'heure'
+    ];
+
+    public function etudiant()
+    {
+        return $this->belongsTo(Etudiant::class);
+
+    }
+   
+
+
+
+
+
+}
+
+
+
+
+
+class RetardController extends Controller
+{
+
+
+>>>>>>> e8fd732 (Normalize)
     public function index()
     {
         return $this->belongsTo(Professeur::class);
@@ -65,6 +96,9 @@ class RetardController extends Controller
 
         return response()->json($retards);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e8fd732 (Normalize)
     }
 }

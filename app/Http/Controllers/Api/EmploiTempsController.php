@@ -7,7 +7,10 @@ use App\Models\EmploiTemps;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e8fd732 (Normalize)
 use App\Models\Professeur;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -40,6 +43,10 @@ public function exportPdf($profId)
 }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e8fd732 (Normalize)
 class EmploiTempsController extends Controller
 {
 
@@ -61,7 +68,10 @@ class EmploiTempsController extends Controller
         }
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e8fd732 (Normalize)
     public function recupurer()
     {
         return EmploiTemps::with(['classe', 'matiere', 'professeur', 'creneau'])->get();
@@ -100,6 +110,10 @@ public function update(Request $request, $id)
         ], 500);
     }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> e8fd732 (Normalize)
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -112,7 +126,10 @@ public function update(Request $request, $id)
         $validator = Validator::make($request->all(), [
             'classe_id' => 'required|exists:classes,id',
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e8fd732 (Normalize)
             'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
             'creneau_id' => 'required|exists:creneaux,id',
             'matiere_id' => 'required|exists:matieres,id',
