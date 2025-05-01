@@ -50,6 +50,12 @@ class UtilisateurController extends Controller
             if ($request->hasFile('photo_profil')) {
                 $chemin = $request->file('photo_profil')->store('photos', 'public');
             }
+            if (Utilisateur::where('email', $request->email)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'L\'adresse e-mail est déjà utilisée.',
+                ], 422);
+            }
     
             // Création de l'utilisateur
             $utilisateur = Utilisateur::create([

@@ -133,13 +133,7 @@ public function getAbsentsCritiques()
         return response()->json($absences);
     }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> d117421 (acceuil)
     use Illuminate\Support\Facades\DB;
 
     public function countEtudiantsAvecAbsenceSuperieureA15h()
@@ -153,23 +147,12 @@ public function getAbsentsCritiques()
     }
     
    
-<<<<<<< HEAD
-=======
-=======
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+
     // Envoyer une notification par email au parent
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
-=======
 
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);

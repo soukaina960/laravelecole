@@ -9,50 +9,9 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "*",
         "laravel/framework": "^11.31",
-<<<<<<< HEAD
         "laravel/sanctum": "^4.1",
         "phpmailer/phpmailer": "^6.10"
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-        
-        "phpmailer/phpmailer": "^6.9"
 
-
-
-        
-
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        "laravel/passport": "*",
-        "laravel/sanctum": "*",
-        "laravel/tinker": "^2.9",
-        "phpmailer/phpmailer": "^6.9"
-=======
-
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-        "laravel/passport": "*",
-        "laravel/sanctum": "*",
-        "laravel/tinker": "^2.9"
->>>>>>> 32f397de9c28bc07174e4af731be108786415da7
->>>>>>> 011abd5fcb530909541d8764ad8651e673ecb8fb
-=======
-
-        "laravel/passport": "*",
-        "laravel/sanctum": "*",
-        "laravel/tinker": "^2.9",
-        "phpmailer/phpmailer": "^6.9",
-
-
-
-        "laravel/passport": "*",
-        "laravel/sanctum": "*",
-        "laravel/tinker": "^2.9"
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

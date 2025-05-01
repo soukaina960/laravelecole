@@ -44,7 +44,10 @@ public function attendances()
     {
         return $this->belongsTo(Parent::class);
     }
-
+    public function parentModel()
+    {
+        return $this->belongsTo(ParentModel::class, 'parent_id');
+    }
 
     public function classroom()
     {
@@ -91,26 +94,7 @@ public function attendances()
 }
 
 
-<<<<<<< HEAD
 
-
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
-
-
-
-
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 // Etudiant.php (modèle)
 public function utilisateur()
 {
@@ -125,33 +109,7 @@ public function utilisateur()
 public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
-
-  
-
-    
-
-
-
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
-
-
->>>>>>> d117421 (acceuil)
->>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);

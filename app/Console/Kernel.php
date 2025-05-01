@@ -26,7 +26,6 @@ class PaimentMenuels
                 ->exists();
 
             if (!$paiementEffectue) {
-                // Envoyer une notification à l'étudiant ET à l'admin
                 $admin = \App\Models\User::where('role', 'admin')->first(); // adapte à ton système
                 Notification::route('mail', $etudiant->email)
                     ->notify(new PaiementEnRetardNotification($etudiant));

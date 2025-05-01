@@ -31,13 +31,10 @@ public function classes()
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
 
->>>>>>> d117421 (acceuil)
 public function utilisateurs()
     {
         return $this->belongsToMany(Utilisateur::class, 'utilisateur_professeur', 'professeur_id', 'utilisateur_id');
@@ -46,14 +43,7 @@ public function utilisateurs()
 
 
 
-<<<<<<< HEAD
-=======
 
-
-
-
-
->>>>>>> d117421 (acceuil)
 public function matieres()
 {
     return $this->belongsToMany(Matiere::class, 'prof_matiere_classe', 'professeur_id', 'matiere_id')
@@ -79,15 +69,7 @@ public function paiementsMensuels($mois = null)
 
 
 
-<<<<<<< HEAD
-=======
 
-
-
-
-
-
->>>>>>> d117421 (acceuil)
 public function etudiants()
 {
     return $this->belongsToMany(Etudiant::class);
@@ -106,12 +88,7 @@ public function recalculerSalaire()
         ->sum('montant_paye');
 
 
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> d117421 (acceuil)
     // Calcul du nouveau salaire
     $this->total = ($this->pourcentage / 100) * $totalMontants + $this->prime;
     $this->save();
@@ -127,9 +104,5 @@ protected static function booted()
 
 
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> d117421 (acceuil)
 }
