@@ -42,7 +42,7 @@ public function attendances()
 
     public function parent()
     {
-        return $this->belongsTo(Parent::class);
+        return $this->belongsTo(ParentModel::class);
     }
 
 

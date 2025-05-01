@@ -41,10 +41,5 @@ class Classroom extends Model
     }
 
     // Relation avec Filiere
-    public function filiere()
-    {
-        return $this->belongsTo(Filiere::class);
 
-    }
-    
 }

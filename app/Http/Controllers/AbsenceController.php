@@ -27,9 +27,10 @@ class AbsenceController extends Controller
             'etudiant_id' => 'required|exists:etudiants,id',
             'date' => 'required|date_format:Y-m-d',
             'justifiee' => 'required|string|in:oui,non',
-            'professeur_id' => 'required|exists:professeurs,id',
             'motif' => 'required|string',
+            'professeur_id' => 'required|exists:professeurs,id',
             'class_id' => 'required|exists:classrooms,id',
+            'matiere_id' => 'required|exists:matieres,id',
         ]);
 
         $justifiee = ($validated['justifiee'] === 'oui') ? 1 : 0;
@@ -41,6 +42,7 @@ class AbsenceController extends Controller
             'professeur_id' => $validated['professeur_id'],
             'motif' => $validated['motif'],
             'class_id' => $validated['class_id'],
+            'matiere_id' => $validated['matiere_id'],
         ]);
 
         return response()->json($absence, 201);
@@ -138,11 +140,11 @@ class AbsenceController extends Controller
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'your-email@gmail.com';
-            $mail->Password = 'your-email-password';
+            $mail->Username = 'aitouhlalfarah18@gmail.com';
+            $mail->Password = 'csfbjnjcukhhtbvh';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
-            $mail->setFrom('your-email@gmail.com', 'Absence Notification');
+            $mail->setFrom('aitouhlalfarah18@gmail.com', 'Absence Notification');
             $mail->addAddress($parent->email);
             $mail->Subject = "Notification d'absence";
             $mail->Body = "Cher parent, votre enfant a accumulé des absences. Merci de vérifier.";
@@ -156,4 +158,27 @@ class AbsenceController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Erreur lors de l\'envoi de l\'email: ' . $e->getMessage()]);
         }
     }
+    public function getAbsencesByParentId($parentId)
+    {
+        // Vérifie si le parent_id est présent dans l'URL
+        if (!$parentId) {
+            return response()->json(['message' => 'parent_id manquant'], 400);
+        }
+    
+        // Récupère les absences où le parent_id correspond
+        $absences = Absence::whereHas('etudiant', function ($query) use ($parentId) {
+            $query->where('parent_id', $parentId);
+        })
+        ->with(['etudiant', 'classroom', 'matiere', 'professeur']) // <= هنا زدنا class و matiere و professeur
+        ->get();
+    
+        // Si aucune absence n'est trouvée
+        if ($absences->isEmpty()) {
+            return response()->json(['message' => 'Aucune absence trouvée pour ce parent_id'], 404);
+        }
+    
+        // Retourne les absences sous forme de JSON
+        return response()->json($absences);
+    }
+    
 }

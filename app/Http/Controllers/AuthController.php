@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+  public function login(Request $request)
 {
     try {
         $request->validate([
@@ -19,25 +19,38 @@ class AuthController extends Controller
             'mot_de_passe' => 'required|string',
         ]);
 
+        // Recherche de l'utilisateur par le matricule
+        // Authentification réussie :
         $utilisateur = Utilisateur::where('matricule', $request->matricule)->first();
+
+        if ($utilisateur->role === 'parent') {
+            $utilisateur->load('parent'); // ← charge la relation parent
+        }
+
 
         if (!$utilisateur || !Hash::check($request->mot_de_passe, $utilisateur->mot_de_passe)) {
             return response()->json(['message' => 'Matricule ou mot de passe incorrect'], 401);
         }
 
+        // Création du token d'authentification
         $token = $utilisateur->createToken('auth_token')->plainTextToken;
+
+        // Recherche du parent lié à cet utilisateur
+        $parent = $utilisateur->parent; // Assurez-vous que la relation est définie dans le modèle Utilisateur
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
             'utilisateur' => $utilisateur,
             'role' => $utilisateur->role,
+            'parent' => $parent,  // Ajout des informations du parent
         ]);
     } catch (\Exception $e) {
         Log::error('Erreur login : ' . $e->getMessage());
         return response()->json(['message' => 'Erreur serveur: ' . $e->getMessage()], 500);
     }
 }
+
 
 public function register(Request $request)
 {

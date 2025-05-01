@@ -112,7 +112,7 @@ class UtilisateurController extends Controller
  
                  // Assurez-vous que votre modèle s'appelle correctement (par exemple ParentModel)
                  ParentModel::create([
-                     'utilisateur_id' => $utilisateur->id,
+                     'user_id' => $utilisateur->id,
                      'nom' => $utilisateur->nom,
                      'prenom' => $parentData['prenom'],
                      'email' => $utilisateur->email,

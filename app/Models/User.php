@@ -32,6 +32,11 @@ public function professeurs()
     return $this->belongsToMany(Professeur::class, 'utilisateur_professeur', 'utilisateur_id', 'professeur_id');
 }
     protected $table = 'utilisateurs';
+
+    public function parent()
+{
+    return $this->hasOne(ParentModel::class, 'user_id'); // user_id = colonne dans la table parents
+}
 }
 
 

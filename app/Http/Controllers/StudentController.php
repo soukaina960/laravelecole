@@ -196,4 +196,10 @@ class StudentController extends Controller
     {
         return $this->belongsTo(Classroom::class, 'class_id');
     }
+    public function getEtudiantsByParent($parentId)
+    {
+        $etudiants = Etudiant::where('parent_id', $parentId)->get();
+        return response()->json($etudiants);
+    }
+    
 }

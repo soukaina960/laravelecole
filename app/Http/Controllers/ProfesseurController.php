@@ -8,6 +8,7 @@ use App\Models\Utilisateur;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 
 
 class ProfesseurController extends Controller
@@ -217,4 +218,20 @@ public function getEtudiantsAvecPaiements($professeurId, $mois = null)
         // Retourner les informations du professeur
         return response()->json($prof);
     }
+
+    //pour afficher les matieres d'un professeur dans la tables d'absences 
+    public function getMatieres(Request $request)
+{
+    $professeur_id = $request->query('professeur_id');
+    $classe_id = $request->query('classe_id');
+
+    $matieres = DB::table('prof_matiere_classe')
+        ->join('matieres', 'prof_matiere_classe.matiere_id', '=', 'matieres.id')
+        ->where('professeur_id', $professeur_id)
+        ->where('classe_id', $classe_id)
+        ->select('matieres.id', 'matieres.nom')
+        ->get();
+
+    return response()->json($matieres);
+}
 }
