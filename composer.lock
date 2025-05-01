@@ -16,7 +16,6 @@
 
 
 
-
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -3060,7 +3059,6 @@
 
 
 
->>>>>>> 32f397de9c28bc07174e4af731be108786415da7
 
 
 

@@ -62,10 +62,7 @@ class PaiementMensuelController extends Controller
             ], 409);
         }
     
-            'etudiant_id' => 'required|exists:etudiants,id',
-            'mois' => 'required|date_format:Y-m', // ✅ Accepter le format Y-m (ex: 2025-04)
-        ]);
-    
+// ✅ Accepter le format Y-m (ex: 2025-04
         // Convertir le mois en 'Y-m-d' (ex: 2025-04-01)
         $moisComplet = Carbon::createFromFormat('Y-m', $request->mois)->startOfMonth();
     

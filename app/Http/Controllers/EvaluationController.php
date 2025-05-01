@@ -205,42 +205,42 @@ public function getNotesByParent(Request $request)
 
 
     // Récupération des notes d'un étudiant avec les informations de matière
-    public function getNotesEtudiant($etudiant_id, Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'annee_scolaire_id' => 'required|exists:annees_scolaires,id',
-            'semestre_id' => 'required|exists:semestres,id',
-            'matiere_id' => 'nullable|exists:matieres,id',
-        ]);
+    // public function getNotesEtudiant($etudiant_id, Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'annee_scolaire_id' => 'required|exists:annees_scolaires,id',
+    //         'semestre_id' => 'required|exists:semestres,id',
+    //         'matiere_id' => 'nullable|exists:matieres,id',
+    //     ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
 
-        $query = Evaluation::with(['matiere:id,nom', 'professeur:id,nom,specialite'])
-            ->where('etudiant_id', $etudiant_id)
-            ->where('annee_scolaire_id', $request->annee_scolaire_id)
-            ->where('semestre_id', $request->semestre_id);
+    //     $query = Evaluation::with(['matiere:id,nom', 'professeur:id,nom,specialite'])
+    //         ->where('etudiant_id', $etudiant_id)
+    //         ->where('annee_scolaire_id', $request->annee_scolaire_id)
+    //         ->where('semestre_id', $request->semestre_id);
 
-        if ($request->has('matiere_id')) {
-            $query->where('matiere_id', $request->matiere_id);
-        }
+    //     if ($request->has('matiere_id')) {
+    //         $query->where('matiere_id', $request->matiere_id);
+    //     }
 
-        $notes = $query->get([
-            'id',
-            'note1',
-            'note2',
-            'note3',
-            'note4',
-            'facteur',
-            'note_finale',
-            'remarque',
-            'matiere_id',
-            'professeur_id',
-            'created_at',
-            'updated_at'
-        ]);
+    //     $notes = $query->get([
+    //         'id',
+    //         'note1',
+    //         'note2',
+    //         'note3',
+    //         'note4',
+    //         'facteur',
+    //         'note_finale',
+    //         'remarque',
+    //         'matiere_id',
+    //         'professeur_id',
+    //         'created_at',
+    //         'updated_at'
+    //     ]);
 
-        return response()->json($notes);
-    }
+    //     return response()->json($notes);
+    // }
 }
