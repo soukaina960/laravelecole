@@ -28,6 +28,21 @@ class Utilisateur extends Authenticatable
     }
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+  
+    
+
+
+
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
     
 
    
@@ -45,9 +60,18 @@ class Utilisateur extends Authenticatable
         return $this->hasOne(Professeur::class, 'user_id'); 
     }
     
+<<<<<<< HEAD
 
     // Relation avec l'étudiant
 
+=======
+
+
+    // Relation avec l'étudiant
+
+  
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
    
 
 
@@ -58,11 +82,21 @@ class Utilisateur extends Authenticatable
 
     
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
     public function surveillant()
     {
         return $this->hasOne(Surveillant::class, 'user_id'); 
     }
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 // Utilisateur.php (modèle)
 public function etudiant()
 {
@@ -77,7 +111,22 @@ public function etudiant()
     
 
 
+<<<<<<< HEAD
 
+=======
+
+
+
+
+<<<<<<< HEAD
+>>>>>>> d117421 (acceuil)
+>>>>>>> d29b252f9cbb27f9e29cc0ab9b7671adf77c01da
+=======
+
+
+
+>>>>>>> 85d9dd7 (exman)
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 public function parent()
 {
     return $this->hasOne(ParentModel::class, 'utilisateur_id');

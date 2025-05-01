@@ -1,6 +1,12 @@
 <?php
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,8 +26,19 @@ class Retard extends Model
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class);
+<<<<<<< HEAD
     }
    
+=======
+
+
+
+namespace App\Http\Controllers;
+
+use App\Models\Retard;
+use Illuminate\Http\Request;
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
 class RetardController extends Controller
 {
     public function index()
@@ -79,5 +96,9 @@ class RetardController extends Controller
                     ->get();
 
         return response()->json($retards);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 53e700ca45defad81932aed2dab9a8c96d3f3565
     }
 }
