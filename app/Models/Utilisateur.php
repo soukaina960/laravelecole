@@ -35,12 +35,16 @@ class Utilisateur extends Authenticatable
 
 
 
+
+
+
   
     
 
 
 
 
+    // Relation avec l'étudiant
 
     
 
@@ -49,7 +53,10 @@ class Utilisateur extends Authenticatable
 
 
 
+
    
+
+
 
 
 
@@ -59,6 +66,8 @@ class Utilisateur extends Authenticatable
         return $this->hasOne(Professeur::class, 'user_id'); 
     }
     
+
+
 
     // Relation avec l'étudiant
 
@@ -96,12 +105,17 @@ class Utilisateur extends Authenticatable
 // Utilisateur.php (modèle)
 public function etudiant()
 {
-    return $this->hasOne(Etudiant::class, 'utilisateur_id');}
+    return $this->hasOne(Etudiant::class, 'utilisateur_id');
+}
+
+
 
   public function admin()
 {
     return $this->hasOne(Admin::class, 'user_id');
 } 
+
+
    
    
     
@@ -118,9 +132,11 @@ public function etudiant()
 
 
 
+
+
 public function parent()
 {
-    return $this->hasOne(ParentModel::class, 'utilisateur_id');
+    return $this->hasOne(ParentModel::class, 'user_id'); // user_id = colonne dans la table parents
 }
 
 }

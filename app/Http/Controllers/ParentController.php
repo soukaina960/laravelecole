@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
+use App\Models\Utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\ParentModel;
+use App\Models\PaiementMensuel;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ParentController extends Controller
 {
@@ -26,6 +29,55 @@ class ParentController extends Controller
             'parents' => $parents
         ]);
     }
+    public function update(Request $request, $id)
+{
+    try {
+        // Trouver le parent par ID
+        $parent = ParentModel::findOrFail($id);
+
+        // Trouver l'utilisateur lié au parent
+        $user = Utilisateur::findOrFail($parent->user_id);
+
+        // Validation des données
+        $validatedData = $request->validate([
+            'parent.nom' => 'required|string|max:255',
+            'parent.prenom' => 'required|string|max:255',
+            'parent.telephone' => 'nullable|string|max:20',
+            'user.email' => 'required|email|max:255',
+            'user.password' => 'nullable|string|min:6',
+        ]);
+
+        // Mise à jour des informations du parent
+        $parent->update([
+            'nom' => $validatedData['parent']['nom'],
+            'prenom' => $validatedData['parent']['prenom'],
+            'telephone' => $validatedData['parent']['telephone'] ?? $parent->telephone,
+        ]);
+
+        // Mise à jour des informations de l'utilisateur
+        $user->email = $validatedData['user']['email'];
+
+        if (!empty($validatedData['user']['password'])) {
+            // Si un nouveau mot de passe est fourni, le hacher
+            $user->password = bcrypt($validatedData['user']['password']);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profil mis à jour avec succès.',
+            'parent' => $parent,
+            'user' => $user
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Erreur lors de la mise à jour du profil.',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
     public function getParentEmail($etudiant_id)
     {
     
@@ -70,4 +122,37 @@ class ParentController extends Controller
             ], 500);
         }
     }
+    public function show($id)
+    {
+        $parent = ParentModel::find($id);
+        if (!$parent) {
+            return response()->json(['message' => 'Parent non trouvé'], 404);
+        }
+        return response()->json($parent);
+    }
+    public function getByUserId($user_id)
+{
+    $parent = ParentModel::where('user_id', $user_id)->first();
+
+    if (!$parent) {
+        return response()->json(['message' => 'Parent introuvable'], 404);
+    }
+
+    return response()->json($parent);
+}
+public function paiementsDuParent($parentId)
+{
+    // جميع الأولاد ديال هاد الوالد
+    $enfants = Etudiant::where('parent_id', $parentId)->pluck('id');
+
+    // جميع الـ paiements ديال هاد الأولاد
+    $paiements = PaiementMensuel::whereIn('etudiant_id', $enfants)->get();
+
+    return response()->json($paiements);
+}
+
+
+
+
+
 }

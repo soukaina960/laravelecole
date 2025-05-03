@@ -20,6 +20,9 @@ public function store(Request $request)
             'etudiant_id' => 'required|exists:etudiants,id',
             'description' => 'required|string',
             'date' => 'required|date',
+            'professeur_id' => 'required|exists:professeurs,id',
+            'class_id' => 'required|exists:classrooms,id',
+            'matiere_id' => 'required|exists:matieres,id',
         ]);
 
         $incident = Incident::create($request->all());
@@ -71,5 +74,26 @@ public function getByDateRange($etudiant_id, $date_debut, $date_fin)
 
     return response()->json($incidents);
 }
-
+public function getIncidentsByParentId($parentId)
+    {
+        // Vérifie si le parent_id est présent dans l'URL
+        if (!$parentId) {
+            return response()->json(['message' => 'parent_id manquant'], 400);
+        }
+    
+        // Récupère les absences où le parent_id correspond
+        $absences = Incident::whereHas('etudiant', function ($query) use ($parentId) {
+            $query->where('parent_id', $parentId);
+        })
+        ->with(['etudiant', 'classroom', 'matiere', 'professeur']) // <= هنا زدنا class و matiere و professeur
+        ->get();
+    
+        // Si aucune absence n'est trouvée
+        if ($absences->isEmpty()) {
+            return response()->json(['message' => 'Aucune absence trouvée pour ce parent_id'], 404);
+        }
+    
+        // Retourne les absences sous forme de JSON
+        return response()->json($absences);
+    }
 }

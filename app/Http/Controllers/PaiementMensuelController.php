@@ -6,7 +6,12 @@ use App\Models\PaiementMensuel;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\EtudiantProfesseur;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\ParentModel;
+use App\Models\Utilisateur;
+use App\Models\Professeur;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PaiementMensuelController extends Controller
 {
@@ -57,17 +62,39 @@ class PaiementMensuelController extends Controller
             ], 409);
         }
     
+// ✅ Accepter le format Y-m (ex: 2025-04
+        // Convertir le mois en 'Y-m-d' (ex: 2025-04-01)
+        $moisComplet = Carbon::createFromFormat('Y-m', $request->mois)->startOfMonth();
+    
         // Enregistrement du paiement mensuel
         $paiement = PaiementMensuel::create([
             'etudiant_id' => $request->etudiant_id,
             'mois' => $moisCourant, // Mois courant généré automatiquement
             'date_paiement' => Carbon::now()->toDateString(),
             'est_paye' => true,
+            'mois' => $moisComplet->toDateString(), // Enregistre au format Y-m-d
+            'date_paiement' => Carbon::now()->toDateString(),
+            'est_paye' => true,
         ]);
+    
     
         return response()->json($paiement, 201);
     }
     
+    
+    
+    // Méthode pour afficher un paiement mensuel spécifique
+    public function show($id)
+    {
+        $paiement = PaiementMensuel::find($id);
+        
+        if (!$paiement) {
+            return response()->json(['message' => 'Paiement non trouvé'], 404);
+        }
+
+        return response()->json($paiement);
+    }
+
     // Méthode pour mettre à jour un paiement mensuel
     public function update(Request $request, $id)
     {
@@ -170,6 +197,7 @@ class PaiementMensuelController extends Controller
                 'details' => $e->getMessage()
             ], 500);
         }
+        
     }
     public function resetPaiementsMoisPrecedent()
 {
@@ -194,6 +222,86 @@ class PaiementMensuelController extends Controller
 
 
 
+}
+
+
+    public function getPaiementsByMois($parent_id, $mois)
+{
+    // Convertir "avril" en chiffre 04
+    $mois_numero = $this->convertirMoisEnNumero($mois);
+
+    if (!$mois_numero) {
+        return response()->json(['message' => 'Mois invalide.'], 400);
+    }
+
+    // Chercher les paiements dont le mois de 'mois' = $mois_numero
+    $paiements = PaiementMensuel::whereMonth('mois', $mois_numero)
+    ->whereHas('etudiant', function ($query) use ($parent_id) {
+        $query->where('parent_id', $parent_id);
+    })->get();
+
+
+    if ($paiements->isEmpty()) {
+        return response()->json(['message' => 'Aucun paiement trouvé pour ce mois.']);
+    }
+
+    return response()->json($paiements);
+}
+
+// Petite fonction pour convertir "avril" => 4
+private function convertirMoisEnNumero($mois)
+{
+    $mois_array = [
+        'janvier' => 1,
+        'février' => 2,
+        'mars' => 3,
+        'avril' => 4,
+        'mai' => 5,
+        'juin' => 6,
+        'juillet' => 7,
+        'août' => 8,
+        'septembre' => 9,
+        'octobre' => 10,
+        'novembre' => 11,
+        'décembre' => 12,
+    ];
+
+    $mois = strtolower($mois);
+
+    return $mois_array[$mois] ?? null;
+}
+    
+public function generateReceipt($parent_id, $mois)
+{
+    $mois_numero = $this->convertirMoisEnNumero($mois);
+
+    if (!$mois_numero) {
+        return response()->json(['message' => 'Mois invalide.'], 400);
+    }
+
+    $paiements = PaiementMensuel::whereMonth('mois', $mois_numero)
+        ->whereIn('etudiant_id', function ($query) use ($parent_id) {
+            $query->select('id')->from('etudiants')->where('parent_id', $parent_id);
+        })->get();
+
+    if ($paiements->isEmpty()) {
+        return response()->json(['message' => 'Aucun paiement trouvé.']);
+    }
+
+    // Pour l'exemple, on prend le premier paiement et on retourne le PDF
+    $paiement = $paiements->first();
+    $etudiant = $paiement->etudiant;
+    $parent = $etudiant->parent;
+
+    $data = [
+        'paiement' => $paiement,
+        'etudiant' => $etudiant,
+        'parent' => $parent,
+        'ecole' => 'Skolyx',
+    ];
+
+    $pdf = PDF::loadView('pdf.receipt', $data);
+    return $pdf->download('recu_paiement_' . $paiement->id . '.pdf');
 }
 
 

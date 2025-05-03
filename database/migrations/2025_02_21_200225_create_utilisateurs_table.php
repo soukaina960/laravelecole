@@ -20,6 +20,7 @@ return new class extends Migration {
          
 
 
+            $table->enum('role', ['admin', 'professeur', 'surveillant', 'étudiant', 'parent']);         
             $table->timestamps();
         });
     }

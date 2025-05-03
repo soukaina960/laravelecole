@@ -11,56 +11,49 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
-    {
-        try {
-            $request->validate([
-                'matricule' => 'required|string',
-                'mot_de_passe' => 'required|string',
-            ]);
-    
-            // Récupère l'utilisateur en fonction du matricule
-            $utilisateur = Utilisateur::where('matricule', $request->matricule)->first();
-    
-            if (!$utilisateur || !Hash::check($request->mot_de_passe, $utilisateur->mot_de_passe)) {
-                return response()->json(['message' => 'Matricule ou mot de passe incorrect'], 401);
-            }
-    
-            // Récupérer le classe_id si l'utilisateur est un étudiant
-            if ($utilisateur->role === 'étudiant') {
-                $etudiant = $utilisateur->etudiant; // Assure-toi d'avoir la relation correctement définie
-                $utilisateur->classe_id = $etudiant ? $etudiant->classe_id : null;
-            }
-            if ($utilisateur->role === 'admin') {
-                $admin = $utilisateur->admin; // Assure-toi d'avoir la relation correctement définie
-            }
-    
-            // Créer le token d'authentification
-            $token = $utilisateur->createToken('auth_token')->plainTextToken;
-    
-            // Retourner la réponse avec le token et les informations de l'utilisateur
-            return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'utilisateur' => [
-                    'id' => $utilisateur->id,
-                    'matricule' => $utilisateur->matricule,
-                    'nom' => $utilisateur->nom,
-                    'prenom' => $utilisateur->prenom,
-                    'email' => $utilisateur->email,
-                    'role' => $utilisateur->role,
-                    'classe_id' => $utilisateur->classe_id,
-                    // Ajoute uniquement les champs nécessaires
-                ],
-                'role' => $utilisateur->role,
-            ]);
-            
-        } catch (\Exception $e) {
-            Log::error('Erreur login : ' . $e->getMessage());
-            return response()->json(['message' => 'Erreur serveur: ' . $e->getMessage()], 500);
+
+  public function login(Request $request)
+{
+    try {
+        $request->validate([
+            'matricule' => 'required|string',
+            'mot_de_passe' => 'required|string',
+        ]);
+
+        // Recherche de l'utilisateur par le matricule
+        // Authentification réussie :
+        $utilisateur = Utilisateur::where('matricule', $request->matricule)->first();
+
+        if ($utilisateur->role === 'parent') {
+            $utilisateur->load('parent'); // ← charge la relation parent
         }
+
+
+        if (!$utilisateur || !Hash::check($request->mot_de_passe, $utilisateur->mot_de_passe)) {
+            return response()->json(['message' => 'Matricule ou mot de passe incorrect'], 401);
+        }
+
+        // Création du token d'authentification
+        $token = $utilisateur->createToken('auth_token')->plainTextToken;
+
+        // Recherche du parent lié à cet utilisateur
+        $parent = $utilisateur->parent; // Assurez-vous que la relation est définie dans le modèle Utilisateur
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'utilisateur' => $utilisateur,
+            'role' => $utilisateur->role,
+            'parent' => $parent,  // Ajout des informations du parent
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Erreur login : ' . $e->getMessage());
+        return response()->json(['message' => 'Erreur serveur: ' . $e->getMessage()], 500);
     }
-    
+}
+
+
+
 public function register(Request $request)
 {
     try {
@@ -95,6 +88,7 @@ public function register(Request $request)
     }
 }
 }
+
 
 
 

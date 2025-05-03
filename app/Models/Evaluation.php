@@ -50,7 +50,10 @@ class Evaluation extends Model
     {
         return $this->belongsTo(Etudiant::class);
     }
-
+    public function matiere()
+    {
+        return $this->belongsTo(Matiere::class);
+    }
     public function semestre()
     {
         return $this->belongsTo(Semestre::class);
@@ -59,8 +62,13 @@ class Evaluation extends Model
     // Calcul de la note finale
     public function getNoteFinaleAttribute()
     {
-        return ($this->note1 + $this->note2 + $this->note3 + $this->note4) / 4;
+        $notes = collect([$this->note1, $this->note2, $this->note3, $this->note4])->filter()->all();
+        if (count($notes) > 0) {
+            return array_sum($notes) / count($notes);
+        }
+        return null;
     }
+    
 
     // Ajout de la logique pour vérifier ou assigner automatiquement le semestre
     // app/Models/Evaluation.php

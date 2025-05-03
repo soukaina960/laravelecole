@@ -26,6 +26,7 @@ class PaiementMensuel extends Model
         return $this->belongsTo(Etudiant::class);
     }
  
+    
 
     // Si vous souhaitez formater des attributs comme la date
     protected $dates = ['date_paiement'];

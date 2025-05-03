@@ -120,6 +120,7 @@ public function recalculerSalaire()
 
 
 
+
     // Calcul du nouveau salaire
     $this->total = ($this->pourcentage / 100) * $totalMontants + $this->prime;
     $this->save();

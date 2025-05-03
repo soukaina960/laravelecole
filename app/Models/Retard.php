@@ -11,9 +11,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Retard extends Model
-{
-    use HasFactory;
 
     // Champs qu'on peut remplir via create() ou update()
     protected $fillable = [
@@ -39,27 +36,22 @@ use Illuminate\Http\Request;
 
 class RetardController extends Controller
 {
+
     public function index()
     {
-        return response()->json(Retard::with('etudiant')->get());
+        return $this->belongsTo(Professeur::class);
     }
 
-    public function store(Request $request)
+    public function classroom()
     {
-        $request->validate([
-            'etudiant_id' => 'required|exists:etudiants,id',
-            'date' => 'required|date',
-            'heure' => 'required|string',
-        ]);
-
-        $retard = Retard::create($request->all());
-        return response()->json($retard, 201);
+        return $this->belongsTo(Classroom::class, 'class_id');
     }
-
-    public function show($id)
+    public function matiere()
     {
-        return response()->json(Retard::findOrFail($id));
+        return $this->belongsTo(Matiere::class , 'matiere_id');
     }
+
+
 
     public function update(Request $request, $id)
     {

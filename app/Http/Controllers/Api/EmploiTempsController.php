@@ -67,7 +67,7 @@ class EmploiTempsController extends Controller
 
     public function recupurer()
     {
-        return EmploiTemps::with(['classe', 'matiere', 'professeur', 'salle', 'creneau'])->get();
+        return EmploiTemps::with(['classe', 'matiere', 'professeur', 'creneau'])->get();
     }
     
 public function update(Request $request, $id)

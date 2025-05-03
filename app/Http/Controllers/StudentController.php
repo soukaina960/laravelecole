@@ -4,6 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -68,6 +99,44 @@ class StudentController extends Controller
         return response()->json($etudiants);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -78,6 +147,52 @@ class StudentController extends Controller
 
     return response()->json($etudiant);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function getEtudiantsParClasse($classeId)
 {
     $etudiants = DB::table('etudiants')
@@ -86,6 +201,39 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -198,4 +346,10 @@ class StudentController extends Controller
     {
         return $this->belongsTo(Classroom::class, 'class_id');
     }
+    public function getEtudiantsByParent($parentId)
+    {
+        $etudiants = Etudiant::where('parent_id', $parentId)->get();
+        return response()->json($etudiants);
+    }
+    
 }

@@ -17,7 +17,8 @@ class ParentModel extends Model
         'email',
         'telephone',
         'adresse',
-        'profession'
+        'profession',
+        'user_id'
     ];
 
     public function etudiants()
@@ -30,7 +31,7 @@ class ParentModel extends Model
     }
     public function utilisateur()
 {
-    return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
+    return $this->belongsTo(Utilisateur::class, 'user_id');
 }
 }
 

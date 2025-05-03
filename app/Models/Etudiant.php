@@ -42,7 +42,7 @@ public function attendances()
 
     public function parent()
     {
-        return $this->belongsTo(Parent::class);
+        return $this->belongsTo(ParentModel::class);
     }
     public function parentModel()
     {
@@ -93,6 +93,51 @@ public function attendances()
     return $this->hasOne(EmailParent::class);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Etudiant.php (modèle)
 public function utilisateur()
 {
@@ -107,6 +152,43 @@ public function utilisateur()
 public function professeur() {
     return $this->belongsTo(Professeur::class);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 public function notes()

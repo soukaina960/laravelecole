@@ -12,11 +12,11 @@ class Absence extends Model
     protected $fillable = [
         'etudiant_id',
         'date',
-
         'justifiee',
-        'professeur_id',
         'motif',
+        'professeur_id',
         'class_id',
+        'matiere_id',
 
     ];
 
@@ -33,5 +33,10 @@ class Absence extends Model
     {
         return $this->belongsTo(Classroom::class, 'class_id');
     }
+    public function matiere()
+    {
+        return $this->belongsTo(Matiere::class , 'matiere_id');
+    }
+
 
 }

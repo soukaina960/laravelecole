@@ -12,11 +12,27 @@ class Incident extends Model
         'etudiant_id',
         'description',
         'date',
+        'professeur_id',
+        'class_id',
+        'matiere_id',
     ];
 
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class);
+    }
+    public function professeur()
+    {
+        return $this->belongsTo(Professeur::class);
+    }
+
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class, 'class_id');
+    }
+    public function matiere()
+    {
+        return $this->belongsTo(Matiere::class , 'matiere_id');
     }
 }
 
