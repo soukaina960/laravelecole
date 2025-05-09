@@ -151,7 +151,6 @@ class UtilisateurController extends Controller
 
                 case 'professeur':
                     $profData = $request->validate([
-                        'specialite' => 'nullable|string',
                         'niveau_enseignement' => 'nullable|string',
                         'diplome' => 'nullable|string',
                         'date_embauche' => 'nullable|date',
@@ -164,7 +163,6 @@ class UtilisateurController extends Controller
                         'user_id' => $utilisateur->id,
                         'nom' => $utilisateur->nom,
                         'email' => $utilisateur->email,
-                        'specialite' => $profData['specialite'],
                         'niveau_enseignement' => $profData['niveau_enseignement'],
                         'diplome' => $profData['diplome'],
                         'date_embauche' => $profData['date_embauche'],
@@ -219,6 +217,112 @@ class UtilisateurController extends Controller
             ], 500);
         }
     }
+    public function update(Request $request, $id)
+{
+    $utilisateur = Utilisateur::findOrFail($id);
+
+    $validatedData = $request->validate([
+        'nom' => 'nullable|string',
+        'email' => 'nullable|email|unique:utilisateurs,email,' . $id,
+        'telephone' => 'nullable|string',
+        'adresse' => ' nullable|string',
+        'role' => 'in:admin,professeur,surveillant,étudiant,parent',
+    ]);
+
+    if ($request->hasFile('photo_profil')) {
+        $chemin = $request->file('photo_profil')->store('photos', 'public');
+        $utilisateur->photo_profil = $chemin;
+    }
+
+    $utilisateur->update([
+        'nom' => $validatedData['nom'],
+        'email' => $validatedData['email'],
+        'telephone' => $validatedData['telephone'] ?? null,
+        'adresse' => $validatedData['adresse'] ?? null,
+        'role' => $validatedData['role'],
+    ]);
+
+    // Mise à jour spécifique selon le rôle
+    switch ($utilisateur->role) {
+        case 'admin':
+            $utilisateur->admin()->update([
+                'name' => $validatedData['nom'],
+                'email' => $validatedData['email'],
+            ]);
+            break;
+
+        case 'professeur':
+            $profData = $request->validate([
+                'niveau_enseignement' => 'nullable|string',
+                'diplome' => 'nullable|string',
+                'date_embauche' => 'nullable|date',
+            ]);
+
+            $utilisateur->professeur()->update([
+                'nom' => $validatedData['nom'],
+                'email' => $validatedData['email'],
+                'niveau_enseignement' => $profData['niveau_enseignement'],
+                'diplome' => $profData['diplome'],
+                'date_embauche' => $profData['date_embauche'],
+            ]);
+            break;
+
+        case 'surveillant':
+            $utilisateur->surveillant()->update([
+                'nom' => $validatedData['nom'],
+                'email' => $validatedData['email'],
+            ]);
+            break;
+
+        case 'étudiant':
+            $etudiantData = $request->validate([
+                'prenom' => 'required|string',
+                'date_naissance' => 'required|date',
+                'sexe' => 'required|in:M,F',
+                'montant_a_payer' => 'nullable|numeric',
+                'classe_id' => 'nullable|exists:classrooms,id',
+                'origine' => 'nullable|string',
+                'parent_id' => 'nullable|exists:parents,id',
+            ]);
+
+            $utilisateur->etudiant()->update([
+                'nom' => $validatedData['nom'],
+                'prenom' => $etudiantData['prenom'],
+                'date_naissance' => $etudiantData['date_naissance'],
+                'sexe' => $etudiantData['sexe'],
+                'montant_a_payer' => $etudiantData['montant_a_payer'] ?? 0,
+                'classe_id' => $etudiantData['classe_id'] ?? null,
+                'origine' => $etudiantData['origine'] ?? null,
+                'parent_id' => $etudiantData['parent_id'] ?? null,
+                'adresse' => $validatedData['adresse'] ?? null,
+                'photo_profil' => $utilisateur->photo_profil,
+            ]);
+            break;
+
+        case 'parent':
+            $parentData = $request->validate([
+                'prenom' => 'required|string',
+                'profession' => 'nullable|string',
+            ]);
+
+            $utilisateur->parent()->update([
+                'nom' => $validatedData['nom'],
+                'prenom' => $parentData['prenom'],
+                'email' => $validatedData['email'],
+                'telephone' => $validatedData['telephone'],
+                'adresse' => $validatedData['adresse'],
+                'profession' => $parentData['profession'] ?? null,
+            ]);
+            break;
+    }
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Utilisateur mis à jour avec succès',
+        'data' => $utilisateur
+    ]);
+}
+
      public function affecterProfesseurs(Request $request, $etudiantId)
      {
          $etudiant = Etudiant::findOrFail($etudiantId);
@@ -247,16 +351,7 @@ class UtilisateurController extends Controller
          return response()->json($utilisateur);
      }
 
-    public function update(Request $request, $id)
-    {
-        $utilisateur = Utilisateur::findOrFail($id);
-
-        // Mise à jour des champs, y compris le matricule
-        $utilisateur->update($request->only('nom', 'email', 'role', 'matricule')); // Ajout du matricule
-
-        return response()->json($utilisateur);
-    }
-
+   
     public function destroy($id)
     {
         Utilisateur::destroy($id);

@@ -60,6 +60,11 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\SanctionController;
 use App\Http\Controllers\ParentDashboardController;
 use App\Http\Controllers\ReclamationController;
+use App\Http\Controllers\StatistiqueMensuelleController;
+
+Route::get('/statistiques-mensuelles', [StatistiqueMensuelleController::class, 'parAnnee']);
+Route::post('/statistiques-mensuelles', [StatistiqueMensuelleController::class, 'storeOrUpdate']);
+Route::put('/utilisateurs/{id}', [UtilisateurController::class, 'update']);
 
 Route::get('/sanctions', [SanctionController::class, 'index']);
 Route::get('/sanctions/create', [SanctionController::class, 'create']);
@@ -68,7 +73,9 @@ Route::post('/sanctions', [SanctionController::class, 'store']);
 Route::get('/parents/user/{user_id}', [ParentController::class, 'getByUserId']);
 
 
-
+// routes/api.php
+Route::post('/paiements', [PaiementMensuelController::class, 'store']);
+Route::get('/paiements', [PaiementMensuelController::class, 'index']);
 
 
 

@@ -2,8 +2,7 @@
 // app/Http/Controllers/Api/DemandeAttestationController.php
 
 namespace App\Http\Controllers;
-
-
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DemandeAttestation;
@@ -70,48 +69,44 @@ class DemandeAttestationController extends Controller
     }
 
     public function traiterDemande($id)
-    {
-        $demande = DemandeAttestation::findOrFail($id);
+{
+    $demande = DemandeAttestation::findOrFail($id);
 
-        if ($demande->traitee) {
-            return response()->json(['message' => 'Cette demande a déjà été traitée.'], 400);
-        }
-
-        $etudiant = $demande->etudiant;
-
-        $config = ConfigAttestation::first() ?? $this->getSchoolConfig(); // ✅ utilise getSchoolConfig
-
-        $attestation = [
-            'date_emission' => now()->format('d/m/Y'),
-            'annee_universitaire' => $config->annee_scolaire ?? date('Y') . '/' . (date('Y') + 1)
-        ];
-        // Avant Pdf::loadView(), dump les données :
-            dd([
-                'etudiant' => $etudiant,
-                'config' => $config,
-                'attestation' => $attestation
-            ]);
-
-        $pdf = Pdf::loadView('pdf.attestation', [
-            'etudiant' => $etudiant,
-            'config' => $config,
-            'attestation' => (object)$attestation
-        ])>setOption('enable-php', true);
-        return $pdf->stream('attestation.pdf');
-        $pdfPath = 'attestations/attestation_' . $etudiant->id . '_' . time() . '.pdf';
-
-        Storage::disk('public')->put($pdfPath, $pdf->output());
-
-        $demande->update([
-            'traitee' => true,
-            'lien_attestation' => $pdfPath
-        ]);
-
-        return response()->json([
-            'message' => 'Demande traitée avec succès !',
-            'lien' => asset('storage/' . $pdfPath)
-        ]);
+    if ($demande->traitee) {
+        return response()->json(['message' => 'Cette demande a déjà été traitée.'], 400);
     }
+
+    $etudiant = $demande->etudiant;
+
+    $config = ConfigAttestation::first() ?? $this->getSchoolConfig();
+
+    $attestation = [
+        'date_emission' => now()->format('d/m/Y'),
+        'annee_universitaire' => $config->annee_scolaire ?? date('Y') . '/' . (date('Y') + 1)
+    ];
+
+    // Générer le PDF
+    $pdf = Pdf::loadView('pdf.attestation', [
+        'etudiant' => $etudiant,
+        'config' => $config,
+        'attestation' => (object)$attestation
+    ])->setOption('enable-php', true); // ✅ correction ici
+
+    // Enregistrer le PDF dans le disque public
+    $pdfPath = 'attestations/attestation_' . $etudiant->id . '_' . time() . '.pdf';
+    Storage::disk('public')->put($pdfPath, $pdf->output());
+
+    // Marquer la demande comme traitée
+    $demande->update([
+        'traitee' => true,
+        'lien_attestation' => $pdfPath
+    ]);
+
+    return response()->json([
+        'message' => 'Demande traitée avec succès !',
+        'lien' => asset('storage/' . $pdfPath)
+    ]);
+}
 
     private function getSchoolConfig() // ✅ utilisé ici
     {
