@@ -63,6 +63,7 @@ public function attendances()
         return $this->belongsToMany(Professeur::class);
     }
     
+    
 
     public function absences()
     {
@@ -104,7 +105,6 @@ public function attendances()
 
 
 
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 
 

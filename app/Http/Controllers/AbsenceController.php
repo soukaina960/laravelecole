@@ -47,6 +47,7 @@ public function getAbsentsCritiques()
             'professeur_id' => 'required|exists:professeurs,id',
             'class_id' => 'required|exists:classrooms,id',
             'matiere_id' => 'required|exists:matieres,id',
+            'surveillant_id' => 'required|exists:surveillant,id',
         ]);
 
         $justifiee = ($validated['justifiee'] === 'oui') ? 1 : 0;
@@ -59,6 +60,7 @@ public function getAbsentsCritiques()
             'motif' => $validated['motif'],
             'class_id' => $validated['class_id'],
             'matiere_id' => $validated['matiere_id'],
+            'surveillant_id' => $validated['surveillant_id'],
         ]);
 
         return response()->json($absence, 201);
@@ -138,7 +140,6 @@ public function getAbsentsCritiques()
 
 
 
-    use Illuminate\Support\Facades\DB;
 
 
 

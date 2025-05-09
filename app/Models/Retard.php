@@ -12,8 +12,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
-class RetardController extends Controller
+class Retard extends Model
 {
+    use HasFactory;
+    protected $fillable = [
+        'etudiant_id',
+        'professeur_id',
+        'class_id',
+        'matiere_id',
+        'date',
+        'heure',
+        'surveillant_id',
+    ];
+    
+    protected $table = 'retards'; // Assurez-vous que la table est bien 'retards'
+
 
     public function index()
     {
@@ -28,43 +41,20 @@ class RetardController extends Controller
     {
         return $this->belongsTo(Matiere::class , 'matiere_id');
     }
-
-
-
-    public function update(Request $request, $id)
+    public function etudiant()
     {
-        $retard = Retard::findOrFail($id);
-        $retard->update($request->all());
-
-        return response()->json($retard);
+        return $this->belongsTo(Etudiant::class, 'etudiant_id');
     }
-
-    public function destroy($id)
+    public function professeur()
     {
-        Retard::destroy($id);
-        return response()->json(['message' => 'Retard supprimé']);
+        return $this->belongsTo(Professeur::class, 'professeur_id');
     }
-
-    // ✅ Personnalisée : retards d’un étudiant
-    public function getByEtudiant($etudiant_id)
+    public function surveillant()
     {
-        $retards = Retard::where('etudiant_id', $etudiant_id)
-                    ->with('etudiant')
-                    ->get();
-
-        return response()->json($retards);
+        return $this->belongsTo(Surveillant::class , 'surveillant_id');
     }
-
-    // ✅ Personnalisée : retards d’un étudiant entre deux dates
-    public function getByDateRange($etudiant_id, $date_debut, $date_fin)
-    {
-        $retards = Retard::where('etudiant_id', $etudiant_id)
-                    ->whereBetween('date', [$date_debut, $date_fin])
-                    ->with('etudiant')
-                    ->get();
-
-        return response()->json($retards);
+    
 
 
-    }
+    
 }

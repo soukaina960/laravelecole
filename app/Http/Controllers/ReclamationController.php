@@ -37,5 +37,45 @@ class ReclamationController extends Controller
 
     return response()->json(['message' => 'Statut mis à jour avec succès']);
 }
+public function reclamationsParParent($id)
+{
+    $reclamations = Reclamation::where('parent_id', $id)->orderByDesc('created_at')->get();
+    return response()->json(['reclamations' => $reclamations]);
+}
+
+public function annuler($id)
+{
+    $reclamation = Reclamation::findOrFail($id);
+
+    if ($reclamation->statut !== 'en attente') {
+        return response()->json(['message' => 'Impossible d’annuler cette réclamation.'], 400);
+    }
+
+    $reclamation->statut = 'annulée';
+    $reclamation->save();
+
+    return response()->json(['message' => 'Réclamation annulée avec succès.']);
+}
+public function destroy($id)
+{
+    // Chercher la réclamation par ID
+    $reclamation = Reclamation::find($id);
+
+    // Vérifier si elle existe
+    if (!$reclamation) {
+        return response()->json(['message' => 'Réclamation non trouvée.'], 404);
+    }
+
+    // Optionnel : empêcher de supprimer si le statut n'est pas "en attente"
+    if ($reclamation->statut !== 'en attente') {
+        return response()->json(['message' => 'Seules les réclamations en attente peuvent être supprimées.'], 403);
+    }
+
+    // Supprimer la réclamation
+    $reclamation->delete();
+
+    // Retourner une réponse
+    return response()->json(['message' => 'Réclamation supprimée avec succès.']);
+}
 
 }

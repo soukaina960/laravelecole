@@ -21,6 +21,7 @@ class RetardsController extends Controller
         'professeur_id' => 'required|exists:professeurs,id',
         'class_id' => 'required|exists:classrooms,id',
         'matiere_id' => 'required|exists:matieres,id',
+        'surveillant_id' => 'required|exists:surveillant,id',
     ]);
 
     $retard = Retard::create($validated);
@@ -65,5 +66,30 @@ class RetardsController extends Controller
 
         // Retourne les absences sous forme de JSON
         return response()->json($absences);
+    }
+    
+
+    
+    // ✅ Personnalisée : retards d’un étudiant
+    public function getByEtudiant($etudiant_id)
+    {
+        $retards = Retard::where('etudiant_id', $etudiant_id)
+                    ->with('etudiant')
+                    ->get();
+
+        return response()->json($retards);
+    }
+
+    // ✅ Personnalisée : retards d’un étudiant entre deux dates
+    public function getByDateRange($etudiant_id, $date_debut, $date_fin)
+    {
+        $retards = Retard::where('etudiant_id', $etudiant_id)
+                    ->whereBetween('date', [$date_debut, $date_fin])
+                    ->with('etudiant')
+                    ->get();
+
+        return response()->json($retards);
+
+
     }
 }

@@ -37,14 +37,15 @@ class AuthController extends Controller
         $token = $utilisateur->createToken('auth_token')->plainTextToken;
 
         // Recherche du parent lié à cet utilisateur
-        $parent = $utilisateur->parent; // Assurez-vous que la relation est définie dans le modèle Utilisateur
-
+        $parent = $utilisateur->parent; 
+        $surveillant = $utilisateur->surveillant; // ← charge la relation surveillant
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
             'utilisateur' => $utilisateur,
             'role' => $utilisateur->role,
-            'parent' => $parent,  // Ajout des informations du parent
+            'parent' => $parent,
+            'surveillant' => $surveillant, // ← renvoie le surveillant
         ]);
     } catch (\Exception $e) {
         Log::error('Erreur login : ' . $e->getMessage());

@@ -5,14 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Etudiant;
 use App\Models\Evaluation;
 use App\Models\ParentModel ;
-
+use Barryvdh\DomPDF\Facade\Pdf; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Professeur;
+use App\Models\Matiere;
+use App\Models\Semestre;
+use App\Models\AnneeScolaire;
+use App\Models\Classe;
+use App\Models\Note;
 
 class EvaluationController extends Controller
 {
+    
     // Récupération des étudiants + leurs évaluations selon le professeur et la matière
     public function indexParClasseEtProfesseur($classeId, Request $request)
     {
@@ -55,6 +62,24 @@ class EvaluationController extends Controller
         }));
     }
 
+    // Afficher les notes par étudiant ID
+    public function show($etudiant_id)
+    {
+        $etudiant = Etudiant::find($etudiant_id);
+
+        if (!$etudiant) {
+            return response()->json(['message' => 'Étudiant non trouvé'], 404);
+        }
+
+        $evaluations = Evaluation::where('etudiant_id', $etudiant_id)
+            ->with(['matiere', 'professeur'])
+            ->get();
+
+        return response()->json([
+            'etudiant' => $etudiant,
+            'evaluations' => $evaluations
+        ]);
+    }
     // Enregistrement ou mise à jour des notes
     public function store(Request $request)
     {
@@ -202,6 +227,79 @@ public function getNotesByParent(Request $request)
     return response()->json($notes);
 }
 
+
+
+public function generateBulletin($etudiant_id, $semestre_id, $annee_scolaire_id)
+{
+    $etudiant = Etudiant::findOrFail($etudiant_id);
+
+    $evaluations = Evaluation::where('etudiant_id', $etudiant_id)
+        ->where('semestre_id', $semestre_id)
+        ->where('annee_scolaire_id', $annee_scolaire_id)
+        ->with(['professeur', 'matiere']) // تأكد ان العلاقة موجودة
+        ->get();
+
+    $data = [
+        'etudiant' => $etudiant,
+        'evaluations' => $evaluations,
+        'semestre' => $semestre_id,
+        'annee_scolaire' => $annee_scolaire_id,
+    ];
+
+    $pdf = PDF::loadView('bulletins.bulletin_pdf', $data);
+
+    return $pdf->download('bulletin_' . $etudiant->nom . '.pdf');
+}
+
+public function afficherBulletin($parent_id , $semestre_id, $anneeId)
+{
+    // Vérifier si le parent existe
+    $parent = ParentModel::find($parent_id);
+
+    $enfants = Etudiant::where('parent_id', $parent_id)->get();
+
+    $bulletins = [];
+
+    foreach ($enfants as $enfant) {
+        $evaluations = Evaluation::where('etudiant_id', $enfant->id)
+            ->where('semestre_id', $semestreId)
+            ->where('annee_scolaire_id', $anneeId)
+            ->with('matiere') // relation avec la matière
+            ->get();
+
+        $bulletins[] = [
+            'etudiant' => $enfant,
+            'evaluations' => $evaluations
+        ];
+    }
+
+    return view('bulletins.bulletin', compact('bulletins'));
+}
+public function voirBulletin($id)
+{
+    $etudiant = Etudiant::findOrFail($id);
+
+    $evaluations = Evaluation::where('etudiant_id', $id)
+        ->where('semestre_id', 1)
+        ->where('annee_scolaire_id', 1)
+        ->with('matiere')
+        ->get();
+
+    return view('etudiant.bulletin', compact('etudiant', 'evaluations'));
+}
+public function telechargerBulletinPDF($id)
+{
+    $etudiant = Etudiant::findOrFail($id);
+
+    $evaluations = Evaluation::where('etudiant_id', $id)
+        ->where('semestre_id', 1)
+        ->where('annee_scolaire_id', 1)
+        ->with('matiere')
+        ->get();
+
+    $pdf = Pdf::loadView('etudiant.bulletin_pdf', compact('etudiant', 'evaluations'));
+    return $pdf->download('Bulletin_'.$etudiant->nom.'.pdf');
+}
 
 
     // Récupération des notes d'un étudiant avec les informations de matière

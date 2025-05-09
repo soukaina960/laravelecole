@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 
 
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
+
 
 
 
@@ -117,7 +117,6 @@ class StudentController extends Controller
 
 
 
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 
 
@@ -167,7 +166,6 @@ class StudentController extends Controller
 
 
 
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 
 
@@ -221,7 +219,6 @@ class StudentController extends Controller
 
 
 
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
 
 
 
