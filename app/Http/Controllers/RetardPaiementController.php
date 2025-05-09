@@ -9,21 +9,22 @@ use Illuminate\Http\Request;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class RetardPaiementController extends Controller
 {
     public function index()
     {
-        $moisActuel = date('m');
-        $anneeActuelle = date('Y');
-
-        $etudiants = Etudiant::whereDoesntHave('paiements', function ($query) use ($moisActuel, $anneeActuelle) {
-            $query->whereMonth('mois', $moisActuel)
-                  ->whereYear('mois', $anneeActuelle);
-        })->get();
-
-        return response()->json($etudiants);
-    }
+        $etudiantsSansPaiement = DB::table('etudiants')
+        ->leftJoin('paiements_mensuels', 'etudiants.id', '=', 'paiements_mensuels.etudiant_id')
+        ->whereNull('paiements_mensuels.etudiant_id') // Condition pour récupérer ceux qui ne sont pas dans la table paiements_mensuels
+        ->select('etudiants.*') // Sélectionne toutes les colonnes des étudiants
+        ->get(); // Retourne la collection d'étudiants
+    
+    return response()->json([
+        'data' => $etudiantsSansPaiement
+    ]);    }
+    
 
     public function envoyerNotification($id)
     {

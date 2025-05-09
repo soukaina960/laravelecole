@@ -41,11 +41,15 @@ class Classroom extends Model
     }
 
 
+
+
     public function evenements()
     {
         return $this->hasMany(Evenement::class);
     }
     
+    // Relation avec Filiere
+ 
 
 
     // Relation avec Filiere
@@ -55,4 +59,5 @@ class Classroom extends Model
     }
 
 
+    
 }

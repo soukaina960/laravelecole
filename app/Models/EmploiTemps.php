@@ -23,16 +23,6 @@ class EmploiTemps extends Model
     }
     
 
-
-        return $this->belongsTo(Classroom::class, 'classe_id');
-    }
-    
-
-
-
-        return $this->belongsTo(Classroom::class, 'classe_id');
-    }
-
     public function matiere()
     {
         return $this->belongsTo(Matiere::class, 'matiere_id');

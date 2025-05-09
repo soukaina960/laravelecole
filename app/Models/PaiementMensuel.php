@@ -23,9 +23,15 @@ class PaiementMensuel extends Model
     // Relations avec d'autres modèles (si nécessaire)
     public function etudiant()
     {
-        return $this->belongsTo(Etudiant::class);
+        return $this->belongsTo(Etudiant::class, 'etudiant_id');
     }
     
+    
+// Relation avec Professeur
+public function professeur()
+{
+    return $this->hasOneThrough(Professeur::class, Etudiant::class);
+}
 
     // Si vous souhaitez formater des attributs comme la date
     protected $dates = ['date_paiement'];
@@ -34,14 +40,5 @@ class PaiementMensuel extends Model
     protected $casts = [
         'est_paye' => 'boolean',
     ];
-    protected static function booted()
-{
-    static::saved(function ($paiement) {
-        $paiement->etudiant->professeurs->each->recalculerSalaire();
-    });
-
-    static::deleted(function ($paiement) {
-        $paiement->etudiant->professeurs->each->recalculerSalaire();
-    });
-}
+ 
 }

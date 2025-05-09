@@ -145,6 +145,15 @@ public function getAbsentsCritiques()
 
 
 
+
+
+
+
+
+
+
+
+
     public function countEtudiantsAvecAbsenceSuperieureA15h()
     {
         $result = Absence::select('etudiant_id', DB::raw('COUNT(*) as total_absences'))
@@ -157,9 +166,27 @@ public function getAbsentsCritiques()
     
    
 
+
+
+
+
+
+
+
+
+    // Envoyer une notification par email au parent
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
+
+
+
+
+
+
+
+
+
 
 
         if (!$etudiant) {

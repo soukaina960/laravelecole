@@ -9,7 +9,8 @@ class Professeur extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','nom','email' ,'specialite', 'niveau_enseignement', 'diplome', 'date_embauche'];
+    protected $fillable = ['user_id','nom','email' ,'specialite', 'niveau_enseignement', 'diplome', 'date_embauche'
+    ,'pourcentage', 'prime', 'total', 'photo_profil'];  
    
     public function utilisateur()
     {
@@ -26,6 +27,12 @@ public function classes()
 {
     return $this->belongsToMany(Classe::class, 'professeur_id', 'classe_id');
 }
+// Dans le modèle Professeur
+public function etudiants()
+{
+    return $this->hasMany(Etudiant::class);
+}
+
 
 
 
@@ -79,52 +86,21 @@ public function paiementsMensuels($mois = null)
     return $etudiants->join('paiements_mensuels', 'etudiants.id', '=', 'paiements_mensuels.etudiant_id')
                      ->get(['etudiants.*', 'paiements_mensuels.*']);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-public function etudiants()
-{
-    return $this->belongsToMany(Etudiant::class);
-}
 public function recalculerSalaire()
 {
-    // Somme des montants payés par les étudiants de ce prof
+    // Somme des montants payés par les étudiants de ce professeur
     $totalMontants = $this->etudiants()
-        ->whereHas('paiements_mensuels', function ($query) {
+        ->withSum('paiements_mensuels as montant_paye', function ($query) {
             $query->where('est_paye', true);
         })
-        ->withSum(['paiements_mensuels as montant_paye' => function ($query) {
-            $query->where('est_paye', true);
-        }], 'montant')
         ->get()
-        ->sum('montant_paye');
-
-
-
-
-
-
-
-
-
-
+        ->sum('paiements_mensuels.montant_paye') + $this->etudiants()->sum('montant_a_payer');
 
     // Calcul du nouveau salaire
     $this->total = ($this->pourcentage / 100) * $totalMontants + $this->prime;
     $this->save();
 }
+
 protected static function booted()
 {
     static::updated(function ($professeur) {
@@ -133,6 +109,7 @@ protected static function booted()
         }
     });
 }
+
 
 
 

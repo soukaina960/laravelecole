@@ -1,18 +1,13 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Models\Retard;
+use Illuminate\Http\Request;
 
 
+class RetardController extends Controller
 
-
-
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-
-class Retard extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -56,5 +51,9 @@ class Retard extends Model
     
 
 
+
     
-}
+
+
+    }
+

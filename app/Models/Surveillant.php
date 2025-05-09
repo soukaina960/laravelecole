@@ -9,14 +9,23 @@ class Surveillant extends Model
 {
     use HasFactory;
 
-    protected $table = 'surveillant'; // Parce que les surveillants f table utilisateurs
+
+// Parce que les surveillants f table utilisateurs
+
+
+    protected $table = 'surveillant';
 
     protected $fillable = [
         'nom',
         'prenom',
         'email',
+
         'password',
         'role',
+
+       'password',
+        'user_id', // Si la relation se fait via `user_id`
+
     ];
     // Relations
     public function utilisateur()

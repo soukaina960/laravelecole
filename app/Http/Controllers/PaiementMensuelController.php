@@ -15,6 +15,39 @@ use Illuminate\Support\Facades\Auth;
 
 class PaiementMensuelController extends Controller
 {
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'etudiant_id' => 'required|exists:etudiants,id'
+        ]);
+    
+        // Get current month in the correct format
+        $moisCourant = Carbon::now()->format('m'); // Or 'Y-m-d' depending on your needs
+        
+    
+        // Check for existing payment
+        $paiementExistant = PaiementMensuel::where('etudiant_id', $request->etudiant_id)
+                                            ->where('mois', $moisCourant)
+                                            ->first();
+    
+        if ($paiementExistant) {
+            return response()->json([
+                'message' => 'Un paiement existe déjà pour ce mois',
+                'paiement' => $paiementExistant
+            ], 409);
+        }
+    
+        // Create payment
+        $paiement = PaiementMensuel::create([
+            'etudiant_id' => $request->etudiant_id,
+            'mois' => $moisCourant, // Format depends on your column definition
+            'date_paiement' => Carbon::now()->toDateString(),
+            'est_paye' => true,
+        ]);
+    
+        return response()->json($paiement, 201);
+    }
+    
     // PaiementController.php
 
     public function getCountEtudiantsSansPaiement()
@@ -38,50 +71,6 @@ class PaiementMensuelController extends Controller
         return response()->json($paiements);
     }
 
-    // Méthode pour créer un paiement mensuel
-    public function store(Request $request)
-    {
-        // Validation des données
-        $validated = $request->validate([
-            'etudiant_id' => 'required|exists:etudiants,id'
-            // On retire la validation du mois car il sera généré automatiquement
-        ]);
-    
-        // Générer automatiquement le mois courant au format "YYYY-MM-01"
-        $moisCourant = Carbon::now()->format('Y-m');
-    
-        // Vérifier si un paiement existe déjà pour ce mois
-        $paiementExistant = PaiementMensuel::where('etudiant_id', $request->etudiant_id)
-                                            ->where('mois', $moisCourant)
-                                            ->first();
-    
-        if ($paiementExistant) {
-            return response()->json([
-                'message' => 'Un paiement existe déjà pour ce mois',
-                'paiement' => $paiementExistant
-            ], 409);
-        }
-    
-// ✅ Accepter le format Y-m (ex: 2025-04
-        // Convertir le mois en 'Y-m-d' (ex: 2025-04-01)
-        $moisComplet = Carbon::createFromFormat('Y-m', $request->mois)->startOfMonth();
-    
-        // Enregistrement du paiement mensuel
-        $paiement = PaiementMensuel::create([
-            'etudiant_id' => $request->etudiant_id,
-            'mois' => $moisCourant, // Mois courant généré automatiquement
-            'date_paiement' => Carbon::now()->toDateString(),
-            'est_paye' => true,
-            'mois' => $moisComplet->toDateString(), // Enregistre au format Y-m-d
-            'date_paiement' => Carbon::now()->toDateString(),
-            'est_paye' => true,
-        ]);
-    
-    
-        return response()->json($paiement, 201);
-    }
-    
-    
     
     // Méthode pour afficher un paiement mensuel spécifique
     public function show($id)

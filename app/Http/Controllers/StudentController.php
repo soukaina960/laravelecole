@@ -4,38 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -44,13 +12,6 @@ use App\Models\ParentModel;
 use App\Models\Classe;
 use App\Models\Utilisateur;
 use Illuminate\Validation\ValidationException;
-
-
-
-
-
-
-
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class StudentController extends Controller
@@ -94,17 +55,18 @@ class StudentController extends Controller
         return response()->json($etudiant, 201);
     }
 
-    public function index()
-    {
-        $etudiants = Etudiant::with('classroom')->get();
-
-        $etudiants->each(function ($etudiant) {
-            if ($etudiant->photo_profil) {
-                $etudiant->photo_profil_url = asset('storage/' . $etudiant->photo_profil);
-            }
-        });
-
-        return response()->json($etudiants);
+    public function index(Request $request)
+{
+    // Initialise la requête avec classroom
+    $query = Etudiant::with('classroom');
+    
+    // Vérifie si on doit inclure les professeurs
+    if ($request->has('include')) {
+        $includes = explode(',', $request->include);
+        
+        if (in_array('professeurs', $includes)) {
+            $query->with('professeurs');
+        }
     }
 
 
@@ -140,6 +102,22 @@ class StudentController extends Controller
 
 
 
+
+
+
+    
+    // Exécute la requête
+    $etudiants = $query->get();
+    
+    // Ajoute les URLs des photos
+    $etudiants->each(function ($etudiant) {
+        $etudiant->photo_profil_url = $etudiant->photo_profil 
+            ? asset('storage/' . $etudiant->photo_profil)
+            : asset('storage/default_image.png');
+    });
+    
+    return response()->json($etudiants);
+}
 
 
 
@@ -201,6 +179,8 @@ class StudentController extends Controller
 
 
 
+
+
     public function getEtudiantsParClasse($classeId)
 {
     $etudiants = DB::table('etudiants')
@@ -209,6 +189,8 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
+
+
 
 
 
