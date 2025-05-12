@@ -432,7 +432,7 @@ Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
 
 
-Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
+// Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 
 
 
