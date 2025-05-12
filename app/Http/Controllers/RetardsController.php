@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Retard;
+use App\Models\Etudiant;
+use App\Models\Professeur;
+use App\Models\Classroom;
+use App\Models\Matiere;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RetardsController extends Controller
 {
+    use HasFactory;
     public function index()
     {
         return response()->json(Retard::with('etudiant')->get());

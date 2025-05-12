@@ -86,7 +86,7 @@ Route::get('/reclamations/parent/{id}', [ReclamationController::class, 'reclamat
 Route::put('/reclamations/{id}/annuler', [ReclamationController::class, 'annuler']);
 Route::delete('/reclamations/{id}', [ReclamationController::class, 'destroy']);
 
-
+Route::get('/reclamations/attente' , [ReclamationController::class , 'getAttendedRec']);
 
 
 use App\Http\Controllers\StatistiqueMensuelleController;
@@ -687,8 +687,8 @@ Route::post('/quizzes', [QuizController::class, 'store']);
 Route::get('/quizzes/{id}', [QuizController::class, 'show']);
 Route::delete('/quizzes/{id}', [QuizController::class, 'destroy']);
 // Temporairement dans routes/api.php
-
-
+Route::delete('/absences/{id}', [AbsenceController::class, 'destroy']);
+Route::delete('/retards/{id}', [RetardsController::class, 'destroy']);
 
 Route::get('/bulletin/{etudiant_id}/{semestre_id}/{annee_scolaire_id}', [EvaluationController::class, 'generateBulletin']);
 Route::get('/bulletin/{parent_id}', [EvaluationController::class, 'afficherBulletin']);

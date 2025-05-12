@@ -60,7 +60,7 @@ class ParentController extends Controller
             'prenom' => $validatedData['parent']['prenom'],
             'telephone' => $validatedData['parent']['telephone'] ?? $parent->telephone,
             'email' => $validatedData['user']['email'],
-            'password' => $validatedData['user']['password'] ? bcrypt($validatedData['user']['password']) : $user->password
+            'password' => $validatedData['user']['password'] ? bcrypt($validatedData['user']['password']) : $user->password,
         ]);;
 
         if (!empty($validatedData['user']['password'])) {

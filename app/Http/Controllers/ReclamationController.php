@@ -29,6 +29,16 @@ class ReclamationController extends Controller
         $reclamations = Reclamation::with('parent')->get();
         return response()->json($reclamations);
     }
+    public function getAttendedRec()
+    {
+        $reclamations = Reclamation::where('statut', 'en attente')
+        ->with('parent')
+        ->get();
+    
+        return response()->json($reclamations);
+    }
+    
+
     public function update(Request $request, $id)
 {
     $reclamation = Reclamation::findOrFail($id);
