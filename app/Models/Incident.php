@@ -15,6 +15,7 @@ class Incident extends Model
         'professeur_id',
         'class_id',
         'matiere_id',
+        'surveillant_id',
     ];
 
     public function etudiant()
@@ -33,6 +34,10 @@ class Incident extends Model
     public function matiere()
     {
         return $this->belongsTo(Matiere::class , 'matiere_id');
+    }
+    public function surveillant()
+    {
+        return $this->belongsTo(Surveillant::class , 'surveillant_id');
     }
 }
 

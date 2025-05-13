@@ -1,7 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+<<<<<<< HEAD
 
+=======
+use Illuminate\Support\Facades\Log;
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DemandeAttestation;
@@ -117,9 +121,10 @@ class DemandeAttestationController extends Controller
 
     // Traiter la demande et générer l'attestation en PDF
     public function traiterDemande($id)
-    {
-        $demande = DemandeAttestation::findOrFail($id);
+{
+    $demande = DemandeAttestation::findOrFail($id);
 
+<<<<<<< HEAD
         if ($demande->traitee) {
             return response()->json(['message' => 'Cette demande a déjà été traitée.'], 400);
         }
@@ -161,6 +166,45 @@ class DemandeAttestationController extends Controller
 
     // Fonction privée pour obtenir la configuration de l'école
     private function getSchoolConfig()
+=======
+    if ($demande->traitee) {
+        return response()->json(['message' => 'Cette demande a déjà été traitée.'], 400);
+    }
+
+    $etudiant = $demande->etudiant;
+
+    $config = ConfigAttestation::first() ?? $this->getSchoolConfig();
+
+    $attestation = [
+        'date_emission' => now()->format('d/m/Y'),
+        'annee_universitaire' => $config->annee_scolaire ?? date('Y') . '/' . (date('Y') + 1)
+    ];
+
+    // Générer le PDF
+    $pdf = Pdf::loadView('pdf.attestation', [
+        'etudiant' => $etudiant,
+        'config' => $config,
+        'attestation' => (object)$attestation
+    ])->setOption('enable-php', true); // ✅ correction ici
+
+    // Enregistrer le PDF dans le disque public
+    $pdfPath = 'attestations/attestation_' . $etudiant->id . '_' . time() . '.pdf';
+    Storage::disk('public')->put($pdfPath, $pdf->output());
+
+    // Marquer la demande comme traitée
+    $demande->update([
+        'traitee' => true,
+        'lien_attestation' => $pdfPath
+    ]);
+
+    return response()->json([
+        'message' => 'Demande traitée avec succès !',
+        'lien' => asset('storage/' . $pdfPath)
+    ]);
+}
+
+    private function getSchoolConfig() // ✅ utilisé ici
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
     {
         return (object)[
             'nom_ecole' => 'Institut Supérieur de Technologie Hay Salam',

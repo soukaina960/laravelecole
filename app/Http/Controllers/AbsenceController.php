@@ -47,6 +47,7 @@ public function getAbsentsCritiques()
             'professeur_id' => 'required|exists:professeurs,id',
             'class_id' => 'required|exists:classrooms,id',
             'matiere_id' => 'required|exists:matieres,id',
+            'surveillant_id' => 'required|exists:surveillant,id',
         ]);
 
         $justifiee = ($validated['justifiee'] === 'oui') ? 1 : 0;
@@ -59,6 +60,7 @@ public function getAbsentsCritiques()
             'motif' => $validated['motif'],
             'class_id' => $validated['class_id'],
             'matiere_id' => $validated['matiere_id'],
+            'surveillant_id' => $validated['surveillant_id'],
         ]);
 
         return response()->json($absence, 201);
@@ -139,6 +141,7 @@ public function getAbsentsCritiques()
 
 
 
+<<<<<<< HEAD
   
 
 
@@ -148,6 +151,8 @@ public function getAbsentsCritiques()
 
 
 
+=======
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
 
 
 
@@ -181,6 +186,7 @@ public function getAbsentsCritiques()
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -195,6 +201,9 @@ public function getAbsentsCritiques()
 
     // Envoyer une notification par email au parent
 
+=======
+    // Envoyer une notification par email au parent
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
@@ -209,6 +218,7 @@ public function getAbsentsCritiques()
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -228,6 +238,8 @@ public function getAbsentsCritiques()
 
 
 
+=======
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);
         }

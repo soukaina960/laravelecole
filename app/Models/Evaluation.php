@@ -72,5 +72,10 @@ class Evaluation extends Model
 
     // Ajout de la logique pour vérifier ou assigner automatiquement le semestre
     // app/Models/Evaluation.php
+<<<<<<< HEAD
  
+=======
+
+    
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
 }

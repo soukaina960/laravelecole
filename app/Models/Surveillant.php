@@ -9,52 +9,44 @@ class Surveillant extends Model
 {
     use HasFactory;
 
-    protected $table = 'utilisateurs'; // Parce que les surveillants f table utilisateurs
+
+// Parce que les surveillants f table utilisateurs
+
+
+    protected $table = 'surveillant';
 
     protected $fillable = [
         'nom',
+        'prenom',
         'email',
-        'matricule',
-        'mot_de_passe',
+
+        'password',
         'role',
-        'telephone',
-        'adresse',
-        'photo_profil',
+
+       'password',
+        'user_id', // Si la relation se fait via `user_id`
+
     ];
-
-    // 🔁 Relations
-
+    // Relations
+    public function utilisateur()
+    {
+        return $this->belongsTo(Utilisateur::class, 'user_id'); 
+    }
     public function absences()
     {
-        return $this->hasMany(Absence::class, 'surveillant_id');
+        return $this->hasMany(Absence::class , 'surveillant_id');
     }
-  public function utilisateur()
-    {
-        return $this->hasOne(Utilisateur::class, 'id', 'user_id'); // Si la relation se fait via `user_id`
-    }
-
     public function retards()
     {
-        return $this->hasMany(Retard::class, 'surveillant_id');
+        return $this->hasMany(Retard::class , 'surveillant_id');
     }
-
-    public function emploiSurveillant()
-    {
-        return $this->hasMany(EmploiSurveillant::class, 'surveillant_id');
-    }
-
-    public function sanctions()
-    {
-        return $this->hasMany(Sanction::class, 'surveillant_id');
-    }
-
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class, 'surveillant_id');
-    }
-
     public function incidents()
     {
-        return $this->hasMany(Incident::class, 'surveillant_id');
+        return $this->hasMany(Incident::class , 'surveillant_id');
     }
+   
+
+
+
+  
 }

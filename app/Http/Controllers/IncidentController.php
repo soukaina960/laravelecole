@@ -23,6 +23,7 @@ public function store(Request $request)
             'professeur_id' => 'required|exists:professeurs,id',
             'class_id' => 'required|exists:classrooms,id',
             'matiere_id' => 'required|exists:matieres,id',
+            'surveillant_id' => 'required|exists:surveillant,id',
         ]);
 
         $incident = Incident::create($request->all());

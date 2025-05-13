@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('absences', function (Blueprint $table) {
-            $table->unsignedBigInteger('matiere_id')->nullable(); // Ajout de la colonne class_id
-            $table->foreign('matiere_id')->references('id')->on('matieres')->onDelete('set null'); // Clé étrangère vers la table classes
-        });
+            $table->unsignedBigInteger('surveillant_id')->nullable()->after('id');
+
+            // Si tu veux ajouter une contrainte de clé étrangère :
+            $table->foreign('surveillant_id')->references('id')->on('surveillant')->onDelete('set null');        });
     }
 
     /**
@@ -23,7 +24,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('absences', function (Blueprint $table) {
-            //
+            $table->dropForeign(['surveillant_id']);
+            $table->dropColumn('surveillant_id');
         });
     }
 };

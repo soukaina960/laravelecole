@@ -6,6 +6,14 @@
 
     ],
 
+    "content-hash": "b6196b4e980abf4dd06472470dcca3e2",
+
+    "content-hash": "5283cc1bd6be68428b4fe2631eaaca7f",
+
+   
+
+
+
     "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
 
 
@@ -40,6 +48,7 @@
     "content-hash": "26c24cc4bab5aa4d724cd85e6edd0f4c",
 
     "content-hash": "7e9441d6e7558eb84949b1e166e4728d",
+
 
 
 
@@ -2800,6 +2809,7 @@
             "time": "2024-11-21T10:39:51+00:00"
         },
         {
+<<<<<<< HEAD
 
 
 
@@ -3021,6 +3031,8 @@
 
 
 
+=======
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
             "name": "phpmailer/phpmailer",
             "version": "v6.10.0",
             "source": {
@@ -3102,6 +3114,7 @@
             "time": "2025-04-24T15:19:31+00:00"
         },
         {
+<<<<<<< HEAD
 
 
 
@@ -3134,6 +3147,8 @@
 
 
 
+=======
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
             "name": "phpoption/phpoption",
             "version": "1.9.3",
             "source": {

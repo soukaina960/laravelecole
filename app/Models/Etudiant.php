@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\classroom;
+use App\Models\PaiementMensuel;
+
 
 
 
@@ -60,8 +62,17 @@ public function attendances()
     }
     public function professeurs()
     {
-        return $this->belongsToMany(Professeur::class);
+        return $this->belongsToMany(Professeur::class, 'etudiant_professeur', 'etudiant_id', 'professeur_id');
     }
+    // App\Models\Etudiant.php
+
+    public function paiements()
+    {
+        return $this->hasMany(PaiementMensuel::class, 'etudiant_id');
+    }
+    
+
+    
     
 
     public function absences()
@@ -106,6 +117,7 @@ public function attendances()
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -122,6 +134,8 @@ public function attendances()
 
 
 
+=======
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
 
 
 
@@ -165,6 +179,7 @@ public function utilisateur()
 
 
 
+<<<<<<< HEAD
     
 
 public function professeur() {
@@ -222,6 +237,8 @@ public function professeur() {
 
 
 
+=======
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);
@@ -236,10 +253,6 @@ public function evaluations()
 
 
 
-    public function paiements()
-{
-    return $this->hasMany(PaiementMensuel::class);
-}
 public function paiements_mensuels()
 {
     return $this->hasMany(PaiementMensuel::class);
@@ -255,6 +268,10 @@ protected static function booted()
 }
 
 
+public function paiementsMensuels()
+{
+    return $this->hasMany(PaiementMensuel::class);
+}
 
 
 }

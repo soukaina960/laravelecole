@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Retard;
+use App\Models\Etudiant;
+use App\Models\Professeur;
+use App\Models\Classroom;
+use App\Models\Matiere;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RetardsController extends Controller
 {
+    use HasFactory;
     public function index()
     {
         return response()->json(Retard::with('etudiant')->get());
@@ -21,6 +27,7 @@ class RetardsController extends Controller
         'professeur_id' => 'required|exists:professeurs,id',
         'class_id' => 'required|exists:classrooms,id',
         'matiere_id' => 'required|exists:matieres,id',
+        'surveillant_id' => 'required|exists:surveillant,id',
     ]);
 
     $retard = Retard::create($validated);
@@ -65,5 +72,30 @@ class RetardsController extends Controller
 
         // Retourne les absences sous forme de JSON
         return response()->json($absences);
+    }
+    
+
+    
+    // ✅ Personnalisée : retards d’un étudiant
+    public function getByEtudiant($etudiant_id)
+    {
+        $retards = Retard::where('etudiant_id', $etudiant_id)
+                    ->with('etudiant')
+                    ->get();
+
+        return response()->json($retards);
+    }
+
+    // ✅ Personnalisée : retards d’un étudiant entre deux dates
+    public function getByDateRange($etudiant_id, $date_debut, $date_fin)
+    {
+        $retards = Retard::where('etudiant_id', $etudiant_id)
+                    ->whereBetween('date', [$date_debut, $date_fin])
+                    ->with('etudiant')
+                    ->get();
+
+        return response()->json($retards);
+
+
     }
 }

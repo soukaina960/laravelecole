@@ -10,9 +10,11 @@
             color: #333;
         }
 
+        /* Couleurs principales */
         :root {
-            --green-dark: #2A9D8F;
-            --green-light: #CFF5EE;
+            --blue-dark: #27548A;
+            --blue-light: #9EC6F3;
+            --red-soft: #e63946;
         }
 
         .header-table {
@@ -32,22 +34,26 @@
         h2 {
             margin: 0;
             font-size: 20px;
-            color: var(--green-dark);
+            color: var(--blue-dark);
         }
 
         h3 {
             text-align: center;
-            color: var(--green-dark);
+            color: var(--blue-dark);
             margin-top: 30px;
+        }
+
+        .center {
+            text-align: center;
         }
 
         p {
             margin: 4px 0;
         }
 
-        .receipt-info-box {
-            border: 1px solid var(--green-light);
-            background-color: #f7fdfa;
+        .student-info-box {
+            border: 1px solid var(--blue-light);
+            background-color: #f7fbff;
             padding: 10px 15px;
             margin: 20px 0;
             display: flex;
@@ -61,7 +67,7 @@
         }
 
         .info-item strong {
-            color: var(--green-dark);
+            color: var(--blue-dark);
         }
 
         table {
@@ -73,12 +79,16 @@
         th, td {
             border: 1px solid #ccc;
             padding: 8px;
-            text-align: center;
         }
 
         th {
-            background-color: var(--green-light);
+            background-color: var(--blue-light);
             color: #000;
+        }
+
+        tfoot td {
+            font-weight: bold;
+            background-color: #f0f0f0;
         }
 
         .footer {
@@ -92,13 +102,13 @@
 </head>
 <body>
 
-    <!-- En-tête de l’établissement -->
+    <!-- En-tête établissement -->
     <table class="header-table">
         <tr>
             <td style="width: 20%;">
                 <img src="{{ public_path('image.png') }}" class="logo">
             </td>
-            <td style="text-align: center;">
+            <td class="center">
                 <h2>Établissement Skolyx</h2>
                 <p>Adresse : Rue Exemple, Casablanca</p>
                 <p>Tél : 05 22 00 00 00 - Email : contact@skolyx.ma</p>
@@ -107,34 +117,42 @@
     </table>
 
     <!-- Titre -->
-    <h3>Reçu de Paiement</h3>
+    <h3>Bulletin Scolaire</h3>
 
-    <!-- Informations de paiement -->
-    <div class="receipt-info-box">
-        <div class="info-item"><strong>Nom de l'école :</strong> {{ $ecole }}</div>
-        <div class="info-item"><strong>Nom de l’étudiant :</strong> {{ $etudiant->nom }} {{ $etudiant->prenom }}</div>
-        <div class="info-item"><strong>Nom du parent :</strong> {{ $parent->nom }} {{ $parent->prenom }}</div>
-        <div class="info-item"><strong>Mois de paiement :</strong> {{ $paiement->mois }}</div>
-        <div class="info-item"><strong>Date de paiement :</strong> {{ $paiement->date_paiement }}</div>
-        <div class="info-item"><strong>Statut de paiement :</strong> {{ $paiement->est_paye ? 'Payé' : 'Non payé' }}</div>
+    <!-- Informations de l’étudiant -->
+    <div class="student-info-box">
+        <div class="info-item"><strong>Nom :</strong> Farah Aitouhlal</div>
+        <div class="info-item"><strong>Date de naissance :</strong> 2004-05-10</div>
+        <div class="info-item"><strong>Classe :</strong> DD1-A</div>
+        <div class="info-item"><strong>Année scolaire :</strong> 2024-2025</div>
+        <div class="info-item"><strong>Nombre total :</strong> 30</div>
+        <div class="info-item"><strong>Semestre :</strong> Semestre 1</div>
     </div>
 
-    <!-- Tableau -->
+    <!-- Tableau des évaluations -->
     <table>
         <thead>
             <tr>
-                <th>Mois</th>
-                <th>Date de paiement</th>
-                <th>État du paiement</th>
+                <th>Matière</th>
+                <th>Note Finale</th>
+                <th>Remarque</th>
             </tr>
         </thead>
         <tbody>
+            @foreach($evaluations as $eval)
             <tr>
-                <td>{{ $paiement->mois }}</td>
-                <td>{{ $paiement->date_paiement }}</td>
-                <td>{{ $paiement->est_paye ? 'Payé' : 'Non payé' }}</td>
+                <td>{{ $eval->matiere->nom ?? $eval->professeur->specialite ?? 'N/A' }}</td>
+                <td>{{ $eval->note_finale }}</td>
+                <td>{{ $eval->remarque }}</td>
             </tr>
+            @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">Moyenne Générale</td>
+                <td>{{ $moyenneGenerale }}</td>
+            </tr>
+        </tfoot>
     </table>
 
     <!-- Pied de page -->

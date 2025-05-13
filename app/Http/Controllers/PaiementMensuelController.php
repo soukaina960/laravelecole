@@ -15,6 +15,39 @@ use Illuminate\Support\Facades\Auth;
 
 class PaiementMensuelController extends Controller
 {
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'etudiant_id' => 'required|exists:etudiants,id'
+        ]);
+    
+        // Get current month in the correct format
+        $moisCourant = Carbon::now()->format('m'); // Or 'Y-m-d' depending on your needs
+        
+    
+        // Check for existing payment
+        $paiementExistant = PaiementMensuel::where('etudiant_id', $request->etudiant_id)
+                                            ->where('mois', $moisCourant)
+                                            ->first();
+    
+        if ($paiementExistant) {
+            return response()->json([
+                'message' => 'Un paiement existe déjà pour ce mois',
+                'paiement' => $paiementExistant
+            ], 409);
+        }
+    
+        // Create payment
+        $paiement = PaiementMensuel::create([
+            'etudiant_id' => $request->etudiant_id,
+            'mois' => $moisCourant, // Format depends on your column definition
+            'date_paiement' => Carbon::now()->toDateString(),
+            'est_paye' => true,
+        ]);
+    
+        return response()->json($paiement, 201);
+    }
+    
     // PaiementController.php
 
     public function getCountEtudiantsSansPaiement()
@@ -38,6 +71,7 @@ class PaiementMensuelController extends Controller
         return response()->json($paiements);
     }
 
+<<<<<<< HEAD
     // Méthode pour créer un paiement mensuel
     public function store(Request $request)
     {
@@ -77,6 +111,8 @@ class PaiementMensuelController extends Controller
     }
     
     
+=======
+>>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
     
     
     // Méthode pour afficher un paiement mensuel spécifique

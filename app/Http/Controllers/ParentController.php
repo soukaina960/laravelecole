@@ -55,7 +55,13 @@ class ParentController extends Controller
         ]);
 
         // Mise à jour des informations de l'utilisateur
-        $user->email = $validatedData['user']['email'];
+        $user->update([
+            'nom' => $validatedData['parent']['nom'],
+            'prenom' => $validatedData['parent']['prenom'],
+            'telephone' => $validatedData['parent']['telephone'] ?? $parent->telephone,
+            'email' => $validatedData['user']['email'],
+            'password' => $validatedData['user']['password'] ? bcrypt($validatedData['user']['password']) : $user->password,
+        ]);;
 
         if (!empty($validatedData['user']['password'])) {
             // Si un nouveau mot de passe est fourni, le hacher

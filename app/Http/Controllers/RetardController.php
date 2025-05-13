@@ -16,14 +16,19 @@ class RetardController extends Controller
     {
         $request->validate([
             'etudiant_id' => 'required|exists:etudiants,id',
+            'professeur_id' => 'required|exists:professeurs,id',
+            'class_id' => 'required|exists:classrooms,id',
+            'matiere_id' => 'required|exists:matieres,id',
             'date' => 'required|date',
-            'heure' => 'required',
+            'heure' => 'required|date_format:H:i',
+            'surveillant_id' => 'required|exists:surveillant,id',
         ]);
-
+    
         $retard = Retard::create($request->all());
-
+    
         return response()->json($retard, 201);
     }
+    
 
     public function show($id)
     {
