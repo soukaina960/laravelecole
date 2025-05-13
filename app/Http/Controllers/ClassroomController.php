@@ -65,8 +65,20 @@ class ClassroomController extends Controller
     public function students($id)
     {
         $etudiants = Etudiant::where('classe_id', $id)->get();
+    
+        // Nettoyage des caractères mal encodés
+        $etudiants = $etudiants->map(function ($etudiant) {
+            foreach ($etudiant->getAttributes() as $key => $value) {
+                if (is_string($value)) {
+                    $etudiant->$key = utf8_encode($value);
+                }
+            }
+            return $etudiant;
+        });
+    
         return response()->json($etudiants);
     }
+    
     
 
     public function show($id)

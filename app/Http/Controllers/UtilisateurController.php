@@ -84,7 +84,7 @@ class UtilisateurController extends Controller
                 $mail->setFrom('aitouhlalfarah18@gmail.com', 'Administration');
                 $mail->addAddress($utilisateur->email, $utilisateur->nom);
                 $mail->Subject = 'Votre compte a été créé';
-                $mail->Body = "Bonjour {$utilisateur->nom},\n\nVotre compte a été créé avec succès.\nVoici votre mot de passe : {$password}\n\nMerci de le changer après connexion.";
+                $mail->Body = "Bonjour {$utilisateur->nom},\n\nVotre compte a été créé avec succès.\nVoici votre mot de passe : {$password} et votre matricule  :{$utilisateur->matricule}   \n\nMerci de le changer après connexion.";
 
                 if (!$mail->send()) {
                     Log::error('Email non envoyé: ' . $mail->ErrorInfo);

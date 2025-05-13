@@ -4,16 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
-
-
-
-
-
-
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
->>>>>>> e8fd732 (Normalize)
 
 
 
@@ -38,8 +28,6 @@ use Illuminate\Http\Request;
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -54,7 +42,17 @@ use Illuminate\Http\Request;
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
+
+
+
+
+
+
+
+
+
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -117,84 +115,32 @@ class StudentController extends Controller
     public function index()
     {
         $etudiants = Etudiant::with('classroom')->get();
-
-        $etudiants->each(function ($etudiant) {
-            if ($etudiant->photo_profil) {
-                $etudiant->photo_profil_url = asset('storage/' . $etudiant->photo_profil);
+    
+        $etudiants = $etudiants->map(function ($etudiant) {
+            // Convertir les champs de l'étudiant principal
+            foreach ($etudiant->getAttributes() as $key => $value) {
+                if (is_string($value)) {
+                    $etudiant->$key = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+                }
             }
+    
+            // Convertir les champs de la relation classroom
+            if ($etudiant->relationLoaded('classroom') && $etudiant->classroom) {
+                foreach ($etudiant->classroom->getAttributes() as $key => $value) {
+                    if (is_string($value)) {
+                        $etudiant->classroom->$key = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+                    }
+                }
+            }
+    
+            return $etudiant;
         });
-
-        return response()->json($etudiants);
+    
+        return response()->json($etudiants, 200, [], JSON_UNESCAPED_UNICODE);
     }
-<<<<<<< HEAD
-=======
+     
+    
 
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> e8fd732 (Normalize)
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
->>>>>>> e8fd732 (Normalize)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
->>>>>>> e8fd732 (Normalize)
     public function show($id)
 {
     $etudiant = Etudiant::with('classroom', 'professeurs')->findOrFail($id);
@@ -209,67 +155,6 @@ class StudentController extends Controller
 
 
 
-
-
-
-
-
-
-
-<<<<<<< HEAD
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
-
-
-
-
-
-
->>>>>>> 85d9dd7 (exman)
-
-
-
-
-
->>>>>>> e8fd732 (Normalize)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> e8fd732 (Normalize)
-
     public function getEtudiantsParClasse($classeId)
 {
     $etudiants = DB::table('etudiants')
@@ -278,73 +163,7 @@ class StudentController extends Controller
 
     return response()->json($etudiants);
 }
-<<<<<<< HEAD
-=======
 
-
-
-
-
-
-
-
-
-
-
->>>>>>> 85d9dd7 (exman)
->>>>>>> e8fd732 (Normalize)
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
->>>>>>> 1843d24962a3dec636a2679bdf86cf5987c1c4da
-=======
->>>>>>> e8fd732 (Normalize)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
->>>>>>> e8fd732 (Normalize)
 
     public function update(Request $request, $id)
     {

@@ -32,10 +32,9 @@ class Utilisateur extends Authenticatable
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> e8fd732 (Normalize)
+
+
 
 
 
@@ -48,11 +47,11 @@ class Utilisateur extends Authenticatable
 
 
 
-<<<<<<< HEAD
+
     // Relation avec l'étudiant
 
-=======
->>>>>>> e8fd732 (Normalize)
+
+
     
 
    
@@ -68,21 +67,20 @@ class Utilisateur extends Authenticatable
 
 
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> e8fd732 (Normalize)
+
+
     public function professeur()
     {
         return $this->hasOne(Professeur::class, 'user_id'); 
     }
     
 
-<<<<<<< HEAD
 
-=======
->>>>>>> e8fd732 (Normalize)
+
+
+
 
     // Relation avec l'étudiant
 
@@ -104,10 +102,10 @@ class Utilisateur extends Authenticatable
     
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> e8fd732 (Normalize)
+
+
+
     public function surveillant()
     {
         return $this->hasOne(Surveillant::class, 'user_id'); 
@@ -126,23 +124,21 @@ public function etudiant()
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
   public function admin()
 {
     return $this->hasOne(Admin::class, 'user_id');
 } 
 
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> e8fd732 (Normalize)
+
+
    
    
     
@@ -161,11 +157,10 @@ public function etudiant()
 
 
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> e8fd732 (Normalize)
+
+
 public function parent()
 {
     return $this->hasOne(ParentModel::class, 'user_id'); // user_id = colonne dans la table parents

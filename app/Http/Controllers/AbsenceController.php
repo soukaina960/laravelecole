@@ -137,13 +137,9 @@ public function getAbsentsCritiques()
     }
 
 
-<<<<<<< HEAD
-
-    use Illuminate\Support\Facades\DB;
-=======
 
 
-    use Illuminate\Support\Facades\DB;
+  
 
 
 
@@ -151,19 +147,19 @@ public function getAbsentsCritiques()
 
 
 
->>>>>>> 85d9dd7 (exman)
->>>>>>> e8fd732 (Normalize)
 
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
+
+
+
 
     public function countEtudiantsAvecAbsenceSuperieureA15h()
     {
@@ -177,8 +173,7 @@ public function getAbsentsCritiques()
     
    
 
-<<<<<<< HEAD
-=======
+
 
 
 
@@ -199,21 +194,11 @@ public function getAbsentsCritiques()
 
 
     // Envoyer une notification par email au parent
->>>>>>> e8fd732 (Normalize)
+
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
->>>>>>> f638a544eba774a2d2daae48a4c990c1b9ef9a4b
 
 
 
@@ -233,7 +218,15 @@ public function getAbsentsCritiques()
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
+
+
+
+
+
+
+
 
         if (!$etudiant) {
             return response()->json(['status' => 'error', 'message' => 'Étudiant non trouvé'], 404);

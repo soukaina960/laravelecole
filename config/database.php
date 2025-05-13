@@ -40,6 +40,8 @@ return [
             'busy_timeout' => null,
             'journal_mode' => null,
             'synchronous' => null,
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
         ],
 
         'mysql' => [

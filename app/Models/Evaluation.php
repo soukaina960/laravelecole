@@ -72,9 +72,5 @@ class Evaluation extends Model
 
     // Ajout de la logique pour vérifier ou assigner automatiquement le semestre
     // app/Models/Evaluation.php
-public function matiere()
-{
-    return $this->belongsTo(Matiere::class);
-}
-    
+ 
 }

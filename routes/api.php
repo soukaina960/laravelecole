@@ -21,10 +21,9 @@ use App\Http\Controllers\AbsenceController;
 
 use App\Http\Controllers\NotificationController;
 
-<<<<<<< HEAD
+
 use App\Http\Controllers\NotificationsController;
 
-=======
 
 
 
@@ -38,7 +37,8 @@ use App\Http\Controllers\NotificationsController;
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
 
 
 use App\Http\Controllers\PaiementMensuelController;
@@ -46,14 +46,13 @@ use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\PaiementController;
 
 
-<<<<<<< HEAD
-=======
 
 
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
 
 
 
@@ -68,8 +67,6 @@ use App\Http\Controllers\PaiementController;
 
 
 use App\Http\Controllers\QuizController;
-<<<<<<< HEAD
-=======
 
 
 
@@ -91,7 +88,8 @@ use App\Http\Controllers\QuizController;
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\SemestreController;
@@ -99,7 +97,7 @@ use App\Http\Controllers\FichierPedagogiqueController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ConfigAttestationController;
 use App\Http\Controllers\MatiereController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\RetardsController;
 use App\Http\Controllers\DemandeAttestationController;
@@ -117,13 +115,13 @@ Route::post('/sanctions', [SanctionController::class, 'store']);
 Route::get('/parents/user/{user_id}', [ParentController::class, 'getByUserId']);
 
 
-=======
-
-use App\Http\Controllers\DemandeAttestationController;
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
+
+
 
 
 
@@ -137,13 +135,12 @@ use App\Http\Controllers\API\EvenementController;
 
 use App\Http\Controllers\RetardPaiementController;
 use App\Http\Controllers\ChatBotController;
-
+use App\Http\Controllers\ExamenController;
 Route::post('/chatbot', [ChatBotController::class, 'handle']);
 
 
 Route::get('/demandes-attestations', [DemandeAttestationController::class, 'index']);
 
-Route::post('/demandes-attestations/{id}/traiter', [DemandeAttestationController::class, 'traiterDemande']);
 
 Route::get('/admins', [AdminController::class, 'index']);
 Route::get('/etudiants/retards', [RetardPaiementController::class, 'index']);
@@ -157,10 +154,9 @@ Route::apiResource('evenements', EvenementController::class);
     Route::put('/evenements/{id}', [EvenementController::class, 'update']);
     Route::delete('/evenements/{id}', [EvenementController::class, 'destroy']);
 
-<<<<<<< HEAD
-=======
 
->>>>>>> e8fd732 (Normalize)
+
+
 Route::get('/emplois-temps', [EmploiTempsController::class, 'recupurer']);
 Route::get('/emplois-temps/professeur/{id}/pdf', [EmploiTempsController::class, 'exportPdf']);
 Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
@@ -182,10 +178,9 @@ Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurC
     Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
     Route::get('/emplois-temps/professeur/{id}', [EmploiTempsController::class, 'getByProfesseur']);
     
-<<<<<<< HEAD
-=======
 
->>>>>>> e8fd732 (Normalize)
+
+
 
 
 // routes/api.php
@@ -195,10 +190,9 @@ Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 
 Route::post('paiement/reset-mois-precedent', [PaiementMensuelController::class, 'resetPaiementsMoisPrecedent']);
 Route::delete('/professeurs/{professeurId}/etudiants/{etudiantId}', [ProfesseurController::class, 'destroyEtudiant']);
 
-<<<<<<< HEAD
-=======
 
->>>>>>> e8fd732 (Normalize)
+
+
 
 Route::get('/creneaux', [CreneauController::class, 'index']);
 Route::post('/creneaux', [CreneauController::class, 'store']);
@@ -208,19 +202,19 @@ Route::delete('/creneaux/{id}', [CreneauController::class, 'destroy']);
 Route::get('/emplois-temps/{classeId}', [EmploiTempsController::class, 'index']);
 
 Route::get('/absences/plus-de-15h', [AbsenceController::class, 'countEtudiantsAvecAbsenceSuperieureA15h']);
-<<<<<<< HEAD
-Route::put('/{id}', [EmploiTempsController::class, 'update']);
 
 Route::put('/{id}', [EmploiTempsController::class, 'update']);
-
-=======
 
 Route::put('/{id}', [EmploiTempsController::class, 'update']);
 
 
+
 Route::put('/{id}', [EmploiTempsController::class, 'update']);
 
->>>>>>> e8fd732 (Normalize)
+
+Route::put('/{id}', [EmploiTempsController::class, 'update']);
+
+
 
 Route::prefix('emplois-temps')->group(function () {
     // GET /api/emplois-temps/{classeId} - Get schedule for a class
@@ -230,8 +224,6 @@ Route::prefix('emplois-temps')->group(function () {
     Route::post('/', [EmploiTempsController::class, 'store']);
 });
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -250,12 +242,14 @@ Route::prefix('emplois-temps')->group(function () {
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
 
 Route::get('matieres', [MatiereController::class, 'index']);
 Route::post('matieres', [MatiereController::class, 'store']);
 Route::put('matieres/{id}', [MatiereController::class, 'update']);
 Route::delete('matieres/{id}', [MatiereController::class, 'destroy']);
+
 
 
 
@@ -451,8 +445,6 @@ Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
 
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -471,20 +463,20 @@ Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
 Route::delete('/emplois_temps/{id}', [EmploiTempsController::class, 'destroy']);
 
 Route::apiResource('charges', ChargeController::class);
 Route::get('/rapport-pdf', [RapportController::class, 'exportPdf']);
 
-<<<<<<< HEAD
-=======
 
 
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
 Route::post('absences', [EtudiantProfesseurController::class, 'enregistrerAbsences']);
 
 
@@ -499,30 +491,12 @@ Route::post('/paiements-mensuels', [PaiementMensuelController::class, 'store']);
 Route::get('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'show']);
 Route::put('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'update']);
 Route::delete('/paiements-mensuels/{id}', [PaiementMensuelController::class, 'destroy']);
-<<<<<<< HEAD
-
-Route::prefix('fichiers-pedagogiques')->group(function () {
-
-Route::prefix('fichiers-pedagogiques')->group(function () {
-
-Route::prefix('fichiers-pedagogiques')->group(function () {
-
-
-Route::prefix('fichiers-pedagogiques')->group(function () {
-
-=======
->>>>>>> e8fd732 (Normalize)
 
 
 
 Route::prefix('fichiers-pedagogiques')->group(function () {
 
 
-<<<<<<< HEAD
-Route::prefix('fichiers')->group(function () {
-
-
-=======
 
 
 
@@ -534,7 +508,8 @@ Route::prefix('fichiers')->group(function () {
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
     Route::get('/', [FichierPedagogiqueController::class, 'index']);
     Route::post('/', [FichierPedagogiqueController::class, 'store']);
     Route::get('/{id}', [FichierPedagogiqueController::class, 'show']);
@@ -583,20 +558,6 @@ Route::get('paiements/parent/{parent_id}/{mois}', [PaiementMensuelController::cl
         Route::delete('/{id}', [AbsenceController::class, 'destroy']);
     });
 
-<<<<<<< HEAD
-});Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
-
-});
-
-
-});Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
-
-
-});
-
-
-});Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
-=======
 
 
 
@@ -605,7 +566,10 @@ Route::get('paiements/parent/{parent_id}/{mois}', [PaiementMensuelController::cl
 
 
 
-});Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
+
+
+
+
 
 
 
@@ -622,7 +586,7 @@ Route::get('paiements/parent/{parent_id}/{mois}', [PaiementMensuelController::cl
 
 
 
->>>>>>> e8fd732 (Normalize)
+
 
 
 
@@ -648,10 +612,9 @@ Route::get('/etudiants/{id}', [EtudiantController::class, 'show']);
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> e8fd732 (Normalize)
+
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/paiements-mensuels/{etudiantId}', [PaiementMensuelController::class, 'listePaiements']);  // Changé ici
@@ -686,9 +649,8 @@ Route::prefix('demandes-attestations')->group(function () {
     Route::get('/etudiant/{id}', [DemandeAttestationController::class, 'demandesEtudiant']); // Étudiant
 });
 
-<<<<<<< HEAD
+
 Route::put('/reclamations/{id}', [ReclamationController::class, 'update']);
-=======
 
 
 
@@ -711,7 +673,8 @@ Route::put('/reclamations/{id}', [ReclamationController::class, 'update']);
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
 
 Route::get('/attestations/{id}/download', [DemandeAttestationController::class, 'download']);
 Route::get('/demandes-non-traitees', [DemandeAttestationController::class, 'demandesNonTraitees']);
@@ -722,18 +685,18 @@ Route::get('demandes-non-traitees', [DemandeAttestationController::class, 'getDe
 
 Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);
 
-<<<<<<< HEAD
-Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
-Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
-=======
-
-
 
 Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
+Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
+
+
+
+
+Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
 
 Route::post('traiter-demande/{id}', [DemandeAttestationController::class, 'traiterDemande']);Route::get('/absents-critiques', [AbsenceController::class, 'getAbsentsCritiques']);
 
->>>>>>> e8fd732 (Normalize)
+
 Route::get('/retards-paiement', [PaiementMensuelController::class, 'getCountEtudiantsSansPaiement']);
 
 
@@ -765,8 +728,6 @@ Route::get('/api/etudiant/examens', [ExamenController::class, 'getExamensEtudian
 
     ->middleware(['auth:api', 'etudiant']);
     Route::get('/etudiants/{Classroom}/examens', [ExamenController::class, 'getExamensEtudiant']);
-<<<<<<< HEAD
-=======
 
 
 
@@ -775,7 +736,8 @@ Route::get('/api/etudiant/examens', [ExamenController::class, 'getExamensEtudian
 
 
 
->>>>>>> e8fd732 (Normalize)
+
+
     Route::prefix('quizzes')->group(function () {
         Route::post('/', [QuizController::class, 'store']); // Création
         Route::get('/{quiz}', [QuizController::class, 'show']); // Mise à jour
@@ -793,8 +755,7 @@ Route::delete('/quizzes/{id}', [QuizController::class, 'destroy']);
 // Temporairement dans routes/api.php
 
 
-<<<<<<< HEAD
-=======
+Route::post('demandes-attestations/{id}/traiter', [DemandeAttestationController::class, 'marquerCommeTraitee']);
 
 
->>>>>>> e8fd732 (Normalize)
+

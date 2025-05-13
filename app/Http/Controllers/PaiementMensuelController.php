@@ -41,19 +41,18 @@ class PaiementMensuelController extends Controller
     // Méthode pour créer un paiement mensuel
     public function store(Request $request)
     {
-        // Validation des données
+        // Validation de la requête
         $validated = $request->validate([
-            'etudiant_id' => 'required|exists:etudiants,id'
-            // On retire la validation du mois car il sera généré automatiquement
+            'etudiant_id' => 'required|exists:etudiants,id',
         ]);
     
-        // Générer automatiquement le mois courant au format "YYYY-MM-01"
-        $moisCourant = Carbon::now()->format('Y-m');
+        // Générer automatiquement le mois courant au format 'Y-m-d' (ex: 2025-05-01)
+        $moisComplet = Carbon::now()->startOfMonth()->toDateString();
     
         // Vérifier si un paiement existe déjà pour ce mois
         $paiementExistant = PaiementMensuel::where('etudiant_id', $request->etudiant_id)
-                                            ->where('mois', $moisCourant)
-                                            ->first();
+                                           ->where('mois', $moisComplet)
+                                           ->first();
     
         if ($paiementExistant) {
             return response()->json([
@@ -62,24 +61,21 @@ class PaiementMensuelController extends Controller
             ], 409);
         }
     
-// ✅ Accepter le format Y-m (ex: 2025-04
-        // Convertir le mois en 'Y-m-d' (ex: 2025-04-01)
-        $moisComplet = Carbon::createFromFormat('Y-m', $request->mois)->startOfMonth();
-    
-        // Enregistrement du paiement mensuel
+        // Créer le paiement mensuel
         $paiement = PaiementMensuel::create([
-            'etudiant_id' => $request->etudiant_id,
-            'mois' => $moisCourant, // Mois courant généré automatiquement
+            'etudiant_id'   => $request->etudiant_id,
+            'mois'          => $moisComplet,
             'date_paiement' => Carbon::now()->toDateString(),
-            'est_paye' => true,
-            'mois' => $moisComplet->toDateString(), // Enregistre au format Y-m-d
-            'date_paiement' => Carbon::now()->toDateString(),
-            'est_paye' => true,
+            'est_paye'      => true,
+            'user_id'       => Auth::id(), // Facultatif si ton modèle le prévoit
         ]);
     
-    
-        return response()->json($paiement, 201);
+        return response()->json([
+            'message' => 'Paiement enregistré avec succès.',
+            'paiement' => $paiement
+        ], 201);
     }
+    
     
     
     

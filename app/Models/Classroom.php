@@ -47,12 +47,11 @@ class Classroom extends Model
     }
     
 
-<<<<<<< HEAD
-=======
+
     // Relation avec Filiere
  
 
->>>>>>> e8fd732 (Normalize)
+
 
     // Relation avec Filiere
     public function quizzes()
@@ -60,9 +59,9 @@ class Classroom extends Model
         return $this->hasMany(Quiz::class);
     }
 
-<<<<<<< HEAD
 
-=======
+
+
     
->>>>>>> e8fd732 (Normalize)
+
 }
