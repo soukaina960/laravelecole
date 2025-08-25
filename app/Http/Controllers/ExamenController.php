@@ -21,8 +21,8 @@ class ExamenController extends Controller
             'matiere_id' => 'required|exists:matieres,id',
             'professeur_id' => 'nullable|exists:professeurs,id',
             'date' => 'required|date',
-            'heure_debut' => 'required|date_format:H:i',
-            'heure_fin' => 'required|date_format:H:i|after:heure_debut',
+            'heure_debut' => 'required|date_format:H:i:s',
+            'heure_fin' => 'required|date_format:H:i:s|after:heure_debut',
             'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi,Dimanche',
         ]);
 
@@ -36,7 +36,19 @@ class ExamenController extends Controller
 
         return response()->json(['message' => 'Examen créé avec succès'], 201);
     }
+   public function index(Request $request)
+    {
+        // Récupérer tous les examens avec les relations
+        $examens = Examen::with(['classroom', 'matiere', 'professeur'])
+            ->when($request->class_id, function ($query, $class_id) {
+                return $query->where('classe_id', $class_id);
+            })
+            ->orderBy('date')
+            ->orderBy('heure_debut')
+            ->get();
 
+        return response()->json($examens);
+    }
     public function show($id)
     {
         // Récupérer l'examen par son ID avec les relations
@@ -49,6 +61,47 @@ class ExamenController extends Controller
 
         // Renvoyer les données de l'examen trouvé
         return response()->json($examen);
+    }
+    public function update(Request $request, $id)
+    {
+        // Validation des données reçues
+        $validated = $request->validate([
+            'classe_id' => 'required|exists:classrooms,id',
+            'matiere_id' => 'required|exists:matieres,id',
+            'professeur_id' => 'nullable|exists:professeurs,id',
+            'date' => 'required|date',
+            'heure_debut' => 'required|date_format:H:i:s',
+            'heure_fin' => 'required|date_format:H:i:s|after:heure_debut',
+            'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi,Dimanche',
+        ]);
+
+        // Récupérer l'examen par son ID
+        $examen = Examen::find($id);
+
+        // Si l'examen n'existe pas, renvoyer une erreur 404
+        if (!$examen) {
+            return response()->json(['message' => 'Examen non trouvé'], 404);
+        }
+
+        // Mettre à jour l'examen avec les nouvelles données
+        $examen->update($validated);
+
+        return response()->json(['message' => 'Examen mis à jour avec succès']);
+    }
+    public function destroy($id)
+    {
+        // Récupérer l'examen par son ID
+        $examen = Examen::find($id);
+
+        // Si l'examen n'existe pas, renvoyer une erreur 404
+        if (!$examen) {
+            return response()->json(['message' => 'Examen non trouvé'], 404);
+        }
+
+        // Supprimer l'examen
+        $examen->delete();
+
+        return response()->json(['message' => 'Examen supprimé avec succès']);
     }
     public function emploiExamensEtudiant()
     {

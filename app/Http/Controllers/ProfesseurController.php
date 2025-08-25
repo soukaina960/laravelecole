@@ -138,6 +138,62 @@ class ProfesseurController extends Controller
     
         return response()->json(['salaire' => $salaire], 200);
     }
+    public function getSalairesMensuels(Request $request)
+{
+    try {
+        // Validation des paramètres de requête
+        $request->validate([
+            'mois' => 'nullable|integer|between:1,12',
+            'annee' => 'nullable|integer|min:2000',
+        ]);
+
+        // Construction de la requête avec les relations
+        $query = SalaireMensuel::with(['professeur' => function($query) {
+            $query->select('id', 'nom'); // Sélectionnez seulement les champs nécessaires
+        }]);
+
+        // Application des filtres si présents
+        if ($request->has('mois') ){
+            $query->where('mois', $request->mois);
+        }
+
+        if ($request->has('annee')) {
+            $query->where('annee', $request->annee);
+        }
+
+        // Tri par année et mois (du plus récent au plus ancien)
+        $query->orderBy('annee', 'desc')
+              ->orderBy('mois', 'desc');
+
+        // Exécution de la requête et formatage des résultats
+        $salaires = $query->get()->map(function($salaire) {
+            return [
+                'id' => $salaire->id,
+                'professeur_id' => $salaire->professeur_id,
+                'professeur_nom' => $salaire->professeur ? 
+                    $salaire->professeur->nom . ' ' . $salaire->professeur->prenom : 
+                    'Professeur inconnu',
+                'mois' => $salaire->mois,
+                'annee' => $salaire->annee,
+                'salaire' => $salaire->salaire,
+                'prime' => $salaire->prime,
+                'pourcentage' => $salaire->pourcentage,
+                'total_paiements' => $salaire->total_paiements,
+                'created_at' => $salaire->created_at->format('Y-m-d H:i:s'),
+                'updated_at' => $salaire->updated_at->format('Y-m-d H:i:s'),
+            ];
+        });
+
+        return response()->json($salaires);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de la récupération des salaires',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
     
     public function calculerSalaireMensuel(Request $request, $id)
     {

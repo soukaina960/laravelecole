@@ -64,12 +64,12 @@ class Classroom extends Model
     }
 
 
-<<<<<<< HEAD
+
 
 
     
 
-=======
+
     
->>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
+
 }

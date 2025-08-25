@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Etudiant;
 
-class ClasseController extends Controller
+class ClassroomController extends Controller
 {
-   // Dans ClasseController.php
+   // Dans ClassroomController.php
    public function getEtudiants($classeId)
 {
     try {

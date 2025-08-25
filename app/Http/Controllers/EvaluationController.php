@@ -61,25 +61,44 @@ class EvaluationController extends Controller
             ];
         }));
     }
+private function nettoyerUtf8($donnees)
+{
+    if (is_string($donnees)) {
+        return mb_convert_encoding($donnees, 'UTF-8', 'UTF-8');
+    } elseif (is_array($donnees)) {
+        return array_map([$this, 'nettoyerUtf8'], $donnees);
+    } elseif (is_object($donnees)) {
+        foreach ($donnees as $cle => $valeur) {
+            $donnees->$cle = $this->nettoyerUtf8($valeur);
+        }
+    }
+    return $donnees;
+}
 
     // Afficher les notes par étudiant ID
-    public function show($etudiant_id)
-    {
-        $etudiant = Etudiant::find($etudiant_id);
+  public function show($etudiant_id)
+{
+    $etudiant = Etudiant::find($etudiant_id);
 
-        if (!$etudiant) {
-            return response()->json(['message' => 'Étudiant non trouvé'], 404);
-        }
-
-        $evaluations = Evaluation::where('etudiant_id', $etudiant_id)
-            ->with(['matiere', 'professeur'])
-            ->get();
-
-        return response()->json([
-            'etudiant' => $etudiant,
-            'evaluations' => $evaluations
-        ]);
+    if (!$etudiant) {
+        return response()->json(['message' => 'Étudiant non trouvé'], 404);
     }
+
+    $evaluations = Evaluation::where('etudiant_id', $etudiant_id)
+        ->with(['matiere', 'professeur'])
+        ->get();
+
+    // Convertir en tableau et nettoyer les caractères UTF-8
+    $data = [
+        'etudiant' => $etudiant->toArray(),
+        'evaluations' => $evaluations->toArray()
+    ];
+
+    $dataUtf8 = $this->nettoyerUtf8($data);
+
+    return response()->json($dataUtf8);
+}
+
     // Enregistrement ou mise à jour des notes
     public function store(Request $request)
     {
@@ -92,6 +111,7 @@ class EvaluationController extends Controller
                 'notes.*.etudiant_id' => 'required|exists:etudiants,id',
                 'notes.*.annee_scolaire_id' => 'nullable|exists:annees_scolaires,id',
                 'notes.*.semestre_id' => 'nullable|exists:semestres,id',
+                'notes.*.matiere_id' => 'nullable|exists:matieres,id',
                 'notes.*.note1' => 'nullable|numeric',
                 'notes.*.note2' => 'nullable|numeric',
                 'notes.*.note3' => 'nullable|numeric',
@@ -104,11 +124,13 @@ class EvaluationController extends Controller
             foreach ($request->notes as $note) {
                 Evaluation::updateOrCreate(
                     [
-                        'etudiant_id' => $note['etudiant_id'],
-                        'professeur_id' => $request->professeur_id,
-                        'annee_scolaire_id' => $note['annee_scolaire_id'],
-                        'semestre_id' => $note['semestre_id'] ?? null,
-                    ],
+    'etudiant_id' => $note['etudiant_id'],
+    'professeur_id' => $request->professeur_id,
+    'annee_scolaire_id' => $note['annee_scolaire_id'],
+    'semestre_id' => $note['semestre_id'] ?? null,
+    'matiere_id' => $note['matiere_id'] ?? null,
+],
+
                     [
                         'note1' => $note['note1'] ?? null,
                         'note2' => $note['note2'] ?? null,
@@ -136,16 +158,21 @@ class EvaluationController extends Controller
       $semestre_id = $request->query('semestre_id');
       
       // Récupérer les notes de l'étudiant, et associer avec la spécialité du professeur
-      $notes = DB::table('evaluations')
-          ->join('professeurs', 'evaluations.professeur_id', '=', 'professeurs.id')
-          ->where('evaluations.etudiant_id', $etudiant_id)
-          ->where('evaluations.annee_scolaire_id', $annee_scolaire_id)
-          ->where('evaluations.semestre_id', $semestre_id)
-          ->select('evaluations.*', 'professeurs.specialite')
-          ->get();
-  
-      return response()->json($notes);
-  }
+     $notes = DB::table('evaluations')
+    ->join('professeurs', 'evaluations.professeur_id', '=', 'professeurs.id')
+    ->join('matieres', 'evaluations.matiere_id', '=', 'matieres.id') // 🔧 ajout du join avec matieres
+    ->where('evaluations.etudiant_id', $etudiant_id)
+    ->where('evaluations.annee_scolaire_id', $annee_scolaire_id)
+    ->where('evaluations.semestre_id', $semestre_id)
+    ->select(
+        'evaluations.*',
+        'matieres.nom as matiere_nom',
+        'professeurs.nom as professeur_nom'
+    )
+    ->get();
+
+return response()->json($notes);
+    }
   public function getNotesByParentAndSemestre(Request $request)
   {
       $parentId = $request->query('parent_id');
@@ -249,31 +276,89 @@ public function generateBulletin($etudiant_id, $semestre_id, $annee_scolaire_id)
     $pdf = PDF::loadView('bulletins.bulletin_pdf', $data);
 
     return $pdf->download('bulletin_' . $etudiant->nom . '.pdf');
-}
-
-public function afficherBulletin($parent_id , $semestre_id, $anneeId)
+}public function afficherBulletin($etudiant_id, $semestre_id, $annee_scolaire_id)
 {
-    // Vérifier si le parent existe
-    $parent = ParentModel::find($parent_id);
-
-    $enfants = Etudiant::where('parent_id', $parent_id)->get();
-
-    $bulletins = [];
-
-    foreach ($enfants as $enfant) {
-        $evaluations = Evaluation::where('etudiant_id', $enfant->id)
-            ->where('semestre_id', $semestreId)
-            ->where('annee_scolaire_id', $anneeId)
-            ->with('matiere') // relation avec la matière
-            ->get();
-
-        $bulletins[] = [
-            'etudiant' => $enfant,
-            'evaluations' => $evaluations
-        ];
+    // Vérifier si l'étudiant existe
+    $etudiant = Etudiant::find($etudiant_id);
+    
+    if (!$etudiant) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Étudiant non trouvé'
+        ], 404);
     }
 
-    return view('bulletins.bulletin', compact('bulletins'));
+    // Vérifier si le semestre et l'année scolaire existent
+    $semestre = Semestre::find($semestre_id);
+    $anneeScolaire = AnneeScolaire::find($annee_scolaire_id);
+    
+    if (!$semestre || !$anneeScolaire) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Semestre ou année scolaire invalide'
+        ], 400);
+    }
+
+    // Récupérer les évaluations
+    $evaluations = Evaluation::where('etudiant_id', $etudiant->id)
+        ->where('semestre_id', $semestre_id)
+        ->where('annee_scolaire_id', $annee_scolaire_id)
+        ->with('matiere')
+        ->get();
+
+    // Calcul des statistiques
+    $totalNotes = 0;
+    $totalCoefficients = 0;
+    $notesAvecCoefficients = [];
+    
+    foreach ($evaluations as $evaluation) {
+        $notePonderee = $evaluation->note_finale * $evaluation->facteur;
+        $totalNotes += $notePonderee;
+        $totalCoefficients += $evaluation->facteur;
+        $notesAvecCoefficients[] = [
+            'matiere' => $evaluation->matiere->nom,
+            'note' => $evaluation->note_finale,
+            'coefficient' => $evaluation->facteur,
+            'note_ponderee' => $notePonderee
+        ];
+    }
+    
+    $moyenneGenerale = $totalCoefficients > 0 ? $totalNotes / $totalCoefficients : 0;
+
+    // Construction de la réponse
+    $bulletin = [
+        'etudiant' => [
+            'id' => $etudiant->id,
+            'nom_complet' => $etudiant->prenom . ' ' . $etudiant->nom,
+            'classe' => $etudiant->classe->nom ?? 'Non spécifié'
+        ],
+        'periode' => [
+            'semestre' => $semestre->libelle,
+            'annee_scolaire' => $anneeScolaire->libelle
+        ],
+        'statistiques' => [
+            'moyenne_generale' => round($moyenneGenerale, 2),
+            'total_coefficients' => $totalCoefficients,
+            'details_calcul' => $notesAvecCoefficients
+        ],
+        'evaluations' => $evaluations->map(function ($evaluation) {
+            return [
+                'matiere' => [
+                    'id' => $evaluation->matiere->id,
+                    'nom' => $evaluation->matiere->nom,
+                    'coefficient' => $evaluation->matiere->coefficient ?? $evaluation->facteur
+                ],
+                'note' => $evaluation->note_finale,
+                'appreciation' => $evaluation->appreciation ?? 'Non renseignée',
+                'date_evaluation' => $evaluation->date_evaluation?->format('d/m/Y') ?? 'Non spécifiée'
+            ];
+        })->toArray()
+    ];
+
+    return response()->json([
+        'success' => true,
+        'data' => $bulletin
+    ]);
 }
 public function voirBulletin($id)
 {

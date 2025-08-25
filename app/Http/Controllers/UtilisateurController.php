@@ -44,7 +44,7 @@ class UtilisateurController extends Controller
 
             $validatedData = $request->validate([
                 'telephone' => 'nullable|string',
-                'nom' => 'required|string',
+             'nom' => ['required', 'string', 'regex:/^[\pL\s\-]+$/u'],
                 'email' => 'required|email|unique:utilisateurs',
                 'role' => 'required|in:admin,professeur,surveillant,étudiant,parent',
                 'adresse' => 'nullable|string',
@@ -64,6 +64,7 @@ class UtilisateurController extends Controller
                 'photo_profil' => $chemin,
                 'matricule' => $matricule,
                 'mot_de_passe' => Hash::make($password),
+                  'password_changed' => false, // ← IMPORTANT: initialisé à false
             ]);
 
             // ENVOI EMAIL
@@ -117,7 +118,7 @@ class UtilisateurController extends Controller
 
                 case 'étudiant':
                     $studentData = $request->validate([
-                        'prenom' => 'required|string',
+                     'prenom' => 'required|string|alpha',
                         'date_naissance' => 'required|date',
                         'sexe' => 'required|in:M,F',
                         'montant_a_payer' => 'nullable|numeric',

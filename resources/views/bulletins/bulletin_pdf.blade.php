@@ -121,12 +121,12 @@
 
     <!-- Informations de l’étudiant -->
     <div class="student-info-box">
-        <div class="info-item"><strong>Nom :</strong> Farah Aitouhlal</div>
-        <div class="info-item"><strong>Date de naissance :</strong> 2004-05-10</div>
-        <div class="info-item"><strong>Classe :</strong> DD1-A</div>
-        <div class="info-item"><strong>Année scolaire :</strong> 2024-2025</div>
-        <div class="info-item"><strong>Nombre total :</strong> 30</div>
-        <div class="info-item"><strong>Semestre :</strong> Semestre 1</div>
+        <div class="info-item"><strong>Nom :</strong> {{ $etudiant->nom }} {{ $etudiant->prenom }}</div>
+        <div class="info-item"><strong>Date de naissance :</strong>{{ $etudiant->date_naissance ?? '-' }}</div>
+        <div class="info-item"><strong>Classe :</strong> {{ $etudiant->classroom->name ?? '-' }}</div>
+        <div class="info-item"><strong>Année scolaire :</strong>{{ $annee_scolaire->annee ?? '-' }}</div>
+        <div class="info-item"><strong>Nombre total :</strong> {{ $nombreEtudiantsDansClasse ?? '-' }}</div>
+        <div class="info-item"><strong>Semestre :</strong> {{ $semestre->nom ?? '-' }}</div>
     </div>
 
     <!-- Tableau des évaluations -->

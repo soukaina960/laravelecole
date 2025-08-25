@@ -80,7 +80,6 @@ class SurveillantController extends Controller
             // Validation des données
             $validatedData = $request->validate([
                 'surveillant.nom' => 'required|string|max:255',
-                'surveillant.prenom' => 'required|string|max:255',
                 'surveillant.telephone' => 'nullable|string|max:20',
                 'surveillant.email' => 'required|email|max:255',
                 'surveillant.password' => 'nullable|string|min:6',
@@ -89,14 +88,12 @@ class SurveillantController extends Controller
             // Mise à jour des informations du parent
             $surveillant->update([
                 'nom' => $validatedData['surveillant']['nom'],
-                'prenom' => $validatedData['surveillant']['prenom'],
                 'telephone' => $validatedData['surveillant']['telephone'] ?? $surveillant->telephone,
             ]);
     
             // Mise à jour des informations de l'utilisateur
             $utilisateur->update([
                 'nom' => $validatedData['surveillant']['nom'],
-                'prenom' => $validatedData['surveillant']['prenom'],
                 'telephone' => $validatedData['surveillant']['telephone'] ?? $surveillant->telephone,
                 'email' => $validatedData['surveillant']['email'],
                 'password' => $validatedData['surveillant']['password'] 

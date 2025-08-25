@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->string('nom');
             $table->string('email')->unique();
             $table->string('mot_de_passe');
-<<<<<<< HEAD
+
 
 
             $table->enum('role', ['admin', 'professeur', 'super_surveillant' ,'surveillant', 'étudiant', 'parent']);
@@ -19,9 +19,9 @@ return new class extends Migration {
 
 
 
-=======
+
             $table->enum('role', ['admin', 'professeur', 'surveillant', 'étudiant', 'parent']);
->>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
+
             $table->timestamps();
         });
     }

@@ -33,4 +33,9 @@ class Bulletin extends Model
     {
         return $this->belongsTo(AnneeScolaire::class);
     }
+    public function evaluations()
+{
+    return $this->hasMany(Evaluation::class);
+}
+
 }

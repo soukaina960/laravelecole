@@ -80,6 +80,40 @@ class ClassroomController extends Controller
     }
     
     
+  public function getFilieresByClasse($classeId)
+   {
+       try {
+           $classe = Classroom::findOrFail($classeId);
+           
+           if (strtolower($classe->niveau) !== 'secondaire') {
+               return response()->json([
+                   'filieres' => [],
+                   'message' => 'Cette classe n\'est pas un lycée.'
+               ]);
+           }
+           
+           // Récupérer la filière associée à la classe
+           $filiere = $classe->filiere;
+           
+           if (!$filiere) {
+               return response()->json([
+                   'filieres' => [],
+                   'message' => 'Aucune filière trouvée pour cette classe'
+               ]);
+           }
+           
+           return response()->json([
+               'filieres' => [$filiere] // Retourne toujours un tableau
+           ]);
+           
+       } catch (\Exception $e) {
+           return response()->json([
+               'filieres' => [],
+               'message' => 'Erreur lors de la récupération des filières',
+               'error' => $e->getMessage()
+           ], 500);
+       }
+   }
 
     public function show($id)
     {

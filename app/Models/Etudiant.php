@@ -106,81 +106,13 @@ public function attendances()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Etudiant.php (modèle)
 public function utilisateur()
 {
     return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
 }
 
-
-
-
-<<<<<<< HEAD
-    
+ 
 
 public function professeur() {
     return $this->belongsTo(Professeur::class);
@@ -191,54 +123,6 @@ public function professeur() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> 9b7d10f01a260c9625961aad17ed4e1345f6cd11
 public function notes()
 {
     return $this->hasMany(NoteMatiere::class);
@@ -271,6 +155,12 @@ protected static function booted()
 public function paiementsMensuels()
 {
     return $this->hasMany(PaiementMensuel::class);
+}
+
+
+public function classe()
+{
+    return $this->belongsTo(Classe::class);
 }
 
 

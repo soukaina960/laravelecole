@@ -1,74 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Attestation de Scolarité</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; }
-        .header, .footer { display: flex; justify-content: space-between; align-items: center; }
-        .logo img { width: 180px; }
-        .school-info { font-size: 14px; margin-top: 25px; }
-        .school-info h2 { color: #2d2d7f; font-size: 22px; margin-top: -120px; margin-left: 300px; }
-        .school-info p { margin: 2px 0; margin-left: 450px; }
-        .title { text-align: center; font-size: 18px; font-weight: bold; text-decoration: underline; margin: 30px 0; }
-        .content { margin: 20px 0; }
-        .footer { margin-top: 80px; text-align: right; flex-direction: column; align-items: flex-end; font-size: 14px; position: relative; }
-        .signature-section { margin-top: 80px; position: relative; width: 300px; height: 150px; }
-        .signature-section img { position: absolute; max-width: 100px; }
-        .signature-img { top: 0; left: 0; }
-        .stamp-img { top: 0; right: 0; }
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 50px;
+            color: #000;
+            background: #fff;
+        }
+
+        .container {
+            border: 1px solid #000;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            margin: 5px 0;
+            font-size: 22px;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin: 40px 0 30px;
+        }
+
+        .content p {
+            font-size: 16px;
+            text-align: justify;
+            margin: 15px 0;
+        }
+
+        .footer {
+            margin-top: 60px;
+            font-size: 16px;
+        }
+
+        .footer .date {
+            margin-bottom: 60px;
+        }
+
+        .signature-block {
+            display: flex;
+            justify-content: flex-end;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .signature-block img {
+            max-width: 120px;
+            margin-top: 5px;
+        }
+
+        .signature-label {
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        @if($config->logo_path)
-            <div class="logo" style="display: flex; align-items: center;">
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header">
+            @if($config->logo_path)
                 <img src="{{ storage_path('app/public/' . $config->logo_path) }}" alt="Logo">
-            </div>
-        @endif
-        <div class="school-info">
+            @endif
             <h2>{{ $config->nom_ecole }}</h2>
-            <p>Tél : {{ $config->telephone }} - Fax : {{ $config->fax }}</p>
+            <p>{{ $config->adresse }}, {{ $config->ville }}</p>
+            <p>Tél : {{ $config->telephone }} | Fax : {{ $config->fax }}</p>
         </div>
-    </div>
 
-    <!-- Title -->
-    <div class="title">ATTESTATION DE SCOLARITÉ</div>
+        <!-- Titre -->
+        <div class="title">Attestation de Scolarité</div>
 
-    <!-- Content -->
-    <div class="content">
-        <p>Le Doyen de la {{ $config->nom_ecole }}, soussigné, atteste que :</p>
-        
-        <p><strong>Nom et Prénom :</strong> {{ $etudiant->nom }} {{ $etudiant->prenom }}</p>
-        <p><strong>Né(e) le :</strong> {{ date('d/m/Y', strtotime($etudiant->date_naissance)) }}</p>
-        
-        @if($etudiant->cin)
-            <p><strong>Titulaire de la CIN N° :</strong> {{ $etudiant->cin }}</p>
-        @endif
-        
-        <p>Poursuit ses études au diplôme de la : <strong>{{ $etudiant->classroom->nom ?? 'Niveau non spécifié' }}</strong></p>
-        
-        <p>Au cours de l'année universitaire : {{ $attestation->annee_universitaire }}</p>
-        
-        <p>La présente attestation est délivrée à l'intéressé(e) pour servir et valoir ce que de droit.</p>
-    </div>
+        <!-- Contenu -->
+        <div class="content">
+            <p>Le Doyen de <strong>{{ $config->nom_ecole }}</strong>, soussigné, atteste que :</p>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>{{ $config->ville }}, le {{ $attestation->date_emission }}</p>
+            <p><strong>Nom et Prénom :</strong> {{ $etudiant->nom }} {{ $etudiant->prenom }}</p>
+            <p><strong>Né(e) le :</strong> {{ date('d/m/Y', strtotime($etudiant->date_naissance)) }}</p>
+            @if($etudiant->cin)
+                <p><strong>Titulaire de la CIN N° :</strong> {{ $etudiant->cin }}</p>
+            @endif
+            <p>Poursuit ses études au diplôme de la : <strong>{{ $etudiant->classroom->name ?? 'Niveau non spécifié' }}</strong></p>
+            <p>Au cours de l'année universitaire : <strong>{{ $attestation->annee_universitaire }}</strong></p>
+            <p>La présente attestation est délivrée à l'intéressé(e) pour servir et valoir ce que de droit.</p>
+        </div>
 
+        <!-- Pied de page -->
+        <div class="footer">
+            <p class="date">Fait à {{ $config->ville }}, le {{ $attestation->date_emission }}</p>
 
-
-        <div class="signature">
-            <p>Visa de l'administration</p>
-                        <!-- Signature et Cachet -->
-                        <div class="signature-section">
-                @if($config->signature_path)
-                    <img src="{{ storage_path('app/public/' . $config->signature_path) }}" alt="Signature" class="signature-img">
-                @endif
+            <div class="signature-block">
+                <p class="signature-label">Cachet et signature</p>
                 @if($config->cachet_path)
-                    <img src="{{ storage_path('app/public/' . $config->cachet_path) }}" alt="Cachet" class="stamp-img">
+                    <img src="{{ storage_path('app/public/' . $config->cachet_path) }}" alt="Cachet">
+                @endif
+                @if($config->signature_path)
+                    <img src="{{ storage_path('app/public/' . $config->signature_path) }}" alt="Signature">
                 @endif
             </div>
         </div>
