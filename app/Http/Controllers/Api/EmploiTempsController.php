@@ -11,6 +11,24 @@ use Illuminate\Support\Facades\Validator;
 
 class EmploiTempsController extends Controller
 {
+    public function verifierSalle(Request $request)
+{
+    $request->validate([
+        'salle' => 'required|string|max:50',
+        'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
+        'creneau_id' => 'required|exists:creneaux,id',
+    ]);
+
+    $existe = EmploiTemps::where('salle', $request->salle)
+        ->where('jour', $request->jour)
+        ->where('creneau_id', $request->creneau_id)
+        ->exists();
+
+    return response()->json([
+        'occupee' => $existe
+    ]);
+}
+
     /**
      * Récupérer l'emploi du temps d'un professeur
      */
@@ -49,10 +67,10 @@ class EmploiTempsController extends Controller
     /**
      * Récupérer les emplois du temps d'une classe
      */
-    public function index($classeId)
+     public function index($classeId)
     {
         try {
-            $emplois = EmploiTemps::with(['matiere', 'professeur', 'creneau'])
+            $emplois = EmploiTemps::with(['matiere', 'professeur', 'creneau', 'salle'])
                 ->where('classe_id', $classeId)
                 ->get();
 
@@ -68,17 +86,57 @@ class EmploiTempsController extends Controller
     /**
      * Récupérer tous les emplois du temps
      */
-    public function recupurer(Request $request)
-{
-    $query = EmploiTemps::with(['classe', 'matiere', 'professeur', 'creneau']);
+ public function recupurer(Request $request)
+    {
+        $query = EmploiTemps::with(['classe', 'matiere', 'professeur', 'creneau', 'salle']);
 
-    if ($request->has('classe_id')) {
-        $query->where('classe_id', $request->classe_id);
+        if ($request->has('classe_id')) {
+            $query->where('classe_id', $request->classe_id);
+        }
+
+        return response()->json($query->get());
     }
+public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'classe_id' => 'required|exists:classrooms,id',
+            'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
+            'creneau_id' => 'required|exists:creneaux,id',
+            'matiere_id' => 'required|exists:matieres,id',
+            'professeur_id' => 'required|exists:professeurs,id',
+            'salle_id' => 'required|exists:salles,id',
+        ]);
 
-    return response()->json($query->get());
-}
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
+        // Vérifier si la salle est déjà occupée
+        $exists = EmploiTemps::where('jour', $request->jour)
+            ->where('creneau_id', $request->creneau_id)
+            ->where('salle_id', $request->salle_id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'message' => 'Cette salle est déjà occupée pour ce créneau.'
+            ], 422);
+        }
+
+        try {
+            $emploi = EmploiTemps::create($request->all());
+            $emploi->load(['matiere', 'professeur', 'creneau', 'salle']);
+            return response()->json($emploi, 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erreur lors de la création',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 
     /**
      * Mettre à jour un emploi du temps
@@ -91,58 +149,37 @@ class EmploiTempsController extends Controller
             'creneau_id' => 'required|exists:creneaux,id',
             'matiere_id' => 'required|exists:matieres,id',
             'professeur_id' => 'required|exists:professeurs,id',
-            'salle' => 'required|string|max:50',
+            'salle_id' => 'required|exists:salles,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Vérifier si la salle est déjà occupée par un autre emploi
+        $exists = EmploiTemps::where('jour', $request->jour)
+            ->where('creneau_id', $request->creneau_id)
+            ->where('salle_id', $request->salle_id)
+            ->where('id', '!=', $id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'message' => 'Cette salle est déjà occupée pour ce créneau.'
             ], 422);
         }
 
         try {
             $emploi = EmploiTemps::findOrFail($id);
             $emploi->update($request->all());
-            $emploi->load(['matiere', 'professeur', 'creneau']);
-
+            $emploi->load(['matiere', 'professeur', 'creneau', 'salle']);
             return response()->json($emploi, 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la mise à jour',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    /**
-     * Créer un nouvel emploi du temps
-     */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'classe_id' => 'required|exists:classrooms,id',
-            'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
-            'creneau_id' => 'required|exists:creneaux,id',
-            'matiere_id' => 'required|exists:matieres,id',
-            'professeur_id' => 'required|exists:professeurs,id',
-            'salle' => 'required|string|max:50',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        try {
-            $emploi = EmploiTemps::create($request->all());
-            $emploi->load(['matiere', 'professeur', 'creneau']);
-            return response()->json($emploi, 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Erreur lors de la création',
                 'error' => $e->getMessage(),
             ], 500);
         }

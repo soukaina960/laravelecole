@@ -44,6 +44,7 @@ use App\Http\Controllers\ConfigAttestationController;
 use App\Http\Controllers\MatiereController;
 use App\Http\Controllers\DemandeAttestationController;
 use App\Http\Controllers\StatistiqueMensuelleController;
+use App\Http\Controllers\Api\EmploiTempsController;
 
 
 // routes/api.php
@@ -53,6 +54,16 @@ use App\Http\Controllers\API\EvenementController;
 
 use App\Http\Controllers\RetardPaiementController;
 use App\Http\Controllers\ChatBotController;
+use App\Http\Controllers\SalleController;
+
+// Routes CRUD pour les salles
+Route::get('/salles', [SalleController::class, 'index']);        // Récupérer toutes les salles
+Route::get('/salles/{id}', [SalleController::class, 'show']);    // Récupérer une salle spécifique
+Route::post('/salles', [SalleController::class, 'store']);       // Créer une salle
+Route::put('/salles/{id}', [SalleController::class, 'update']);
+Route::delete('/salles/{id}', [SalleController::class, 'destroy']);
+Route::post('/emplois-temps/verifier-salle', [EmploiTempsController::class, 'verifierSalle']);
+
 Route::get('/retard',[RetardsController::class,'index']);
 Route::get('/statistiques-mensuelles', [StatistiqueMensuelleController::class, 'parAnnee']);
 Route::post('/statistiques-mensuelles', [StatistiqueMensuelleController::class, 'storeOrUpdate']);
@@ -201,21 +212,6 @@ Route::delete('/creneaux/{id}', [CreneauController::class, 'destroy']);
 Route::get('/emplois-temps/{classeId}', [EmploiTempsController::class, 'index']);
 
 Route::get('/absences/plus-de-15h', [AbsenceController::class, 'countEtudiantsAvecAbsenceSuperieureA15h']);
-
-Route::put('/{id}', [EmploiTempsController::class, 'update']);
-
-
-Route::put('/{id}', [EmploiTempsController::class, 'update']);
-
-
-
-Route::put('/{id}', [EmploiTempsController::class, 'update']);
-
-
-
-Route::put('/{id}', [EmploiTempsController::class, 'update']);
-
-
 Route::put('/{id}', [EmploiTempsController::class, 'update']);
 
 
@@ -226,6 +222,7 @@ Route::prefix('emplois-temps')->group(function () {
     
     // POST /api/emplois-temps - Create new schedule entry
     Route::post('/', [EmploiTempsController::class, 'store']);
+    Route::delete('{id}', [EmploiTempsController::class, 'destroy']);
 });
 
 

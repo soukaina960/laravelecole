@@ -13,7 +13,7 @@ class EmploiTemps extends Model
         'creneau_id',
         'matiere_id',
         'professeur_id',
-        'salle' // Champ texte, pas une relation
+        'salle_id' // Champ texte, pas une relation
     ];
 
     // Relations
@@ -24,14 +24,6 @@ class EmploiTemps extends Model
 
         return $this->belongsTo(Classroom::class, 'classe_id');
     }
-    
-
-
-
-
-
-
-
 
     public function matiere()
     {
@@ -47,4 +39,9 @@ class EmploiTemps extends Model
     {
         return $this->belongsTo(Creneau::class, 'creneau_id');
     }
+    public function salle()
+    {
+        return $this->belongsTo(Salle::class);
+    }
+
 }

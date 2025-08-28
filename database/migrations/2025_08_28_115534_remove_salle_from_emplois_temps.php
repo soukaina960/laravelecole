@@ -9,17 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up()
+    public function up()
 {
-    Schema::table('salaire_professeurs', function (Blueprint $table) {
-        $table->string('mois', 2)->after('annee');
+    Schema::table('emplois_temps', function (Blueprint $table) {
+        $table->dropColumn('salle');
     });
 }
 
 public function down()
 {
-    Schema::table('salaire_professeurs', function (Blueprint $table) {
-        $table->dropColumn('mois');
+    Schema::table('emplois_temps', function (Blueprint $table) {
+        $table->string('salle')->nullable();
     });
 }
 
