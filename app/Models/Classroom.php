@@ -53,11 +53,23 @@ class Classroom extends Model
 
 
     // Relation avec Filiere
+ 
+
+
+
+    // Relation avec Filiere
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
     }
 
 
+
+
+
     
+
+
+    
+
 }

@@ -100,6 +100,9 @@ public function recalculerSalaire()
         ->get()
         ->sum('paiements_mensuels.montant_paye') + $this->etudiants()->sum('montant_a_payer');
 
+
+
+
     // Calcul du nouveau salaire
     $this->total = ($this->pourcentage / 100) * $totalMontants + $this->prime;
     $this->save();
@@ -113,6 +116,10 @@ protected static function booted()
         }
     });
 }
+
+
+
+
 
 
 

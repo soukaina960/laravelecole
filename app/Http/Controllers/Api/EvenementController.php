@@ -6,14 +6,22 @@ use App\Models\Evenement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Etudiant;
 
 class EvenementController extends Controller
 {
     // Afficher la liste des événements
-    public function index()
-    {
-        return Evenement::with('classe')->get();
+   public function index(Request $request)
+{
+    $query = Evenement::with('classe');
+
+    if ($request->has('class_id')) {
+        $query->where('class_id', $request->class_id);
     }
+
+    return $query->get();
+}
+
     
 
     // Créer un nouvel événement
@@ -66,5 +74,24 @@ class EvenementController extends Controller
 
         return response()->json(null, 204);
     }
+  public function getEvenementsByParentId($parentId)
+{
+    // Récupérer tous les étudiants liés à ce parent
+    $etudiants = Etudiant::where('parent_id', $parentId)->get();
+
+    if ($etudiants->isEmpty()) {
+        return response()->json(['message' => 'Aucun étudiant trouvé pour ce parent'], 404);
+    }
+
+    // Extraire tous les IDs de classe
+    $classeIds = $etudiants->pluck('classe_id')->unique();
+
+    // Récupérer tous les événements pour ces classes
+    $evenements = Evenement::whereIn('class_id', $classeIds)->get();
+
+    return response()->json($evenements);
+}
+
+  
 }
 

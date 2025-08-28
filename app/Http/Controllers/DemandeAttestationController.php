@@ -1,16 +1,15 @@
 <?php
-// app/Http/Controllers/Api/DemandeAttestationController.php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DemandeAttestation;
 use App\Models\Etudiant;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\ConfigAttestation; // ✅ ajoute ceci
-
+use App\Models\ConfigAttestation;
+use Illuminate\Validation\Rule;
 
 class DemandeAttestationController extends Controller
 {
@@ -26,33 +25,44 @@ class DemandeAttestationController extends Controller
             'traitee' => false,
         ]);
 
-        return response()->json(['message' => 'Demande envoyée avec succès', 'demande' => $demande]);
+        return response()->json([
+            'message' => 'Demande envoyée avec succès', 
+            'demande' => $demande
+        ], 201);
     }
 
     // Admin voit toutes les demandes
     public function index()
     {
         $demandes = DemandeAttestation::with('etudiant')->get();
+    
+        $demandes = $demandes->map(function ($demande) {
+            // Clean main model attributes
+            foreach ($demande->getAttributes() as $key => $value) {
+                if (is_string($value)) {
+                    $demande->$key = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+                }
+            }
+    
+            // Clean related etudiant data
+            if ($demande->relationLoaded('etudiant')) {
+                foreach ($demande->etudiant->getAttributes() as $key => $value) {
+                    if (is_string($value)) {
+                        $demande->etudiant->$key = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+                    }
+                }
+            }
+    
+            return $demande;
+        });
+    
         return response()->json($demandes);
     }
 
     // Admin traite la demande
     public function marquerCommeTraitee($id)
     {
-        $demande = DemandeAttestation::findOrFail($id);
-        $etudiantId = $demande->etudiant_id;
-
-        $pdfUrl = url("/api/etudiants/{$etudiantId}/attestation-pdf");
-
-        $demande->update([
-            'traitee' => true,
-            'lien_attestation' => $pdfUrl
-        ]);
-
-        return response()->json([
-            'message' => 'Demande traitée avec succès',
-            'lien' => $pdfUrl
-        ]);
+        return $this->traiterDemande($id);
     }
 
     // Étudiant voit ses propres demandes
@@ -61,63 +71,65 @@ class DemandeAttestationController extends Controller
         $demandes = DemandeAttestation::where('etudiant_id', $id)->get();
         return response()->json($demandes);
     }
+
+    // Récupérer les demandes non traitées
     public function getDemandesNonTraitees()
     {
-        // Récupère toutes les demandes non traitées
-        $demandes = DemandeAttestation::where('traitee', false)->get();
+        $demandes = DemandeAttestation::where('traitee', false)
+            ->with('etudiant')
+            ->get();
+            
         return response()->json($demandes);
     }
 
+    // Traiter la demande et générer l'attestation en PDF
     public function traiterDemande($id)
-{
-    $demande = DemandeAttestation::findOrFail($id);
+    {
+        $demande = DemandeAttestation::findOrFail($id);
 
-    if ($demande->traitee) {
-        return response()->json(['message' => 'Cette demande a déjà été traitée.'], 400);
+        if ($demande->traitee) {
+            return response()->json([
+                'message' => 'Cette demande a déjà été traitée.'
+            ], 400);
+        }
+
+        $etudiant = $demande->etudiant;
+        $config = ConfigAttestation::first() ?? $this->getSchoolConfig();
+
+        $attestation = [
+            'date_emission' => now()->format('d/m/Y'),
+            'annee_universitaire' => $config->annee_scolaire ?? date('Y') . '/' . (date('Y') + 1),
+        ];
+
+        $pdf = Pdf::loadView('pdf.attestation', [
+            'etudiant' => $etudiant,
+            'config' => $config,
+            'attestation' => (object)$attestation,
+        ])->setOption('enable-php', true);
+
+        $pdfPath = 'attestations/attestation_' . $etudiant->id . '_' . time() . '.pdf';
+        Storage::disk('public')->put($pdfPath, $pdf->output());
+
+        $demande->update([
+            'traitee' => true,
+            'lien_attestation' => $pdfPath, // Store relative path
+        ]);
+
+        return response()->json([
+            'message' => 'Demande traitée avec succès',
+            'lien' => asset('storage/' . $pdfPath)
+        ]);
     }
 
-    $etudiant = $demande->etudiant;
-
-    $config = ConfigAttestation::first() ?? $this->getSchoolConfig();
-
-    $attestation = [
-        'date_emission' => now()->format('d/m/Y'),
-        'annee_universitaire' => $config->annee_scolaire ?? date('Y') . '/' . (date('Y') + 1)
-    ];
-
-    // Générer le PDF
-    $pdf = Pdf::loadView('pdf.attestation', [
-        'etudiant' => $etudiant,
-        'config' => $config,
-        'attestation' => (object)$attestation
-    ])->setOption('enable-php', true); // ✅ correction ici
-
-    // Enregistrer le PDF dans le disque public
-    $pdfPath = 'attestations/attestation_' . $etudiant->id . '_' . time() . '.pdf';
-    Storage::disk('public')->put($pdfPath, $pdf->output());
-
-    // Marquer la demande comme traitée
-    $demande->update([
-        'traitee' => true,
-        'lien_attestation' => $pdfPath
-    ]);
-
-    return response()->json([
-        'message' => 'Demande traitée avec succès !',
-        'lien' => asset('storage/' . $pdfPath)
-    ]);
-}
-
-    private function getSchoolConfig() // ✅ utilisé ici
+    // Configuration par défaut de l'école
+    private function getSchoolConfig()
     {
         return (object)[
             'nom_ecole' => 'Institut Supérieur de Technologie Hay Salam',
             'telephone' => '0528223344',
             'fax' => '0528223345',
-            'logo_path' => 'logos/logo.png', // Ajuster le chemin
+            'logo_path' => 'logos/logo.png',
+            'annee_scolaire' => date('Y') . '/' . (date('Y') + 1),
         ];
     }
-    // Dans ton Controller
-
-
 }

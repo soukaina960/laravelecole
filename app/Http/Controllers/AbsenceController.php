@@ -29,12 +29,31 @@ public function getAbsentsCritiques()
         'count' => $absents->count()
     ]);
 }
+private function nettoyerUtf8($donnees)
+{
+    if (is_string($donnees)) {
+        return mb_convert_encoding($donnees, 'UTF-8', 'UTF-8');
+    } elseif (is_array($donnees)) {
+        return array_map([$this, 'nettoyerUtf8'], $donnees);
+    } elseif (is_object($donnees)) {
+        foreach ($donnees as $cle => $valeur) {
+            $donnees->$cle = $this->nettoyerUtf8($valeur);
+        }
+    }
+    return $donnees;
+}
 
     // Affiche toutes les absences
-    public function index()
-    {
-        return response()->json(Absence::with('etudiant.classroom')->get());
-    }
+  public function index()
+{
+    $absences = Absence::with('etudiant.classroom')->get();
+
+    // Nettoyage des caractères potentiellement mal encodés
+    $absencesUtf8 = $this->nettoyerUtf8($absences->toArray());
+
+    return response()->json($absencesUtf8);
+}
+
 
     // Enregistrer une absence
     public function store(Request $request)
@@ -47,6 +66,7 @@ public function getAbsentsCritiques()
             'professeur_id' => 'required|exists:professeurs,id',
             'class_id' => 'required|exists:classrooms,id',
             'matiere_id' => 'required|exists:matieres,id',
+            'surveillant_id' => 'required|exists:surveillant,id',
         ]);
 
         $justifiee = ($validated['justifiee'] === 'oui') ? 1 : 0;
@@ -59,6 +79,7 @@ public function getAbsentsCritiques()
             'motif' => $validated['motif'],
             'class_id' => $validated['class_id'],
             'matiere_id' => $validated['matiere_id'],
+            'surveillant_id' => $validated['surveillant_id'],
         ]);
 
         return response()->json($absence, 201);
@@ -140,6 +161,20 @@ public function getAbsentsCritiques()
 
 
 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -169,10 +204,48 @@ public function getAbsentsCritiques()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Envoyer une notification par email au parent
+
+
+    // Envoyer une notification par email au parent
+
     public function notifyParent($etudiantId)
     {
         $etudiant = Etudiant::find($etudiantId);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -217,27 +290,39 @@ public function getAbsentsCritiques()
             return response()->json(['status' => 'error', 'message' => 'Erreur lors de l\'envoi de l\'email: ' . $e->getMessage()]);
         }
     }
-    public function getAbsencesByParentId($parentId)
-    {
-        // Vérifie si le parent_id est présent dans l'URL
-        if (!$parentId) {
-            return response()->json(['message' => 'parent_id manquant'], 400);
+    private function utf8Clean($data)
+{
+    if (is_string($data)) {
+        return mb_convert_encoding($data, 'UTF-8', 'UTF-8');
+    } elseif (is_array($data)) {
+        return array_map([$this, 'utf8Clean'], $data);
+    } elseif (is_object($data)) {
+        foreach ($data as $key => $value) {
+            $data->$key = $this->utf8Clean($value);
         }
-    
-        // Récupère les absences où le parent_id correspond
-        $absences = Absence::whereHas('etudiant', function ($query) use ($parentId) {
-            $query->where('parent_id', $parentId);
-        })
-        ->with(['etudiant', 'classroom', 'matiere', 'professeur']) // <= هنا زدنا class و matiere و professeur
-        ->get();
-    
-        // Si aucune absence n'est trouvée
-        if ($absences->isEmpty()) {
-            return response()->json(['message' => 'Aucune absence trouvée pour ce parent_id'], 404);
-        }
-    
-        // Retourne les absences sous forme de JSON
-        return response()->json($absences);
+        return $data;
     }
+    return $data;
+}
+
+public function getAbsencesByParentId($parentId)
+{
+    if (!$parentId) {
+        return response()->json(['message' => 'parent_id manquant'], 400);
+    }
+
+    $absences = Absence::whereHas('etudiant', function ($query) use ($parentId) {
+        $query->where('parent_id', $parentId);
+    })
+    ->with(['etudiant.classroom', 'matiere', 'professeur'])
+    ->get();
+
+    // Nettoyage UTF-8 avant de renvoyer la réponse
+    $data = $this->utf8Clean($absences->toArray());
+
+    return response()->json($data); // Même s'il est vide, on retourne un tableau
+}
+
+
     
 }

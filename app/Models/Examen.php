@@ -15,10 +15,11 @@ class Examen extends Model
         'heure_fin'
     ];
 
-    public function classroom()
+   public function classroom()
 {
-    return $this->belongsTo(Classroom::class);
+    return $this->belongsTo(Classroom::class, 'classe_id');
 }
+
 
     public function matiere() {
         return $this->belongsTo(Matiere::class);

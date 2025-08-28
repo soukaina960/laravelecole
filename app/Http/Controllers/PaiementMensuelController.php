@@ -71,6 +71,12 @@ class PaiementMensuelController extends Controller
         return response()->json($paiements);
     }
 
+
+    // Méthode pour créer un paiement mensuel
+   
+    
+
+    
     
     // Méthode pour afficher un paiement mensuel spécifique
     public function show($id)
@@ -147,47 +153,62 @@ class PaiementMensuelController extends Controller
 
         return response()->json($paiement);
     }
-    public function getPaiements($professeurId, $mois)
-    {
-        try {
-            if (!is_numeric($professeurId)) {
-                return response()->json(['error' => 'ID professeur invalide'], 400);
-            }
     
-            if (!preg_match('/^(\d{4})-(\d{2})$/', $mois, $matches)) {
-                return response()->json(['error' => 'Format du mois invalide'], 400);
-            }
-    
-            $dbMonthFormat = $matches[1] . '-' . $matches[2]; // "YYYY-MM"
-    
-            $paiements = DB::table('etudiant_professeur')
-                ->join('etudiants', 'etudiants.id', '=', 'etudiant_professeur.etudiant_id')
-                ->leftJoin('paiements_mensuels', function($join) use ($dbMonthFormat) {
-                    $join->on('etudiant_professeur.etudiant_id', '=', 'paiements_mensuels.etudiant_id')
-                         ->where('paiements_mensuels.mois', 'LIKE', $dbMonthFormat . '%');
-                })
-                ->where('etudiant_professeur.professeur_id', $professeurId)
-                ->select(
-                    'etudiants.id as etudiant_id',
-                    DB::raw('CONCAT(etudiants.prenom, " ", etudiants.nom) as nom_complet'),
-                    'paiements_mensuels.mois',
-                    'paiements_mensuels.est_paye',
-                    'paiements_mensuels.date_paiement'
-                )
-                ->orderBy('etudiants.nom')
-                ->orderBy('etudiants.prenom')
-                ->get();
-    
-            return response()->json($paiements);
-    
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Erreur lors de la récupération des paiements',
-                'details' => $e->getMessage()
-            ], 500);
-        }
-        
+public function getPaiements($professeurId, $mois)
+{
+    // Validation simple manuelle
+    if (!is_numeric($professeurId) || !preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $mois)) {
+        return response()->json(['error' => 'Paramètres invalides'], 400);
     }
+
+   list($annee, $moisNum) = explode('-', $mois);
+$moisInt = (int)$moisNum; // convertit '01' en 1, '02' en 2 etc.
+
+$paiements = DB::table('etudiant_professeur')
+    ->join('etudiants', 'etudiants.id', '=', 'etudiant_professeur.etudiant_id')
+  ->join('paiements_mensuels', function($join) use ($moisNum, $annee) {
+    $join->on('etudiant_professeur.etudiant_id', '=', 'paiements_mensuels.etudiant_id')
+         ->where('paiements_mensuels.mois', '=', $moisNum)
+         ->whereYear('paiements_mensuels.date_paiement', '=', $annee);
+})
+
+    ->where('etudiant_professeur.professeur_id', $professeurId)
+    ->select(
+        'etudiants.id as etudiant_id',
+        DB::raw('CONCAT(etudiants.prenom, " ", etudiants.nom) as nom_complet'),
+        'paiements_mensuels.mois',
+        'paiements_mensuels.est_paye',
+        'paiements_mensuels.date_paiement',
+        DB::raw("
+            CASE
+                WHEN paiements_mensuels.est_paye = 1 THEN 'Payé'
+                WHEN paiements_mensuels.est_paye = 0 THEN 'Non payé'
+                ELSE 'Non renseigné'
+            END as statut_paiement
+        ")
+    )
+    ->orderBy('etudiants.nom')
+    ->orderBy('etudiants.prenom')
+    ->get();
+
+$totalPaiements = DB::table('salaire_professeurs')
+    ->where('professeur_id', $professeurId)
+    ->where('annee', $annee)
+    ->where('mois', $moisInt)
+    ->select('total_paiements')
+    ->first();
+
+
+    $total = $totalPaiements ? $totalPaiements->total_paiements : 0;
+
+    return response()->json([
+        'paiements' => $paiements,
+        'total_paiements' => $total,
+    ]);
+}
+
+
+
     public function resetPaiementsMoisPrecedent()
 {
     // Obtenez le mois précédent
@@ -214,53 +235,7 @@ class PaiementMensuelController extends Controller
 }
 
 
-    public function getPaiementsByMois($parent_id, $mois)
-{
-    // Convertir "avril" en chiffre 04
-    $mois_numero = $this->convertirMoisEnNumero($mois);
-
-    if (!$mois_numero) {
-        return response()->json(['message' => 'Mois invalide.'], 400);
-    }
-
-    // Chercher les paiements dont le mois de 'mois' = $mois_numero
-    $paiements = PaiementMensuel::whereMonth('mois', $mois_numero)
-    ->whereHas('etudiant', function ($query) use ($parent_id) {
-        $query->where('parent_id', $parent_id);
-    })->get();
-
-
-    if ($paiements->isEmpty()) {
-        return response()->json(['message' => 'Aucun paiement trouvé pour ce mois.']);
-    }
-
-    return response()->json($paiements);
-}
-
-// Petite fonction pour convertir "avril" => 4
-private function convertirMoisEnNumero($mois)
-{
-    $mois_array = [
-        'janvier' => 1,
-        'février' => 2,
-        'mars' => 3,
-        'avril' => 4,
-        'mai' => 5,
-        'juin' => 6,
-        'juillet' => 7,
-        'août' => 8,
-        'septembre' => 9,
-        'octobre' => 10,
-        'novembre' => 11,
-        'décembre' => 12,
-    ];
-
-    $mois = strtolower($mois);
-
-    return $mois_array[$mois] ?? null;
-}
-    
-public function generateReceipt($parent_id, $mois)
+   public function getPaiementsByMois($parent_id, $mois)
 {
     $mois_numero = $this->convertirMoisEnNumero($mois);
 
@@ -268,31 +243,65 @@ public function generateReceipt($parent_id, $mois)
         return response()->json(['message' => 'Mois invalide.'], 400);
     }
 
-    $paiements = PaiementMensuel::whereMonth('mois', $mois_numero)
-        ->whereIn('etudiant_id', function ($query) use ($parent_id) {
-            $query->select('id')->from('etudiants')->where('parent_id', $parent_id);
-        })->get();
+    // Remplacez whereMonth par where car le champ contient déjà le numéro du mois
+    $paiements = PaiementMensuel::where('mois', $mois_numero)
+        ->whereHas('etudiant', function ($query) use ($parent_id) {
+            $query->where('parent_id', $parent_id);
+        })
+        ->with('etudiant') // Chargement anticipé des données étudiant
+        ->get();
 
-    if ($paiements->isEmpty()) {
-        return response()->json(['message' => 'Aucun paiement trouvé.']);
+    return response()->json([
+        'success' => true,
+        'data' => $paiements,
+        'message' => $paiements->isEmpty() ? 'Aucun paiement trouvé pour ce mois.' : null
+    ]);
+}
+
+public function generateReceipt($parent_id, $paiement_id)
+{
+    $paiement = PaiementMensuel::where('id', $paiement_id)
+        ->whereHas('etudiant', function ($query) use ($parent_id) {
+            $query->where('parent_id', $parent_id);
+        })
+        ->first();
+
+    if (!$paiement) {
+        return response()->json(['message' => 'Paiement non trouvé ou non autorisé.'], 404);
     }
-
-    // Pour l'exemple, on prend le premier paiement et on retourne le PDF
-    $paiement = $paiements->first();
-    $etudiant = $paiement->etudiant;
-    $parent = $etudiant->parent;
 
     $data = [
         'paiement' => $paiement,
-        'etudiant' => $etudiant,
-        'parent' => $parent,
+        'etudiant' => $paiement->etudiant,
+        'parent' => $paiement->etudiant->parent,
         'ecole' => 'Skolyx',
     ];
 
     $pdf = PDF::loadView('pdf.receipt', $data);
     return $pdf->download('recu_paiement_' . $paiement->id . '.pdf');
 }
+    // Ajoutez cette méthode
+    private function convertirMoisEnNumero($mois)
+    {
+        $mois_array = [
+            'janvier' => '01',
+            'février' => '02',
+            'mars' => '03',
+            'avril' => '04',
+            'mai' => '05',
+            'juin' => '06',
+            'juillet' => '07',
+            'août' => '08',
+            'septembre' => '09',
+            'octobre' => '10',
+            'novembre' => '11',
+            'décembre' => '12',
+        ];
 
+        $mois = strtolower($mois);
+
+        return $mois_array[$mois] ?? null;
+    }
 
     
 }

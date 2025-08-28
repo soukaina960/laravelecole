@@ -38,13 +38,19 @@ class Utilisateur extends Authenticatable
 
 
 
+
+
+
   
     
 
 
 
 
+
     // Relation avec l'étudiant
+
+
 
     
 
@@ -55,6 +61,10 @@ class Utilisateur extends Authenticatable
 
 
    
+
+
+
+
 
 
 
@@ -69,6 +79,9 @@ class Utilisateur extends Authenticatable
 
 
 
+
+
+
     // Relation avec l'étudiant
 
 
@@ -88,6 +101,10 @@ class Utilisateur extends Authenticatable
   
 
     
+
+
+
+
 
 
 
@@ -110,15 +127,28 @@ public function etudiant()
 
 
 
+
+
+
+
+
   public function admin()
 {
     return $this->hasOne(Admin::class, 'user_id');
 } 
 
 
+
+
+
+
    
    
     
+
+
+
+
 
 
 

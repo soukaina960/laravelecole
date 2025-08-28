@@ -16,8 +16,8 @@ class EmploiSurveillance extends Model
         'surveillant_id',
     ];
 
-    public function surveillant()
-    {
-        return $this->belongsTo(Utilisateur::class, 'surveillant_id');
-    }
+    // public function surveillant()
+    // {
+    //     return $this->belongsTo(Utilisateur::class, 'surveillant_id');
+    // }
 }

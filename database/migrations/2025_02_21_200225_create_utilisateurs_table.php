@@ -11,7 +11,17 @@ return new class extends Migration {
             $table->string('nom');
             $table->string('email')->unique();
             $table->string('mot_de_passe');
+
+
+
+            $table->enum('role', ['admin', 'professeur', 'super_surveillant' ,'surveillant', 'étudiant', 'parent']);
+         
+
+
+
+
             $table->enum('role', ['admin', 'professeur', 'surveillant', 'étudiant', 'parent']);
+
             $table->timestamps();
         });
     }

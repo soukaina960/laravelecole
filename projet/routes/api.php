@@ -9,7 +9,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\FiliereController;
-use App\Http\Controllers\ClasseController;
+
 use App\Http\Controllers\ParentController;
 
 Route::post('/associer-etudiant-professeur', [UtilisateurController::class, 'associerEtudiantProfesseur']);
@@ -66,15 +66,15 @@ Route::get('/filieres/{filiereId}/classes', [FiliereController::class, 'getClass
 Route::put('/filieres/{id}', [FiliereController::class, 'update']);
 Route::delete('/filieres/{id}', [FiliereController::class, 'destroy']);
 // Routes pour les classes
-Route::get('/classes/{classeId}/students', [ClasseController::class, 'getStudents']);
-Route::get('/classes/{classeId}/attendances', [ClasseController::class, 'getAttendances']);
-Route::post('/classes/{classeId}/attendances', [ClasseController::class, 'manageAttendances']);
-Route::get('/classes/{classe}/etudiants', [ClasseController::class, 'getEtudiants']);
+Route::get('/classes/{classeId}/students', [ClassroomController::class, 'getStudents']);
+Route::get('/classes/{classeId}/attendances', [ClassroomController::class, 'getAttendances']);
+Route::post('/classes/{classeId}/attendances', [ClassroomController::class, 'manageAttendances']);
+Route::get('/classes/{classe}/etudiants', [ClassroomController::class, 'getEtudiants']);
 // Wrong (if manageAttendances doesn't exist):
-    Route::post('/classes/{classe}/attendances', [ClasseController::class, 'manageAttendances']);
+    Route::post('/classes/{classe}/attendances', [ClassroomController::class, 'manageAttendances']);
 
     // Correct (use the existing method name):
-    Route::post('/classes/{classe}/attendances', [ClasseController::class, 'storeAttendances']);
+    Route::post('/classes/{classe}/attendances', [ClassroomController::class, 'storeAttendances']);
    
     Route::get('/etudiants/{etudiant_id}/parent-email', [ParentController::class, 'getParentEmail']);
 Route::post('/send-message', [MessageController::class, 'send']);

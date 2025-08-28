@@ -73,6 +73,7 @@ public function attendances()
     
 
     
+    
 
     public function absences()
     {
@@ -105,28 +106,19 @@ public function attendances()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Etudiant.php (modèle)
 public function utilisateur()
 {
     return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
 }
+
+ 
+
+public function professeur() {
+    return $this->belongsTo(Professeur::class);
+}
+
+
 
 
 
@@ -163,6 +155,12 @@ protected static function booted()
 public function paiementsMensuels()
 {
     return $this->hasMany(PaiementMensuel::class);
+}
+
+
+public function classe()
+{
+    return $this->belongsTo(Classe::class);
 }
 
 

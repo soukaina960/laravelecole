@@ -44,6 +44,7 @@ class UtilisateurController extends Controller
 
             $validatedData = $request->validate([
                 'telephone' => 'nullable|string',
+
                 'nom' => ['required', 'string', 'regex:/^[\pL\s\-]+$/u'],
                 'email' => 'required|email|unique:utilisateurs',
                 'role' => 'required|in:admin,professeur,surveillant,étudiant,parent',
@@ -64,6 +65,7 @@ class UtilisateurController extends Controller
                 'photo_profil' => $chemin,
                 'matricule' => $matricule,
                 'mot_de_passe' => Hash::make($password),
+                  'password_changed' => false, // ← IMPORTANT: initialisé à false
             ]);
 
             // ENVOI EMAIL
@@ -84,7 +86,7 @@ class UtilisateurController extends Controller
                 $mail->setFrom('aitouhlalfarah18@gmail.com', 'Administration');
                 $mail->addAddress($utilisateur->email, $utilisateur->nom);
                 $mail->Subject = 'Votre compte a été créé';
-                $mail->Body = "Bonjour {$utilisateur->nom},\n\nVotre compte a été créé avec succès.\nVoici votre mot de passe : {$password}\n\nMerci de le changer après connexion.";
+                $mail->Body = "Bonjour {$utilisateur->nom},\n\nVotre compte a été créé avec succès.\nVoici votre mot de passe : {$password} et votre matricule  :{$utilisateur->matricule}   \n\nMerci de le changer après connexion.";
 
                 if (!$mail->send()) {
                     Log::error('Email non envoyé: ' . $mail->ErrorInfo);
@@ -117,7 +119,8 @@ class UtilisateurController extends Controller
 
                 case 'étudiant':
                     $studentData = $request->validate([
-                        'prenom' => 'required|string|alpha',
+
+                     'prenom' => 'required|string|alpha',
                         'date_naissance' => 'required|date',
                         'sexe' => 'required|in:M,F',
                         'montant_a_payer' => 'nullable|numeric',
@@ -225,7 +228,7 @@ class UtilisateurController extends Controller
         'nom' => 'nullable|string',
         'email' => 'nullable|email|unique:utilisateurs,email,' . $id,
         'telephone' => 'nullable|string',
-        'adresse' => ' nullable|string',
+        'adresse' => 'nullable|string',
         'role' => 'in:admin,professeur,surveillant,étudiant,parent',
     ]);
 
@@ -339,7 +342,6 @@ class UtilisateurController extends Controller
  
     public function show($id)
      {
-         return response()->json(Utilisateur::findOrFail($id));
          $utilisateur = Utilisateur::with([
              'etudiant',
              'professeur',

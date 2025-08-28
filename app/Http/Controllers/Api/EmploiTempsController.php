@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class EmploiTempsController extends Controller
 {
-    // Récupérer l'emploi du temps d'un professeur
+    /**
+     * Récupérer l'emploi du temps d'un professeur
+     */
     public function getByProfesseur($id)
     {
         return EmploiTemps::with(['classe', 'matiere', 'creneau'])
@@ -19,7 +21,9 @@ class EmploiTempsController extends Controller
             ->get();
     }
 
-    // Exporter l'emploi du temps d'un professeur en PDF
+    /**
+     * Exporter l'emploi du temps d'un professeur en PDF
+     */
     public function exportPdf($profId)
     {
         $professeur = Professeur::findOrFail($profId);
@@ -28,22 +32,23 @@ class EmploiTempsController extends Controller
             ->get()
             ->groupBy('jour');
 
-        $creneaux = $emplois
-            ->flatten()
+        $creneaux = $emplois->flatten()
             ->pluck('creneau')
             ->unique('heure_debut')
             ->sortBy('heure_debut');
 
         $pdf = Pdf::loadView('pdf.emploi_prof', [
             'professeur' => $professeur,
-            'emplois'    => $emplois,
-            'creneaux'   => $creneaux,
+            'emplois' => $emplois,
+            'creneaux' => $creneaux,
         ]);
 
         return $pdf->download('emploi_' . $professeur->nom . '.pdf');
     }
 
-    // Récupérer les emplois du temps d'une classe
+    /**
+     * Récupérer les emplois du temps d'une classe
+     */
     public function index($classeId)
     {
         try {
@@ -55,33 +60,44 @@ class EmploiTempsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la récupération des données',
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
 
-    // Récupérer tous les emplois du temps
-    public function recuperer()
-    {
-        return EmploiTemps::with(['classe', 'matiere', 'professeur', 'creneau'])->get();
+    /**
+     * Récupérer tous les emplois du temps
+     */
+    public function recupurer(Request $request)
+{
+    $query = EmploiTemps::with(['classe', 'matiere', 'professeur', 'creneau']);
+
+    if ($request->has('classe_id')) {
+        $query->where('classe_id', $request->classe_id);
     }
 
-    // Mettre à jour un emploi du temps
+    return response()->json($query->get());
+}
+
+
+    /**
+     * Mettre à jour un emploi du temps
+     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'classe_id'     => 'required|exists:classrooms,id',
-            'jour'          => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
-            'creneau_id'    => 'required|exists:creneaux,id',
-            'matiere_id'    => 'required|exists:matieres,id',
+            'classe_id' => 'required|exists:classrooms,id',
+            'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
+            'creneau_id' => 'required|exists:creneaux,id',
+            'matiere_id' => 'required|exists:matieres,id',
             'professeur_id' => 'required|exists:professeurs,id',
-            'salle'         => 'required|string|max:50',
+            'salle' => 'required|string|max:50',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
-                'errors'  => $validator->errors(),
+                'errors' => $validator->errors(),
             ], 422);
         }
 
@@ -94,42 +110,47 @@ class EmploiTempsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la mise à jour',
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
 
-    // Créer un nouvel emploi du temps
+    /**
+     * Créer un nouvel emploi du temps
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'classe_id'     => 'required|exists:classrooms,id',
-            'jour'          => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
-            'creneau_id'    => 'required|exists:creneaux,id',
-            'matiere_id'    => 'required|exists:matieres,id',
+            'classe_id' => 'required|exists:classrooms,id',
+            'jour' => 'required|string|in:Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi',
+            'creneau_id' => 'required|exists:creneaux,id',
+            'matiere_id' => 'required|exists:matieres,id',
             'professeur_id' => 'required|exists:professeurs,id',
-            'salle'         => 'required|string|max:50',
+            'salle' => 'required|string|max:50',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
-                'errors'  => $validator->errors(),
+                'errors' => $validator->errors(),
             ], 422);
         }
 
         try {
             $emploi = EmploiTemps::create($request->all());
+            $emploi->load(['matiere', 'professeur', 'creneau']);
             return response()->json($emploi, 201);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la création',
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
 
-    // Supprimer un emploi du temps
+    /**
+     * Supprimer un emploi du temps
+     */
     public function destroy($id)
     {
         try {
@@ -138,7 +159,7 @@ class EmploiTempsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erreur lors de la suppression',
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
