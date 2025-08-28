@@ -14,4 +14,8 @@ class SalaireMensuel extends Model
         'total_paiements',
         'salaire',
     ];
+     public function professeur()
+    {
+        return $this->belongsTo(Professeur::class);
+    }
 }

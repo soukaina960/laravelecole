@@ -11,7 +11,11 @@ class Professeur extends Model
 
     protected $fillable = ['user_id','nom','email' ,'specialite', 'niveau_enseignement', 'diplome', 'date_embauche'
     ,'pourcentage', 'prime', 'total', 'photo_profil'];  
-   
+   public function salaire()
+{
+    return $this->hasMany(SalaireProfesseur::class);
+}
+
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, 'user_id'); 

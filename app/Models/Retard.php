@@ -1,93 +1,52 @@
 <?php
 
-
-
-
-
-
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+class Retard extends Model
+{
+    use HasFactory;
 
-    // Champs qu'on peut remplir via create() ou update()
     protected $fillable = [
         'etudiant_id',
+        'professeur_id',
+        'class_id',
+        'matiere_id',
         'date',
-        'heure'
+        'heure',
+        'surveillant_id',
+        'motif' // Ajouté comme champ optionnel
     ];
 
+    // Relation avec l'étudiant
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class);
     }
-   
 
-
-
-
-namespace App\Http\Controllers;
-
-use App\Models\Retard;
-use Illuminate\Http\Request;
-
-
-class RetardController extends Controller
-{
-
-    public function index()
+    // Relation avec le professeur
+    public function professeur()
     {
         return $this->belongsTo(Professeur::class);
     }
 
+    // Relation avec la classe
     public function classroom()
     {
         return $this->belongsTo(Classroom::class, 'class_id');
     }
+
+    // Relation avec la matière
     public function matiere()
     {
-        return $this->belongsTo(Matiere::class , 'matiere_id');
+        return $this->belongsTo(Matiere::class);
     }
 
-
-
-    public function update(Request $request, $id)
+    // Relation avec le surveillant
+    public function surveillant()
     {
-        $retard = Retard::findOrFail($id);
-        $retard->update($request->all());
-
-        return response()->json($retard);
-    }
-
-    public function destroy($id)
-    {
-        Retard::destroy($id);
-        return response()->json(['message' => 'Retard supprimé']);
-    }
-
-    // ✅ Personnalisée : retards d’un étudiant
-    public function getByEtudiant($etudiant_id)
-    {
-        $retards = Retard::where('etudiant_id', $etudiant_id)
-                    ->with('etudiant')
-                    ->get();
-
-        return response()->json($retards);
-    }
-
-    // ✅ Personnalisée : retards d’un étudiant entre deux dates
-    public function getByDateRange($etudiant_id, $date_debut, $date_fin)
-    {
-        $retards = Retard::where('etudiant_id', $etudiant_id)
-                    ->whereBetween('date', [$date_debut, $date_fin])
-                    ->with('etudiant')
-                    ->get();
-
-        return response()->json($retards);
-
-
-
+        return $this->belongsTo(Surveillant::class);
     }
 }

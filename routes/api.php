@@ -62,6 +62,7 @@ use App\Http\Controllers\ParentDashboardController;
 use App\Http\Controllers\ReclamationController;
 use App\Http\Controllers\StatistiqueMensuelleController;
 
+Route::get('/retard',[RetardsController::class,'index']);
 Route::get('/statistiques-mensuelles', [StatistiqueMensuelleController::class, 'parAnnee']);
 Route::post('/statistiques-mensuelles', [StatistiqueMensuelleController::class, 'storeOrUpdate']);
 Route::put('/utilisateurs/{id}', [UtilisateurController::class, 'update']);
@@ -88,9 +89,11 @@ use App\Http\Controllers\API\EvenementController;
 
 use App\Http\Controllers\RetardPaiementController;
 use App\Http\Controllers\ChatBotController;
+Route::get('/salaires-mensuels', [ProfesseurController::class, 'getSalairesMensuels']);
 
 Route::post('/chatbot', [ChatBotController::class, 'handle']);
-
+Route::post('/calculer-salaires', [SalaireController::class, 'calculerSalairesTousProfesseurs']);
+Route::get('/professeurs/salaires', [ProfesseurController::class, 'salairesProfesseursParMois']);
 Route::get('/professeurs/{id}/salaires', [ProfesseurController::class, 'historiqueSalaire']);
 Route::post('/professeurs/{id}/calculer-salaire-mensuel', [ProfesseurController::class, 'calculerSalaireMensuel']);
 Route::get('/demandes-attestations', [DemandeAttestationController::class, 'index']);

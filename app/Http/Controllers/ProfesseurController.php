@@ -229,6 +229,88 @@ class ProfesseurController extends Controller
 
         return response()->json($salaires);
     }
+   
+public function calculerSalairesTousProfesseurs(Request $request)
+{
+    try {
+        $request->validate([
+            'mois' => 'required|integer|between:1,12',
+            'annee' => 'required|integer|min:2000',
+        ]);
+
+        $mois = (int) $request->input('mois');
+        $annee = (int) $request->input('annee');
+
+        $professeurs = Professeur::all();
+        $resultats = [];
+
+        foreach ($professeurs as $professeur) {
+            $etudiants = Etudiant::whereHas('professeurs', function($query) use ($professeur) {
+                    $query->where('professeur_id', $professeur->id);
+                })
+                ->whereHas('paiementsMensuels', function($q) use ($mois, $annee) {
+                    $q->where('mois', $mois)
+                      ->whereYear('created_at', $annee)
+                      ->where('est_paye', 1);
+                })
+                ->get();
+
+            $totalMontants = $etudiants->sum('montant_a_payer');
+            
+            // Récupérer le pourcentage et la prime spécifiques au professeur
+            $pourcentage = $professeur->pourcentage_salaire ?? 0; // Supposons que c'est stocké dans la table professeurs
+            $prime = $professeur->prime_mensuelle ?? 0; // Supposons que c'est stocké dans la table professeurs
+
+            $salaire = ($totalMontants * ($pourcentage / 100)) + $prime;
+
+            // Vérifier si le salaire existe déjà
+            $salaireMensuelExist = SalaireMensuel::where('professeur_id', $professeur->id)
+                ->where('mois', $mois)
+                ->where('annee', $annee)
+                ->first();
+
+            if ($salaireMensuelExist) {
+                $salaireMensuelExist->update([
+                    'total_paiements' => $totalMontants,
+                    'salaire' => $salaire,
+                ]);
+            } else {
+                SalaireMensuel::create([
+                    'professeur_id' => $professeur->id,
+                    'mois' => $mois,
+                    'annee' => $annee,
+                    'total_paiements' => $totalMontants,
+                    'salaire' => $salaire,
+                    'prime' => $prime,
+                    'pourcentage' => $pourcentage,
+                ]);
+            }
+
+            $resultats[] = [
+                'professeur_id' => $professeur->id,
+                'professeur_nom' => $professeur->nom, // Supposons qu'il y a un champ nom
+                'nombre_etudiants' => $etudiants->count(),
+                'total_montants' => $totalMontants,
+                'salaire' => $salaire,
+                'pourcentage' => $pourcentage,
+                'prime' => $prime,
+                'mois' => $mois,
+                'annee' => $annee,
+            ];
+        }
+
+        return response()->json([
+            'message' => 'Calcul des salaires terminé avec succès',
+            'data' => $resultats,
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Une erreur est survenue',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 
     public function destroy($id)
     {
@@ -237,6 +319,62 @@ class ProfesseurController extends Controller
 
         return response()->json(['message' => 'Professeur supprimé avec succès'], 200);
     }
+    public function getSalairesMensuels(Request $request)
+{
+    try {
+        // Validation des paramètres de requête
+        $request->validate([
+            'mois' => 'nullable|integer|between:1,12',
+            'annee' => 'nullable|integer|min:2000',
+        ]);
+
+        // Construction de la requête avec les relations
+        $query = SalaireMensuel::with(['professeur' => function($query) {
+            $query->select('id', 'nom'); // Sélectionnez seulement les champs nécessaires
+        }]);
+
+        // Application des filtres si présents
+        if ($request->has('mois') ){
+            $query->where('mois', $request->mois);
+        }
+
+        if ($request->has('annee')) {
+            $query->where('annee', $request->annee);
+        }
+
+        // Tri par année et mois (du plus récent au plus ancien)
+        $query->orderBy('annee', 'desc')
+              ->orderBy('mois', 'desc');
+
+        // Exécution de la requête et formatage des résultats
+        $salaires = $query->get()->map(function($salaire) {
+            return [
+                'id' => $salaire->id,
+                'professeur_id' => $salaire->professeur_id,
+                'professeur_nom' => $salaire->professeur ? 
+                    $salaire->professeur->nom . ' ' . $salaire->professeur->prenom : 
+                    'Professeur inconnu',
+                'mois' => $salaire->mois,
+                'annee' => $salaire->annee,
+                'salaire' => $salaire->salaire,
+                'prime' => $salaire->prime,
+                'pourcentage' => $salaire->pourcentage,
+                'total_paiements' => $salaire->total_paiements,
+                'created_at' => $salaire->created_at->format('Y-m-d H:i:s'),
+                'updated_at' => $salaire->updated_at->format('Y-m-d H:i:s'),
+            ];
+        });
+
+        return response()->json($salaires);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de la récupération des salaires',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 
     public function panierDetail($professeurId, Request $request)
     {
